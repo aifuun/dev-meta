@@ -69,12 +69,14 @@ Transaction Flow 不是章节编号，而是业务流单元。编号要稳定，
 - 每个流的输入、输出、成功条件
 - 关键架构决策及理由（为什么这样串联）
 - 与上一版本或现有能力的继承/变更关系
+- **跨 TF 状态机**：当多个 TF 通过状态跃迁协作时，在此定义状态、跃迁条件及各 TF 在状态机中的角色
 
 **general-design.md 不包含**：
 - 函数签名
 - 具体 API 参数列表
 - 伪代码
 - 具体异常回退细节
+- 单 TF 内部的状态机（应放在 detailed-design.md）
 
 **spec.md** 不包含：
 - 输入、输出、依赖关系的详细设计
@@ -94,7 +96,7 @@ Transaction Flow 不是章节编号，而是业务流单元。编号要稳定，
 - 数据结构 / Schema 定义
 - API 调用顺序与前置条件
 - 边界情况与异常路径策略
-- 若 Transaction Flow 涉及复杂异步状态或跨端交互，必须补充文本状态机或时序图（Sequence Diagram）
+- 若 Transaction Flow 内部涉及复杂异步状态或交互流程，必须补充文本状态机或时序图（Sequence Diagram）
 
 ---
 
@@ -140,6 +142,10 @@ Transaction Flow 不是章节编号，而是业务流单元。编号要稳定，
 
 ## 5. 与现有版本的继承关系
 （表格：现有能力 / 模块 / 流 → 本版本变更）
+
+## 6. 跨 TF 状态机
+（当多个 TF 通过状态跃迁协作时，在此定义。
+每个状态机包含：名称与作用范围、状态列表、跃迁条件、涉及哪些 TF、各 TF 在哪些跃迁中起作用）
 ```
 
 ---
@@ -230,3 +236,5 @@ templates/versions/vX.Y-<slug>/
 | detailed-design.md | 流的一句话职责总览 | general-design.md |
 | tasks.md | 功能验收标准 | spec.md |
 | spec.md | 数据 Schema | detailed-design.md |
+| general-design.md | 单 TF 内部的状态机 | detailed-design.md |
+| detailed-design.md | 跨 TF 状态机 | general-design.md |

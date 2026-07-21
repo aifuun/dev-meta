@@ -20,17 +20,27 @@
 | 项目开发流程 | `docs/project-dev-flow.md` | 两层文档体系、小版本执行步骤、文档边界规则 |
 | 版本文档规范 | `docs/version-rules.md` | spec / general-design / detailed-design / tasks 结构与职责 |
 | Git 工作流规范 | `docs/git-flow-rules.md` | 分支命名、commit 规范、PR/Issue 关联规则 |
+| 工作日志规范 | `docs/worklog-rules.md` | 每日工作总结 + 详细日志 + 待办 + 里程碑结构与记录规则 |
 
 ## 3. 模板目录
 
-按版本从以下模板创建文档，不复制模板正文到项目内（需要离线或审计要求时除外）。
+版本级和项目级模板**不复制正文**到项目内，按需从模板创建并填写（离线/审计要求时除外）。工作日志模板例外，需复制到项目内。
 
 | 模板 | 路径 | 用途 |
 |---|---|---|
 | 版本四件套 | `templates/versions/vX.Y-<slug>/` | 每个小版本从模板创建 spec / general-design / detailed-design / tasks |
 | 项目基线 | `templates/project/` | 项目初始化时按需创建 project-spec / general-design / api-design / schema-design / roadmap |
+| 工作日志 | `templates/worklog.md` | **复制**到 `docs/reports/worklog.md`，每天更新 |
 
-## 4. 本项目例外
+## 4. 工作日志使用指引
+
+1. 项目初始化时，将 `templates/worklog.md` 复制到 `docs/reports/worklog.md`
+2. 修改文件头部的项目名，开始记录
+3. **每天结束时更新**：在「每日工作总结」表顶部加一行，在下方新增日期章节
+4. 当日有 commit 则列出；无 commit 则在「其他工作」中记录讨论、决策、操作
+5. 待办与里程碑随进度同步维护
+
+## 5. 本项目例外
 
 <!-- 如无例外项，写"无"；如有，逐条列出差异及理由 -->
 

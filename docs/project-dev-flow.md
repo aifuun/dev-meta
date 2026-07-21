@@ -100,7 +100,7 @@
 
 ### 4.1 跨项目规范引用策略
 
-- `version-rules.md` 与 `git-flow-rules.md` 以 `dev-meta`项目中的对应文件 为统一权威来源。
+- `version-rules.md`、`git-flow-rules.md` 与 `worklog-rules.md` 以 `dev-meta` 项目中的对应文件为统一权威来源。
 - 业务项目默认不复制规范正文，只在项目内放置轻量入口文档 `docs/dev-rules.md`。
 - 入口文档模板见 `templates/dev-rules.md`（位于 `dev-meta` 仓库），新项目直接复制并填写即可。
 - 入口文档填写三项必填内容：
@@ -148,6 +148,9 @@ project-root/
 │   ├── project-roadmap.md
 │   ├── version-rules.md
 │   ├── git-flow-rules.md
+│   ├── worklog-rules.md
+│   ├── reports/
+│   │   └── worklog.md
 │   └── versions/
 │       └── vX.Y-<slug>/
 │           ├── spec.md
@@ -161,12 +164,13 @@ project-root/
     │   ├── project-api-design.md
     │   ├── project-schema-design.md
     │   └── project-roadmap.md
-    └── versions/
-        └── vX.Y-<slug>/
-            ├── spec.md
-            ├── general-design.md
-            ├── detailed-design.md
-            └── tasks.md
+    ├── versions/
+    │   └── vX.Y-<slug>/
+    │       ├── spec.md
+    │       ├── general-design.md
+    │       ├── detailed-design.md
+    │       └── tasks.md
+    └── worklog.md
 ```
 
 ## 7. 使用建议（单人开发）
