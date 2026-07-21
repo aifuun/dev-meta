@@ -6,23 +6,75 @@
 
 | Skill | 触发场景 | 职责 | 频率 |
 |-------|----------|------|------|
-| `dev-meta-init` | 初始化新项目 | 创建 docs 目录树、生成 dev-rules.md、初始化项目基线文档 | 低频 |
-| `dev-meta-version` | 新建版本 / 推进 TF | 创建版本文档四件套、分支/PR、TF Issue、追踪交付 | 高频 |
-| `dev-meta-worklog` | 每日记录工作 | 追加工作总结、维护待办与里程碑 | 每日 |
+| `dm-init` | 初始化新项目 | 创建 docs 目录树、初始化项目基线文档与 worklog | 低频 |
+| `dm-flow` | 新建版本 / 推进 TF | 创建版本文档四件套、分支/PR、TF Issue、追踪交付 | 高频 |
+| `dm-log` | 每日记录工作 | 追加工作总结、维护待办与里程碑 | 每日 |
 
 ## Skill 关系
 
 ```
-dev-meta-init
+dm-init
     │
-    └── 项目初始化后，后续版本迭代用 dev-meta-version
+    └── 项目初始化后，后续版本迭代用 dm-flow
             │
             ├── 每个版本开始 → 创建四件套 + 分支 + PR + Issue
             ├── 每个 TF 完成 → commit + 关 Issue + 更新追踪
             └── 版本收尾 → merge PR + 补齐验收
                                     │
-dev-meta-worklog ← 每日穿插，记录所有工作
+dm-log ← 每日穿插，记录所有工作
 ```
+
+## 使用说明
+
+### 安装
+
+将本目录下的 skill 复制到 CodeBuddy 的 skills 目录：
+
+```bash
+# 用户级（推荐，跨项目可用）
+cp -r skills/dm-* ~/.codebuddy/skills/
+
+# 项目级（团队共享）
+cp -r skills/dm-* .codebuddy/skills/
+```
+
+每个 skill 目录下需包含 `SKILL.md`（核心指令）、`references/`（规范文档）、`assets/`（模板文件），具体文件清单见各 skill 设计文档。
+
+### 触发方式
+
+在 CodeBuddy 对话中，用自然语言描述需求，AI 自动匹配对应 skill：
+
+| 想做什么 | 对话示例 |
+|----------|----------|
+| 初始化项目 | "初始化一个新项目 `my-app`" |
+| 开始新版本 | "新建版本 v1.2-login" |
+| 完成一个 TF | "TF2 完成了，帮我 commit" |
+| 关闭版本 | "关闭版本 v1.2，准备 merge" |
+| 记录工作 | "记录今天的工作" |
+
+### 典型项目生命周期
+
+```
+                          dm-init
+                             │
+                    项目骨架搭建完成
+                             │
+              ┌──────────────┼──────────────┐
+              │              │              │
+         dm-flow         dm-flow         dm-flow
+         v1.0-core       v1.1-fix       v1.2-feature
+              │              │              │
+         dm-log  ←─── 每日穿插记录 ───→  dm-log
+              │              │              │
+         版本收尾        版本收尾        版本收尾
+```
+
+### 前置条件
+
+| 条件 | 适用 skill | 说明 |
+|------|------------|------|
+| Git 仓库已初始化 | dm-init / dm-flow | 版本管理依赖 Git |
+| `gh` CLI（可选） | dm-flow | 用于自动创建 PR/Issue，未安装则生成文本描述手动粘贴 |
 
 ## 共享资源
 
@@ -30,11 +82,10 @@ dev-meta-worklog ← 每日穿插，记录所有工作
 
 | 资源类型 | 文件 | 使用方 |
 |----------|------|--------|
-| 规范 | `docs/project-dev-flow.md` | init |
-| 规范 | `docs/version-rules.md` | version |
-| 规范 | `docs/git-flow-rules.md` | version |
-| 规范 | `docs/worklog-rules.md` | worklog |
-| 模板 | `templates/dev-rules.md` | init |
-| 模板 | `templates/project/*` | init |
-| 模板 | `templates/versions/vX.Y-<slug>/*` | version |
-| 模板 | `templates/worklog.md` | worklog |
+| 规范 | `docs/project-dev-flow.md` | dm-init |
+| 规范 | `docs/version-rules.md` | dm-flow |
+| 规范 | `docs/git-flow-rules.md` | dm-flow |
+| 规范 | `docs/worklog-rules.md` | dm-log |
+| 模板 | `templates/project/*` | dm-init |
+| 模板 | `templates/versions/vX.Y-<slug>/*` | dm-flow |
+| 模板 | `templates/worklog.md` | dm-log |

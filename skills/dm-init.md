@@ -1,4 +1,4 @@
-# dev-meta-init
+# dm-init
 
 ## 概述
 
@@ -16,24 +16,17 @@
 
 ```
 docs/
-├── dev-rules.md
-├── project-spec.md          (按需)
+├── project-spec.md           (按需)
 ├── project-general-design.md (按需)
-├── project-api-design.md    (按需)
-├── project-schema-design.md (按需)
-├── project-roadmap.md       (按需)
-├── reports/
-│   └── worklog.md
+├── project-api-design.md     (按需)
+├── project-schema-design.md  (按需)
+├── project-roadmap.md        (按需)
 └── versions/
+reports/
+└── worklog.md
 ```
 
-### 2. 生成 dev-rules.md
-
-- 基于 `templates/dev-rules.md` 模板
-- 填写项目名、GitHub 仓库地址
-- 声明引用的 dev-meta 版本（当前为 v0.1.0）
-
-### 3. 按需创建项目基线文档
+### 2. 按需创建项目基线文档
 
 - `project-spec.md` — 项目目标、核心功能、非功能需求
 - `project-general-design.md` — 系统架构、模块划分、技术决策
@@ -41,7 +34,7 @@ docs/
 - `project-schema-design.md` — 数据 Schema（若涉及）
 - `project-roadmap.md` — 版本路线图
 
-### 4. 初始化 worklog
+### 3. 初始化 worklog
 
 - 基于 `templates/worklog.md` 创建 `reports/worklog.md`
 
@@ -51,7 +44,6 @@ docs/
 |------|------|------|
 | SKILL.md | — | 上述流程指令 |
 | references/project-dev-flow.md | `docs/project-dev-flow.md` | 目录结构与文件职责详情 |
-| assets/dev-rules.md | `templates/dev-rules.md` | 入口模板 |
 | assets/project-spec.md | `templates/project/project-spec.md` | 项目规格模板 |
 | assets/project-general-design.md | `templates/project/project-general-design.md` | 概要设计模板 |
 | assets/project-api-design.md | `templates/project/project-api-design.md` | API 设计模板 |
@@ -65,8 +57,7 @@ docs/
 用户: "初始化一个新项目 shadow-player-v3"
 
 AI:  1. 创建 docs/ 目录树
-     2. 生成 docs/dev-rules.md（项目名: shadow-player-v3）
-     3. 询问是否需要项目基线文档
-     4. 创建 reports/worklog.md
-     5. 输出初始化报告
+     2. 询问是否需要项目基线文档
+     3. 创建 reports/worklog.md
+     4. 输出初始化报告
 ```
