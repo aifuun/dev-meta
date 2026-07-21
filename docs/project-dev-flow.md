@@ -149,14 +149,14 @@ project-root/
 │   ├── version-rules.md
 │   ├── git-flow-rules.md
 │   ├── worklog-rules.md
-│   ├── reports/
-│   │   └── worklog.md
 │   └── versions/
 │       └── vX.Y-<slug>/
 │           ├── spec.md
 │           ├── general-design.md
 │           ├── detailed-design.md
 │           └── tasks.md
+├── reports/
+│   └── worklog.md
 └── templates/
     ├── project/
     │   ├── project-spec.md

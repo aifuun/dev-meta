@@ -37,7 +37,7 @@
 - **全文档检查与修复**：比对 `docs/` 规范与 `templates/` 模板，发现 6 项不一致——version-rules.md 术语不同步、spec.md 模板列表 vs 自然语言段落、project-dev-flow.md 与 git-flow-rules.md 内容重复、samples/ 误删未提交、project-dev-flow.md §6 缺少 docs/versions 路径、TF 子结构规范缺失。全部修复并通过 git 提交推送。
 - **项目级模板补齐**：在 `templates/project/` 下创建 5 个模板，对应 project-dev-flow.md 定义的项目级文档。
 - **跨项目入口机制**：创建 `templates/dev-rules.md` 模板，使其他项目可放置轻量入口文档指向本仓库的规范与模板。为 HSK-3.0、DragonPinyin、rolligen-shadow、rolligen-danmu、rolligen-eva、shadow-player-v2 共 6 个项目生成 docs/dev-rules.md。
-- **worklog 规范建立**：分析 4 个项目（shadow-player-v2、DragonPinyin、rolligen-eva、rolligen-shadow）的 worklog.md，提取共性结构（每日总结表 + 详细日志 + 待办 + 里程碑），制定 `docs/worklog-rules.md` 规范与 `templates/worklog.md` 模板。同步更新 `project-dev-flow.md` §6 目录结构（增加 `docs/reports/worklog.md`）、§4.1 引用（增加 worklog-rules.md）、README、`templates/dev-rules.md`。
+- **worklog 规范建立**：分析 4 个项目（shadow-player-v2、DragonPinyin、rolligen-eva、rolligen-shadow）的 worklog.md，提取共性结构（每日总结表 + 详细日志 + 待办 + 里程碑），制定 `docs/worklog-rules.md` 规范与 `templates/worklog.md` 模板。同步更新 `project-dev-flow.md` §6 目录结构（增加 `reports/worklog.md`）、§4.1 引用（增加 worklog-rules.md）、README、`templates/dev-rules.md`。
 - **README 补完**：添加版本、状态、许可证三行元数据。
 
 ---
