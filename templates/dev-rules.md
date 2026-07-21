@@ -29,7 +29,7 @@
 | 模板 | 路径 | 用途 |
 |---|---|---|
 | 版本四件套 | `templates/versions/vX.Y-<slug>/` | 每个小版本从模板创建 spec / general-design / detailed-design / tasks |
-| 项目基线 | `templates/project/` | 项目初始化时按需创建 project-spec / general-design / api-design / schema-design / roadmap |
+| 项目基线 | `templates/project/` | 项目初始化时按需创建 project-spec / general-design / api-design / schema-design / ui-design / deployment / roadmap |
 | 工作日志 | `templates/worklog.md` | **复制**到 `reports/worklog.md`，每天更新 |
 
 ## 4. 工作日志使用指引
