@@ -101,10 +101,11 @@
 ### 4.1 跨项目规范引用策略
 
 - `version-rules.md` 与 `git-flow-rules.md` 以 `dev-meta`项目中的对应文件 为统一权威来源。
-- 业务项目默认不复制规范正文，只在项目内提供轻量入口文档（如 `docs/dev-rules.md`）。
-- 轻量入口文档应包含三项：
-    - 规范来源链接（指向 `dev-meta` 对应文件）
-    - 采用的规范版本（tag 或 commit）
+- 业务项目默认不复制规范正文，只在项目内放置轻量入口文档 `docs/dev-rules.md`。
+- 入口文档模板见 `templates/dev-rules.md`（位于 `dev-meta` 仓库），新项目直接复制并填写即可。
+- 入口文档填写三项必填内容：
+    - 规范来源仓库与版本（tag 或 commit）
+    - 应参考的关键文件与模板路径
     - 本项目例外项（如无则写“无”）
 - 仅在以下场景复制规范正文到项目内：
     - 离线环境或合规审计要求仓库自包含
@@ -113,7 +114,7 @@
 
 ### 4.2 templates 跨项目使用策略
 
-- `templates/versions/` 以 `dev-meta` 为默认模板源。
+- `templates/versions/` 与 `templates/project/` 以 `dev-meta` 为默认模板源。
 - 新项目默认采用“引用优先”策略：
     - 在项目内声明模板来源与版本（tag 或 commit）
     - 按版本从模板创建 `spec/general-design/detailed-design/tasks`
@@ -130,9 +131,8 @@
 
 ## 5. 最小治理规则
 
-- 每个小版本：1 个 PR。
-- 每个 TF：1 个 issue。
-- 每次 commit：关联 issue。
+版本级治理的权威来源为 `git-flow-rules.md`。项目级硬性底线：
+
 - 版本结束：必须有验收记录与复盘结论。
 
 ## 6. 模板目录建议
@@ -147,8 +147,20 @@ project-root/
 │   ├── project-schema-design.md
 │   ├── project-roadmap.md
 │   ├── version-rules.md
-│   └── git-flow-rules.md
+│   ├── git-flow-rules.md
+│   └── versions/
+│       └── vX.Y-<slug>/
+│           ├── spec.md
+│           ├── general-design.md
+│           ├── detailed-design.md
+│           └── tasks.md
 └── templates/
+    ├── project/
+    │   ├── project-spec.md
+    │   ├── project-general-design.md
+    │   ├── project-api-design.md
+    │   ├── project-schema-design.md
+    │   └── project-roadmap.md
     └── versions/
         └── vX.Y-<slug>/
             ├── spec.md
