@@ -28,6 +28,18 @@
 
 ## 3. 项目级开发主流程
 
+### 文档创建顺序
+
+| 顺序 | 文档 | 何时创建 | 前置依赖 |
+|------|------|----------|----------|
+| 1 | `project-spec.md` | 项目初始化 | — |
+| 2 | `project-general-design.md` | 架构基线建立 | project-spec |
+| 3 | `project-api-design.md` | 契约基线建立 | project-general-design |
+| 3 | `project-schema-design.md` | 数据基线建立 | project-general-design |
+| 4 | `project-roadmap.md` | 版本路线规划 | 以上全部 |
+| * | `project-ui-design.md` | 按需（有 UI 时） | project-general-design |
+| * | `project-deployment.md` | 按需（有部署时） | project-general-design |
+
 ### 3.1 项目初始化
 
 输入：业务目标、约束、团队能力、时间边界。

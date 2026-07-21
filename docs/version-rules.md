@@ -14,6 +14,17 @@ docs/versions/vX.Y-<slug>/
 └── tasks.md              # Transaction Flow 交付计划：怎么拆分、怎么执行
 ```
 
+### 创建顺序
+
+> 版本级四文档按以下顺序创建，每步都是下一步的前置条件：
+
+| 顺序 | 文档 | 回答的问题 | 前置依赖 |
+|------|------|-----------|----------|
+| 1 | `spec.md` | 交付什么？怎样算完成？ | — |
+| 2 | `general-design.md` | 流程如何串联？模块如何分工？ | spec |
+| 3 | `detailed-design.md` | 每一步怎么实现？ | general-design |
+| 4 | `tasks.md` | 怎么拆分？怎么执行？ | detailed-design |
+
 ---
 
 ## 2. 各文件职责
