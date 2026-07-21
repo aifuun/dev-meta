@@ -1,0 +1,42 @@
+# V1.4.1 概要设计
+
+## 1. 架构背景与目标
+
+- 架构目标：把偏好持久化能力从播放器主流程中拆出来，形成可独立复用的 IndexedDB 基础通道。
+- 上一版本基线：V1.3（已发布）。
+- 影响范围：切歌恢复、定时写入、删除清理、异常降级。
+
+## 2. Transaction Flow 划分
+
+| 流编号 | 一句话职责 | 输入 | 输出 | 依赖 | 边界 |
+|---|---|---|---|---|---|
+| TF1 | 切歌前先保存当前曲，切歌后恢复目标曲 | 当前 trackId、目标 trackId、播放器状态 | 目标曲恢复态 | prefs-store、playback-controller | 保存失败时不阻塞切歌 |
+| TF2 | 播放中定期刷写 currentTime | 当前 trackId、currentTime、倍速、AB 状态 | 持久化偏好记录 | prefs-store、timing loop | 节流写入，避免影响播放时钟 |
+| TF3 | 删除轨道或清空列表时清理偏好 | trackId 或清空事件 | 相关偏好被删除 | prefs-store、playlist-manager、core-engine | 清理失败不影响主业务 |
+| TF4 | IDB 不可用时静默降级 | 可用性检测结果 | 内存态/失败吞掉策略 | audio-store、prefs-store | 隐私模式或配额异常时不可中断播放 |
+
+## 3. 流之间的数据流
+
+- 执行顺序：TF2 持续写入偏好；TF1 在 switchTrack 时先保存再恢复；TF3 在删除/清空时清理；TF4 贯穿所有流程作为兜底。
+- 串行/并行关系：TF1 中的“保存当前曲”和“恢复目标曲”必须串行；TF2 的写入与播放主线程并行，采用节流与异步写。
+- 依赖关系：`playback-controller.js` 负责编排，`prefs-store.js` 负责偏好读写，`audio-store.js` 负责 IndexedDB 打开与底层能力探测。
+
+## 4. 关键决策
+
+| 决策 | 备选方案 | 选择理由 | 影响 |
+|---|---|---|---|
+| 以 trackId 作为偏好主键 | 以文件名或索引作为主键 | trackId 更稳定，能避免同名文件与重排问题 | 删除/重导入时可精确清理 |
+| 偏好与播放时钟异步写入 | 每帧写入 currentTime | 异步节流可以避免 UI 和播放时钟被阻塞 | 需要容忍最终一致性 |
+| 保存与恢复拆为独立操作 | 切歌时一次性覆盖 | 独立操作更容易复用与单测，也更容易失败降级 | 需要保证 switchTrack 顺序正确 |
+| IDB 不可用时静默降级 | 直接报错阻断播放 | 播放是主路径，偏好可丢失但功能不能中断 | 需要明确默认值策略 |
+
+## 5. 与现有版本的继承关系
+
+| 现有能力 / 模块 / 流 | 本版本变更 |
+|---|---|
+| `playback-controller.js` 切歌逻辑 | 在 `switchTrack()` 中增加先保存后恢复偏好的编排 |
+| `startTimingLoop()` | 增加周期性写入 `currentTime` 的持久化动作 |
+| `core-engine.js` 清空列表 | 增加 `prefsStore.deleteAll()` 清理动作 |
+| `playlist-manager.js` 删除轨道 | 增加 `prefsStore.delete(trackId)` 清理动作 |
+| 播放器默认行为 | 在无历史偏好时继续使用默认值起播 |
+
