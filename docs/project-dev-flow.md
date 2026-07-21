@@ -13,6 +13,8 @@
 - `project-general-design.md`：系统架构、模块边界、关键技术决策。
 - `project-api-design.md`：接口契约、错误模型、兼容与版本策略。
 - `project-schema-design.md`：数据模型、命名规范、迁移策略。
+- `project-ui-design.md`：设计系统、组件库、设计 Token、适配策略。
+- `project-deployment.md`：环境拓扑、CI/CD、基础设施、可观测性、发布流程。
 - `project-roadmap.md`：版本规划、依赖关系、里程碑。
 
 ### 2.2 版本级文档（高频更新，按版本推进）
@@ -77,8 +79,9 @@
 2. 建文档（spec/general/detailed/tasks）
 3. 建跟踪项（1 个版本 PR + 每个 TF 1 个 issue）
 4. 开发与提交（commit 规范、关联 issue）
-5. 验收与收尾（验收记录、关闭 issue、合并 PR）
-6. 复盘与归档（变更总结、遗留项）
+5. 测试与验证（按 TF 测试策略执行，记录结果）
+6. 验收与收尾（验收记录、关闭 issue、合并 PR）
+7. 复盘与归档（变更总结、遗留项）
 
 ### 3.6 项目级回收与迭代
 
@@ -101,8 +104,12 @@
 ### 4.1 跨项目规范引用策略
 
 - `version-rules.md`、`git-flow-rules.md` 与 `worklog-rules.md` 以 `dev-meta` 项目中的对应文件为统一权威来源。
-- 推荐通过 `dm-init` / `dm-flow` / `dm-log` skill 自动加载规范，无需在项目中手动维护引用。
-- 若需要手动引用（如不使用 skill），建议在项目 README 或文档头部标注 dev-meta 版本。
+- 业务项目默认不复制规范正文，仅在项目内放置轻量入口文档 `docs/dev-rules.md`，作为人类与 AI 共读的项目清单（记录项目基本情况、规范来源与例外项）。
+- 推荐通过 `dm-init` skill 自动生成入口文档；若手动创建，入口文档模板见 `templates/dev-rules.md`。
+- 入口文档填写三项必填内容：
+    - 项目名称与仓库地址
+    - 规范来源仓库与版本（tag 或 commit）
+    - 本项目例外项（如无则写"无"）
 - 仅在以下场景复制规范正文到项目内：
     - 离线环境或合规审计要求仓库自包含
     - 团队明确要求项目仓库独立维护完整规范
@@ -141,6 +148,8 @@ project-root/
 │   ├── project-general-design.md
 │   ├── project-api-design.md
 │   ├── project-schema-design.md
+│   ├── project-ui-design.md
+│   ├── project-deployment.md
 │   ├── project-roadmap.md
 │   ├── version-rules.md
 │   ├── git-flow-rules.md
@@ -159,6 +168,8 @@ project-root/
     │   ├── project-general-design.md
     │   ├── project-api-design.md
     │   ├── project-schema-design.md
+    │   ├── project-ui-design.md
+    │   ├── project-deployment.md
     │   └── project-roadmap.md
     ├── versions/
     │   └── vX.Y-<slug>/

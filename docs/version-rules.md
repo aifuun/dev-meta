@@ -70,6 +70,7 @@ Transaction Flow 不是章节编号，而是业务流单元。编号要稳定，
 - 关键架构决策及理由（为什么这样串联）
 - 与上一版本或现有能力的继承/变更关系
 - **跨 TF 状态机**：当多个 TF 通过状态跃迁协作时，在此定义状态、跃迁条件及各 TF 在状态机中的角色
+- **测试策略**：每个 TF 的测试级别（单元/集成/E2E/手工）、关键测试场景、测试环境依赖
 
 **general-design.md 不包含**：
 - 函数签名
@@ -77,6 +78,7 @@ Transaction Flow 不是章节编号，而是业务流单元。编号要稳定，
 - 伪代码
 - 具体异常回退细节
 - 单 TF 内部的状态机（应放在 detailed-design.md）
+- 具体测试用例（策略层级即可，用例细节在 detailed-design 中展开）
 
 **spec.md** 不包含：
 - 输入、输出、依赖关系的详细设计
@@ -118,7 +120,7 @@ Transaction Flow 不是章节编号，而是业务流单元。编号要稳定，
 （表格：验收项 | 对应流 | 通过标准）
 
 ## 5. DoD (Definition of Done)
-（勾选框清单）
+（勾选框清单，需包含测试相关条目）
 ```
 
 ---
@@ -146,6 +148,10 @@ Transaction Flow 不是章节编号，而是业务流单元。编号要稳定，
 ## 6. 跨 TF 状态机
 （当多个 TF 通过状态跃迁协作时，在此定义。
 每个状态机包含：名称与作用范围、状态列表、跃迁条件、涉及哪些 TF、各 TF 在哪些跃迁中起作用）
+
+## 7. 测试策略
+（每个 TF 的测试级别、关键测试场景、测试环境依赖。
+general-design 仅定义策略层级（单元/集成/E2E/手工）和关键场景，不写具体测试用例）
 ```
 
 ---
@@ -238,3 +244,4 @@ templates/versions/vX.Y-<slug>/
 | spec.md | 数据 Schema | detailed-design.md |
 | general-design.md | 单 TF 内部的状态机 | detailed-design.md |
 | detailed-design.md | 跨 TF 状态机 | general-design.md |
+| general-design.md | 具体测试用例 | detailed-design.md |
