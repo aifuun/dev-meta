@@ -26,7 +26,7 @@
 
 | 日期 | 工作总结 |
 |------|---------|
-| **2026-07-21** | 全文档一致性检查与修复（6 项问题，含规范与模板同步、跨文档去重）；SAMPLES 恢复与 project-dev-flow §6 目录结构补全；创建 5 个项目级模板 + dev-rules.md 入口模板；为 6 个业务项目生成 docs/dev-rules.md；制定 worklog 规范并同步更新 project-dev-flow.md、README、dev-rules.md 模板；README 增补版本元数据 |
+| **2026-07-21** | 全文档一致性检查与修复（6 项问题）；项目级模板补齐与跨项目入口机制落地；worklog 规范制定；README 补完；测试策略纳入 general-design 与 dev-flow；user-level skills (dm-flow/dm-init) 同步更新；新增文档创建顺序速查表（更新了 2 次） |
 
 ---
 
@@ -39,6 +39,9 @@
 - **跨项目入口机制**：创建 `templates/dev-rules.md` 模板，使其他项目可放置轻量入口文档指向本仓库的规范与模板。为 HSK-3.0、DragonPinyin、rolligen-shadow、rolligen-danmu、rolligen-eva、shadow-player-v2 共 6 个项目生成 docs/dev-rules.md。
 - **worklog 规范建立**：分析 4 个项目（shadow-player-v2、DragonPinyin、rolligen-eva、rolligen-shadow）的 worklog.md，提取共性结构（每日总结表 + 详细日志 + 待办 + 里程碑），制定 `docs/worklog-rules.md` 规范与 `templates/worklog.md` 模板。同步更新 `project-dev-flow.md` §6 目录结构（增加 `reports/worklog.md`）、§4.1 引用（增加 worklog-rules.md）、README、`templates/dev-rules.md`。
 - **README 补完**：添加版本、状态、许可证三行元数据。
+- **测试策略纳入 general-design 与 dev-flow**：`dev-flow.md` 版本执行步骤新增第 5 步"测试与验证"；`version-rules.md` 更新 general-design 内容边界/结构，新增 §7 测试策略定义；反模式表新增条目；`general-design.md` 模板新增测试策略表格（TF/测试级别/关键场景/环境依赖）；`spec.md` 模板 DoD 新增 2 条测试条目。commits: `2231f1b`
+- **user-level skills 同步**：`dm-flow` SKILL.md 更新 Phase 1/2 和 Key Rules（新增 test strategy 规则）；`assets/general-design.md`、`assets/spec.md`、`references/version-rules.md` 同步更新；`dm-init` reference `project-dev-flow.md` 同步测试验证步骤。
+- **文档创建顺序速查表**：`project-dev-flow.md` 新增项目级文档创建顺序表（含前置依赖）；`version-rules.md` 新增版本级四文档创建顺序表（spec→general→detailed→tasks）；`dm-flow` SKILL.md 显式编号创建顺序；`dm-init` reference 同步速查表。commits: `5862b63`
 
 ---
 
@@ -54,6 +57,7 @@
 
 | 日期 | 里程碑 |
 |------|--------|
+| 2026-07-21 | 测试策略纳入 general-design；dm-flow/dm-init skills 同步；文档创建顺序速查表落地 |
 | 2026-07-21 | worklog 规范制定；跨项目入口机制（dev-rules.md）落地；6 个项目接入 |
 | 2026-07-21 | 全文档一致性检查通过；项目级模板补齐 |
 | 2026-07-21 | 首次 commit (df0b812)：规范与模板初始版本 |
