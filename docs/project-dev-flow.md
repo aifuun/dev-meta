@@ -116,8 +116,8 @@
 ### 4.1 跨项目规范引用策略
 
 - `version-rules.md`、`git-flow-rules.md` 与 `worklog-rules.md` 以 `dev-meta` 项目中的对应文件为统一权威来源。
-- 业务项目默认不复制规范正文，仅在项目内放置轻量入口文档 `docs/dev-rules.md`，作为人类与 AI 共读的项目清单（记录项目基本情况、规范来源与例外项）。
-- 推荐通过 `dm-init` skill 自动生成入口文档；若手动创建，入口文档模板见 `templates/dev-rules.md`。
+- 业务项目默认不复制规范正文，仅在项目内放置轻量入口文档 `docs/dev-reference.md`，作为人类与 AI 共读的项目清单（记录项目基本情况、规范来源与例外项）。
+- 推荐通过 `dm-init` skill 自动生成入口文档；若手动创建，入口文档模板见 `templates/dev-reference.md`。
 - 入口文档填写三项必填内容：
     - 项目名称与仓库地址
     - 规范来源仓库与版本（tag 或 commit）

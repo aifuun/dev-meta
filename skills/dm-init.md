@@ -16,7 +16,7 @@
 
 ```
 docs/
-├── dev-rules.md              (必创建)
+├── dev-reference.md          (必创建)
 ├── project-spec.md           (按需)
 ├── project-general-design.md (按需)
 ├── project-api-design.md     (按需)
@@ -29,9 +29,9 @@ reports/
 └── worklog.md
 ```
 
-### 2. 生成 dev-rules.md
+### 2. 生成 dev-reference.md
 
-- 基于 `assets/dev-rules.md` 模板
+- 基于 `assets/dev-reference.md` 模板
 - 填写项目名、GitHub 仓库地址
 - 声明引用的 dev-meta 版本（当前为 v0.1.0）
 - 作用：人类与 AI 共读的项目清单，描述项目结构与规范来源，而非规范正文副本
@@ -50,13 +50,20 @@ reports/
 
 - 基于 `assets/worklog.md` 创建 `reports/worklog.md`
 
+### 5. 提交
+
+提交所有创建的文件，message 示例：
+```
+chore: initialize project docs following dev-meta
+```
+
 ## Skill 资源映射
 
 | 资源 | 来源 | 用途 |
 |------|------|------|
 | SKILL.md | — | 上述流程指令 |
 | references/project-dev-flow.md | `docs/project-dev-flow.md` | 目录结构与文件职责详情 |
-| assets/dev-rules.md | `templates/dev-rules.md` | 项目入口模板 |
+| assets/dev-reference.md | `templates/dev-reference.md` | 项目入口模板 |
 | assets/project-spec.md | `templates/project/project-spec.md` | 项目规格模板 |
 | assets/project-general-design.md | `templates/project/project-general-design.md` | 概要设计模板 |
 | assets/project-api-design.md | `templates/project/project-api-design.md` | API 设计模板 |
@@ -72,7 +79,7 @@ reports/
 用户: "初始化一个新项目 shadow-player-v3"
 
 AI:  1. 创建 docs/ 目录树
-     2. 生成 docs/dev-rules.md（项目名: shadow-player-v3）
+     2. 生成 docs/dev-reference.md（项目名: shadow-player-v3）
      3. 询问是否需要项目基线文档
      4. 创建 reports/worklog.md
      5. 输出初始化报告

@@ -68,6 +68,7 @@
 2. 补齐 `tasks.md` 验收结果
 3. 提交 worklog 记录
 4. Merge PR (squash merge)
+5. 提交版本文档（如尚未提交）
 
 ## 关键规则速查
 

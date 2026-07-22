@@ -6,7 +6,7 @@
 
 | Skill | 触发场景 | 职责 | 频率 |
 |-------|----------|------|------|
-| `dm-init` | 初始化新项目 | 创建 docs 目录树、生成 dev-rules.md、初始化项目基线文档与 worklog | 低频 |
+| `dm-init` | 初始化新项目 | 创建 docs 目录树、生成 dev-reference.md、初始化项目基线文档与 worklog | 低频 |
 | `dm-flow` | 新建版本 / 推进 TF | 创建版本文档四件套、分支/PR、TF Issue、追踪交付 | 高频 |
 | `dm-log` | 每日记录工作 | 追加工作总结、维护待办与里程碑 | 每日 |
 
@@ -75,7 +75,7 @@ cp -r skills/dm-* .codebuddy/skills/
 |------|------------|------|
 | Git 仓库已初始化 | dm-init / dm-flow | 版本管理依赖 Git |
 | `gh` CLI（可选） | dm-flow | 用于自动创建 PR/Issue，未安装则生成文本描述手动粘贴 |
-| 项目中已有 `docs/dev-rules.md` | dm-flow / dm-log | 确保项目已绑定 dev-meta 规范 |
+| 项目中已有 `docs/dev-reference.md` | dm-flow / dm-log | 确保项目已绑定 dev-meta 规范 |
 
 ## 共享资源
 
@@ -87,7 +87,7 @@ cp -r skills/dm-* .codebuddy/skills/
 | 规范 | `docs/version-rules.md` | dm-flow |
 | 规范 | `docs/git-flow-rules.md` | dm-flow |
 | 规范 | `docs/worklog-rules.md` | dm-log |
-| 模板 | `templates/dev-rules.md` | dm-init |
+| 模板 | `templates/dev-reference.md` | dm-init |
 | 模板 | `templates/project/*` | dm-init |
 | 模板 | `templates/versions/vX.Y-<slug>/*` | dm-flow |
 | 模板 | `templates/worklog.md` | dm-log |
