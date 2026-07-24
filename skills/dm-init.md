@@ -52,7 +52,7 @@ reports/
 
 ### 5. 提交
 
-提交所有创建的文件，message 示例：
+提交所有创建的文件 — 委托 dm-commit skill。示例：
 ```
 chore: initialize project docs following dev-meta
 ```

@@ -55,7 +55,7 @@
 
 ### 6. 提交
 
-提交 worklog 更新：
+提交 worklog 更新 — 委托 dm-commit skill。示例：
 ```
 chore: update worklog — <一句话总结>
 ```

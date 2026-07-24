@@ -49,7 +49,7 @@
 ```
 
 1. **确认验收**：对照 `spec.md` 中该 TF 的验收标准
-2. **执行 commit**
+2. **执行 commit** — 委托 dm-commit skill，格式：
    ```text
    feat(export): collect and preprocess data for PDF export
    
@@ -68,7 +68,7 @@
 2. 补齐 `tasks.md` 验收结果
 3. 提交 worklog 记录
 4. Merge PR (squash merge)
-5. 提交版本文档（如尚未提交）
+5. 提交版本文档（如尚未提交） — 委托 dm-commit
 
 ## 关键规则速查
 
@@ -78,7 +78,7 @@
 | general-design 管 TF 级，detailed-design 管步骤级 | version-rules.md §3.3 |
 | 跨 TF 状态机放 general-design，单 TF 状态机放 detailed-design | version-rules.md §3.4 |
 | 每版本 1 PR，每 TF 1 Issue | git-flow-rules.md §2 |
-| commit: `type(scope): subject` + `Closes #id` | git-flow-rules.md §3 |
+| commit: `type(scope): subject` + `Closes #id`，详见 dm-commit | git-flow-rules.md §3 |
 | 分支: `feature/<version>-<tf>-<topic>` | git-flow-rules.md §4 |
 | 合并: 默认 squash merge | git-flow-rules.md §4.2 |
 

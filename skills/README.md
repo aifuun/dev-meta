@@ -9,6 +9,7 @@
 | `dm-init` | 初始化新项目 | 创建 docs 目录树、生成 dev-reference.md、初始化项目基线文档与 worklog | 低频 |
 | `dm-flow` | 新建版本 / 推进 TF | 创建版本文档四件套、分支/PR、TF Issue、追踪交付 | 高频 |
 | `dm-log` | 每日记录工作 | 追加工作总结、维护待办与里程碑 | 每日 |
+| `dm-commit` | 提交变更 | type 向导、格式校验、footer 关联 Issue，确保 commit 一致性 | 频繁 |
 
 ## Skill 关系
 
@@ -18,10 +19,10 @@ dm-init
     └── 项目初始化后，后续版本迭代用 dm-flow
             │
             ├── 每个版本开始 → 创建四件套 + 分支 + PR + Issue
-            ├── 每个 TF 完成 → commit + 关 Issue + 更新追踪
+            ├── 每个 TF 完成 → dm-commit + 关 Issue + 更新追踪
             └── 版本收尾 → merge PR + 补齐验收
                                     │
-dm-log ← 每日穿插，记录所有工作
+dm-log ← 每日穿插，记录所有工作 ──→ dm-commit (统一提交出口)
 ```
 
 ## 使用说明
@@ -51,6 +52,7 @@ cp -r skills/dm-* .codebuddy/skills/
 | 完成一个 TF | "TF2 完成了，帮我 commit" |
 | 关闭版本 | "关闭版本 v1.2，准备 merge" |
 | 记录工作 | "记录今天的工作" |
+| 提交变更 | "commit" / "帮我 commit" |
 
 ### 典型项目生命周期
 
@@ -67,6 +69,9 @@ cp -r skills/dm-* .codebuddy/skills/
          dm-log  ←─── 每日穿插记录 ───→  dm-log
               │              │              │
          版本收尾        版本收尾        版本收尾
+              └──────────────┼──────────────┘
+                             │
+                        dm-commit (统一提交出口)
 ```
 
 ### 前置条件
@@ -79,7 +84,7 @@ cp -r skills/dm-* .codebuddy/skills/
 
 ## 共享资源
 
-三个 skill 共享 `dev-meta` 仓库中的规范文件与模板，通过 `references/` 和 `assets/` 分发：
+四个 skill 共享 `dev-meta` 仓库中的规范文件与模板，通过 `references/` 和 `assets/` 分发：
 
 | 资源类型 | 文件 | 使用方 |
 |----------|------|--------|
@@ -91,3 +96,4 @@ cp -r skills/dm-* .codebuddy/skills/
 | 模板 | `templates/project/*` | dm-init |
 | 模板 | `templates/versions/vX.Y-<slug>/*` | dm-flow |
 | 模板 | `templates/worklog.md` | dm-log |
+| 规范 | `docs/git-flow-rules.md` | dm-commit |
