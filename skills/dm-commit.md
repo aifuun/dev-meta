@@ -2,14 +2,14 @@
 
 ## 概述
 
-Commit 规范 skill，确保每次提交遵循 dev-meta commit 约定。是 commit 格式的单一事实来源 — dm-flow、dm-log、dm-init 的 commit 步骤均委托至此。
+Commit 规范 skill，确保每次提交遵循 dev-meta commit 约定。是 commit 格式的单一事实来源 — dm-plan-ver、dm-log、dm-init 的 commit 步骤均委托至此。
 
 ## 触发
 
 - "commit"
 - "提交代码"
 - "帮我 commit"
-- dm-flow 阶段 2 步骤 3（TF 交付提交）
+- dm-plan-ver 阶段 2 步骤 3（TF 交付提交）
 - dm-log 步骤 6（worklog 提交）
 - dm-init 步骤 5（初始化提交）
 

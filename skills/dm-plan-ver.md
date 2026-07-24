@@ -1,15 +1,14 @@
-# dm-flow
+# dm-plan-ver
 
 ## 概述
 
-版本开发生命周期 skill，覆盖从版本创建到收尾的全流程：文档、分支、PR、TF Issue、提交规范、追踪验收。
+版本规划与生命周期 skill，负责版本级规划：创建版本文档四件套、分支、PR、TF Issue 生成、追踪验收。逐 TF 开发由 dm-dev-tf 负责；提交格式由 dm-commit 负责。
 
 ## 触发
 
 - "新建版本 v1.2-payment"
 - "开始 vX.Y"
 - "创建 TF 文档"
-- "TF1 完成了"
 - "关闭版本 v1.2"
 
 ## 执行流程
@@ -42,7 +41,12 @@
    - 关联到版本 PR
    - 输出追踪矩阵
 
-### 阶段 2：TF 推进
+### 阶段 2：TF 开发
+
+TF 开发通过两个子 skill 串联：
+
+- **dm-dev-tf** — TF 启动：读文档、确认 Issue、建分支、出开发概要
+- **dm-commit** — TF 提交：`type(scope): subject` + `Closes #id`
 
 ```
 用户: "TF1 完成了"
