@@ -23,7 +23,12 @@
    - `spec.md` — TF 目标与验收
    - `general-design.md` — TF 划分、数据流、关键决策、跨 TF 状态机
    - `detailed-design.md` — 流内步骤、函数签名、Schema、状态机/时序图
-   - `tasks.md` — 任务拆解与执行顺序
+   - `tasks.md` — 任务拆解与执行顺序。**必须完全填充，不得留空白行。**
+     - 从 `detailed-design.md` 逐 TF 提取步骤拆解 → 映射为 task 行
+     - 从 `detailed-design.md` 函数签名中提取文件路径 → "涉及文件"列
+     - 从 `general-design.md` §3 TF 依赖关系映射 → "依赖"列
+     - 末尾追加："补单测与回归用例" + "本地构建与回归验证"
+     - 填写 §2 执行顺序：推荐先做流、可并行任务、必须串行任务及原因
 
 2. **创建分支**
    ```bash
