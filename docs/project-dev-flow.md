@@ -10,7 +10,7 @@
 ### 2.1 项目级文档（长期稳定，低频更新）
 
 - `project-spec.md`：项目目标、边界、非目标、成功指标。
-- `project-general-design.md`：系统架构、模块边界、关键技术决策。
+- `project-design.md`：系统架构、模块边界、关键技术决策。
 - `project-api-design.md`：接口契约、错误模型、兼容与版本策略。
 - `project-schema-design.md`：数据模型、命名规范、迁移策略。
 - `project-ui-design.md`：设计系统、组件库、设计 Token、适配策略。
@@ -20,8 +20,8 @@
 ### 2.2 版本级文档（高频更新，按版本推进）
 
 - `spec.md` — 交付与验收
-- `general-design.md` — 流串接与分工
-- `detailed-design.md` — 实现细节与执行计划
+- `design.md` — 流串接与分工
+- `build.md` — 实现细节与执行计划
 
 版本级文档只描述"本版本增量"，不重复项目级稳定内容。
 
@@ -32,12 +32,12 @@
 | 顺序 | 文档 | 何时创建 | 前置依赖 |
 |------|------|----------|----------|
 | 1 | `project-spec.md` | 项目初始化 | — |
-| 2 | `project-general-design.md` | 架构基线建立 | project-spec |
-| 3 | `project-api-design.md` | 契约基线建立 | project-general-design |
-| 3 | `project-schema-design.md` | 数据基线建立 | project-general-design |
+| 2 | `project-design.md` | 架构基线建立 | project-spec |
+| 3 | `project-api-design.md` | 契约基线建立 | project-design |
+| 3 | `project-schema-design.md` | 数据基线建立 | project-design |
 | 4 | `project-roadmap.md` | 版本路线规划 | 以上全部 |
-| * | `project-ui-design.md` | 按需（有 UI 时） | project-general-design |
-| * | `project-deployment.md` | 按需（有部署时） | project-general-design |
+| * | `project-ui-design.md` | 按需（有 UI 时） | project-design |
+| * | `project-deployment.md` | 按需（有部署时） | project-design |
 
 ### 3.1 项目初始化
 
@@ -53,7 +53,7 @@
 ### 3.2 架构基线建立
 
 输入：`project-spec.md`。
-输出：`project-general-design.md`。
+输出：`project-design.md`。
 
 检查点：
 
@@ -87,7 +87,7 @@
 每个版本遵循以下步骤：
 
 1. 开始一个小版本（目标与范围）
-2. 建文档（spec/general-design/detailed-design）
+2. 建文档（spec/design/build）
 3. 建跟踪项（1 个版本 PR + 每个 TF 1 个 issue）
 4. 开发与提交（commit 规范、关联 issue）
 5. 测试与验证（按 TF 测试策略执行，记录结果）
@@ -131,7 +131,7 @@
 - `templates/versions/` 与 `templates/project/` 以 `dev-meta` 为默认模板源。
 - 新项目默认采用"引用优先"策略：
     - 在项目内声明模板来源与版本（tag 或 commit）
-    - 按版本从模板创建 `spec/general-design/detailed-design`
+    - 按版本从模板创建 `spec/design/build`
 - 以下场景建议复制模板到项目内：
     - 项目需要长期离线开发或受审计约束
     - 项目对模板字段有稳定扩展，且扩展不适合回写到公共模板
@@ -156,7 +156,7 @@ project-root/
 ├── docs/
 │   ├── project-dev-flow.md
 │   ├── project-spec.md
-│   ├── project-general-design.md
+│   ├── project-design.md
 │   ├── project-api-design.md
 │   ├── project-schema-design.md
 │   ├── project-ui-design.md
@@ -168,14 +168,14 @@ project-root/
 │   └── versions/
 │       └── vX.Y-<slug>/
 │           ├── spec.md
-│           ├── general-design.md
-│           └── detailed-design.md
+│           ├── design.md
+│           └── build.md
 ├── reports/
 │   └── worklog.md
 └── templates/
     ├── project/
     │   ├── project-spec.md
-    │   ├── project-general-design.md
+    │   ├── project-design.md
     │   ├── project-api-design.md
     │   ├── project-schema-design.md
     │   ├── project-ui-design.md
@@ -183,9 +183,9 @@ project-root/
     │   └── project-roadmap.md
     ├── versions/
     │   └── vX.Y-<slug>/
-    │       ├── spec.md
-    │       ├── general-design.md
-    │       └── detailed-design.md
+│       ├── spec.md
+│       ├── design.md
+│       └── build.md
     └── worklog.md
 ```
 

@@ -5,5 +5,5 @@
 ## 文件
 
 - `spec.md` — 交付物与验收标准
-- `general-design.md` — Transaction Flow 概要设计
-- `detailed-design.md` — Transaction Flow 详细设计与任务执行计划
+- `design.md` — Transaction Flow 设计
+- `build.md` — 实现蓝图与任务执行计划

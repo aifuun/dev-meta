@@ -87,8 +87,8 @@ AI:  1. 读取 reports/worklog.md
      2. 追加每日表行：| 2026-07-21 | 新增状态机分层规则... |
      3. 追加详细日志章节：
         ### 2026-07-21
-        - **version-rules**: general-design 增加跨 TF 状态机章节
-          - `42ee152` feat: general-design 增加跨 TF 状态机
+        - **version-rules**: design 增加跨 TF 状态机章节
+          - `42ee152` feat: design 增加跨 TF 状态机
         - **templates**: 同步更新 version 与 project 模板
      4. 待办: 标记已完成项，新增待办
      5. 输出变更摘要

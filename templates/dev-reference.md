@@ -18,7 +18,7 @@
 | 规范 | 路径 | 说明 |
 |---|---|---|
 | 项目开发流程 | `docs/project-dev-flow.md` | 两层文档体系、小版本执行步骤、文档边界规则 |
-| 版本文档规范 | `docs/version-rules.md` | spec / general-design / detailed-design / tasks 结构与职责 |
+| 版本文档规范 | `docs/version-rules.md` | spec / design / build 结构与职责 |
 | Git 工作流规范 | `docs/git-flow-rules.md` | 分支命名、commit 规范、PR/Issue 关联规则 |
 | 工作日志规范 | `docs/worklog-rules.md` | 每日工作总结 + 详细日志 + 待办 + 里程碑结构与记录规则 |
 
@@ -28,8 +28,8 @@
 
 | 模板 | 路径 | 用途 |
 |---|---|---|
-| 版本四件套 | `templates/versions/vX.Y-<slug>/` | 每个小版本从模板创建 spec / general-design / detailed-design / tasks |
-| 项目基线 | `templates/project/` | 项目初始化时按需创建 project-spec / general-design / api-design / schema-design / ui-design / deployment / roadmap |
+| 版本三件套 | `templates/versions/vX.Y-<slug>/` | 每个小版本从模板创建 spec / design / build |
+| 项目基线 | `templates/project/` | 项目初始化时按需创建 project-spec / design / api-design / schema-design / ui-design / deployment / roadmap |
 | 工作日志 | `templates/worklog.md` | **复制**到 `reports/worklog.md`，每天更新 |
 
 ## 4. 工作日志使用指引

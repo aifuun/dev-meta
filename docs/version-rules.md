@@ -8,9 +8,9 @@
 
 ```
 docs/versions/vX.Y-<slug>/
-├── spec.md              # Transaction Flow 目标与验收：交付什么、怎样算完成
-├── general-design.md    # Transaction Flow 概要设计：流程如何串联、模块如何分工
-└── detailed-design.md   # Transaction Flow 详细设计与执行计划：怎么实现、怎么执行
+├── spec.md    # 考什么：交付目标与验收标准
+├── design.md  # 为什么这么设计：流程串联、模块分工、架构决策
+└── build.md   # 怎么造：实现蓝图与执行计划
 ```
 
 ### 创建顺序
@@ -20,8 +20,8 @@ docs/versions/vX.Y-<slug>/
 | 顺序 | 文档 | 回答的问题 | 前置依赖 |
 |------|------|-----------|----------|
 | 1 | `spec.md` | 交付什么？怎样算完成？ | — |
-| 2 | `general-design.md` | 流程如何串联？模块如何分工？ | spec |
-| 3 | `detailed-design.md` | 怎么实现？怎么执行？ | general-design |
+| 2 | `design.md` | 流程如何串联？模块如何分工？ | spec |
+| 3 | `build.md` | 怎么实现？怎么执行？ | design |
 
 ---
 
@@ -30,8 +30,39 @@ docs/versions/vX.Y-<slug>/
 | 文件 | 受众 | 回答的问题 | 关键内容 |
 |------|------|-----------|---------|
 | `spec.md` | PM / QA / Dev | 这条 Transaction Flow 要交付什么？怎样算完成？ | 目标、交付范围、功能验收标准、架构验收标准、DoD |
-| `general-design.md` | 架构师 / Dev | 各 Transaction Flow 如何衔接？各流负责什么？ | 流程切分、顺序、模块关系图、关键架构决策与原因 |
-| `detailed-design.md` | Dev | 每个 Flow 怎么实现？怎么执行？ | 流内步骤、函数签名、Schema、异常策略 + 任务执行计划（预估、顺序、并行/串行） |
+| `design.md` | 架构师 / Dev | 各 Transaction Flow 如何衔接？各流负责什么？ | 流程切分、顺序、模块关系图、关键架构决策与原因 |
+| `build.md` | Dev | 每个 Flow 怎么实现？怎么执行？ | 流内步骤、函数签名、Schema、异常策略 + 任务执行计划（预估、顺序、并行/串行） |
+
+### 2.1 三件套分工总览
+
+```
+spec  → 考什么（验收标准）
+design → 为什么这么设计（架构决策）
+build  → 怎么造、按什么顺序造（实现蓝图 + 执行计划）
+```
+
+**spec.md** — 为什么做、做什么
+- 业务流总览：版本目标、TF 覆盖范围、明确不做的事
+- TF 清单：每个流的编号、名称、一句话目标、验收锚点
+- 功能验收标准：怎么验证、通过标准
+- 架构验收标准：模块独立、性能、兼容性等度量约束
+- DoD：交付 checklist
+
+**design.md** — 怎么设计
+- 架构背景与目标：设计动机、上一版本基线、影响范围
+- TF 划分与契约：每个 TF 的输入/输出/依赖/边界
+- 流间数据流：执行顺序、串并行关系、编排者
+- 关键决策：备选方案、选择理由、影响
+- 继承关系：本版本对现有模块/流的变更
+- 跨 TF 状态机：多 TF 协作的状态跃迁定义
+- 测试策略：每个 TF 的测试级别与关键场景
+
+**build.md** — 怎么实现、怎么交付
+- 通用约束：数据 Schema、API 契约、异常策略
+- 每个 TF 的实现详情：目标 → 步骤拆解 → 函数签名 → 伪代码 → 输入输出 → 异常边界
+- 风险与缓解：风险列表 + 缓解措施
+- 状态机/时序图：跨模块交互流程
+- 任务执行计划：序号 → TF → 简述 → 预估 → 备注 + 执行顺序说明
 
 ---
 
@@ -55,13 +86,13 @@ Transaction Flow 不是章节编号，而是业务流单元。编号要稳定，
 ### 3.2 两层设计如何对齐
 
 ```
-1. general-design 先定义每个 Transaction Flow 的目标、边界、输入输出和依赖关系
-2. detailed-design 再展开同一个 Transaction Flow 内部的具体步骤、接口、异常处理，末尾按执行顺序排列任务计划
+1. design 先定义每个 Transaction Flow 的目标、边界、输入输出和依赖关系
+2. build 再展开同一个 Transaction Flow 内部的具体步骤、接口、异常处理，末尾按执行顺序排列任务计划
 ```
 
 ### 3.3 分层收益
 
-| | general-design | detailed-design |
+| | design | build |
 |------|:---:|:---:|
 | **关注粒度** | Transaction Flow 级别 | 流内步骤级别 |
 | **迭代频率** | 低，更多改业务边界 | 高，更多改实现细节 |
@@ -70,7 +101,7 @@ Transaction Flow 不是章节编号，而是业务流单元。编号要稳定，
 
 ### 3.4 内容边界
 
-**general-design.md** 包含：
+**design.md** 包含：
 - Transaction Flow 的名称、目标、范围
 - 各流之间的先后顺序与依赖关系
 - 每个流的输入、输出、成功条件
@@ -79,13 +110,13 @@ Transaction Flow 不是章节编号，而是业务流单元。编号要稳定，
 - **跨 TF 状态机**：当多个 TF 通过状态跃迁协作时，在此定义状态、跃迁条件及各 TF 在状态机中的角色
 - **测试策略**：每个 TF 的测试级别（单元/集成/E2E/手工）、关键测试场景、测试环境依赖
 
-**general-design.md 不包含**：
+**design.md 不包含**：
 - 函数签名
 - 具体 API 参数列表
 - 伪代码
 - 具体异常回退细节
-- 单 TF 内部的状态机（应放在 detailed-design.md）
-- 具体测试用例（策略层级即可，用例细节在 detailed-design 中展开）
+- 单 TF 内部的状态机（应放在 build.md）
+- 具体测试用例（策略层级即可，用例细节在 build 中展开）
 
 **spec.md** 不包含：
 - 输入、输出、依赖关系的详细设计
@@ -99,7 +130,7 @@ Transaction Flow 不是章节编号，而是业务流单元。编号要稳定，
 - 架构验收标准（面向业务可见结果）
 - DoD
 
-**detailed-design.md** 包含：
+**build.md** 包含：
 - 每个 Transaction Flow 内部的步骤拆解
 - 每一步对应的函数签名、入参、返回值、调用时机
 - 数据结构 / Schema 定义
@@ -132,10 +163,10 @@ Transaction Flow 不是章节编号，而是业务流单元。编号要稳定，
 
 ---
 
-## 5. general-design.md 内容结构
+## 5. design.md 内容结构
 
 ```
-# VX.Y 概要设计
+# VX.Y 设计
 
 ## 1. 架构背景与目标
 （本版本的架构目标、上一版本基线、影响范围）
@@ -158,15 +189,15 @@ Transaction Flow 不是章节编号，而是业务流单元。编号要稳定，
 
 ## 7. 测试策略
 （每个 TF 的测试级别、关键测试场景、测试环境依赖。
-general-design 仅定义策略层级（单元/集成/E2E/手工）和关键场景，不写具体测试用例）
+design 仅定义策略层级（单元/集成/E2E/手工）和关键场景，不写具体测试用例）
 ```
 
 ---
 
-## 6. detailed-design.md 内容结构
+## 6. build.md 内容结构
 
 ```
-# VX.Y 详细设计
+# VX.Y 实现蓝图
 
 ## 1. 通用约束
 （本版本所有 Transaction Flow 共用的数据 Schema、API 契约、异常处理原则）
@@ -180,7 +211,7 @@ general-design 仅定义策略层级（单元/集成/E2E/手工）和关键场�
 ### 1.3 异常与边界
 （失败重试、并发冲突、配额不足、大数据量等共用处理策略）
 
-## 2. TF1 详细设计
+## 2. TF1 实现
 
 每个 TF 拆解为以下子章节：
 - 目标：该流要完成什么、成功条件
@@ -189,7 +220,7 @@ general-design 仅定义策略层级（单元/集成/E2E/手工）和关键场�
 - 输入输出与前置条件：输入、输出、前置条件、后置条件
 - 异常与边界：异常场景、回退策略、重试策略
 
-## 3. TF2 详细设计
+## 3. TF2 实现
 （结构同上 TF1）
 
 ## 4. 风险与缓解
@@ -214,26 +245,26 @@ general-design 仅定义策略层级（单元/集成/E2E/手工）和关键场�
 
 ### 6.1 执行计划填充规则
 
-`detailed-design.md` §6 是前文设计的执行视图。填充时以上方各 TF 详细设计为主要来源，以 `general-design.md` 补充依赖与顺序。
+`build.md` §6 是前文设计的执行视图。填充时以上方各 TF 详细设计为主要来源，以 `design.md` 补充依赖与顺序。
 
 | 列 | 来源 | 提取方式 |
 |----|------|----------|
 | **序号** | — | 按推荐执行顺序从 1 递增 |
-| **TF** | `general-design.md` §2 | TF 编号（TF1 / TF2 / …）。收尾任务填"—" |
+| **TF** | `design.md` §2 | TF 编号（TF1 / TF2 / …）。收尾任务填"—" |
 | **任务简述** | 本文件对应 TF 的 §步骤拆解 | 将步骤目标提炼为一句可执行描述 |
 | **预估** | — | 基于步骤复杂度的人工评估（0.5d / 1d / 2d …） |
-| **备注** | `general-design.md` §3 | 标注前置依赖、并行提示、风险标记等 |
+| **备注** | `design.md` §3 | 标注前置依赖、并行提示、风险标记等 |
 
 #### 填充步骤
 
-1. 按 `general-design.md` §3 确认的 TF 执行顺序，为每个 TF 添加一行
+1. 按 `design.md` §3 确认的 TF 执行顺序，为每个 TF 添加一行
 2. 末尾追加固定行："补单测与回归用例" + "本地构建与回归验证"
 3. 填写执行顺序说明（推荐先做、可并行、必须串行）
 
 #### 硬约束
 
 - 执行计划中的每行必须能从上方 TF 详细设计中找到对应步骤
-- 执行顺序必须与 `general-design.md` §3 的 TF 依赖关系一致
+- 执行顺序必须与 `design.md` §3 的 TF 依赖关系一致
 - Phase 1 结束时执行计划不得留空白行
 
 ---
@@ -247,15 +278,15 @@ general-design 仅定义策略层级（单元/集成/E2E/手工）和关键场�
 ```
 templates/versions/vX.Y-<slug>/
 ├── spec.md
-├── general-design.md
-└── detailed-design.md
+├── design.md
+└── build.md
 ```
 
 模板用途：
 
 - `spec.md` 模板用于快速起草版本交付范围和验收标准。
-- `general-design.md` 模板用于快速起草 Transaction Flow 划分与流转关系。
-- `detailed-design.md` 模板用于快速起草伪代码、状态机、Schema、边界处理 + 任务执行计划。
+- `design.md` 模板用于快速起草 Transaction Flow 划分与流转关系。
+- `build.md` 模板用于快速起草伪代码、状态机、Schema、边界处理 + 任务执行计划。
 
 模板与正式文档必须保持字段和章节结构一致，避免出现"规范更新了、模板没跟上"的漂移。
 
@@ -267,10 +298,10 @@ templates/versions/vX.Y-<slug>/
 
 | 不要放在… | 内容 | 应放在 |
 |-----------|------|--------|
-| spec.md | 具体代码实现细节 | detailed-design.md |
-| general-design.md | 函数签名 | detailed-design.md |
-| detailed-design.md | 流的一句话职责总览 | general-design.md |
-| spec.md | 数据 Schema | detailed-design.md |
-| general-design.md | 单 TF 内部的状态机 | detailed-design.md |
-| detailed-design.md | 跨 TF 状态机 | general-design.md |
-| general-design.md | 具体测试用例 | detailed-design.md |
+| spec.md | 具体代码实现细节 | build.md |
+| design.md | 函数签名 | build.md |
+| build.md | 流的一句话职责总览 | design.md |
+| spec.md | 数据 Schema | build.md |
+| design.md | 单 TF 内部的状态机 | build.md |
+| build.md | 跨 TF 状态机 | design.md |
+| design.md | 具体测试用例 | build.md |

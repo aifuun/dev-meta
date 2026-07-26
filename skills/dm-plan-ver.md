@@ -2,7 +2,7 @@
 
 ## 概述
 
-版本规划与生命周期 skill，负责版本级规划：创建版本文档三件套、分支、PR、TF Issue 生成、追踪验收。逐 TF 开发由 dm-dev-tf 负责；提交格式由 dm-commit 负责。
+版本规划与生命周期 skill，负责版本级规划：创建版本文档三件套（spec/design/build）、分支、PR、TF Issue 生成、追踪验收。逐 TF 开发由 dm-dev-tf 负责；提交格式由 dm-commit 负责。
 
 ## 触发
 
@@ -21,9 +21,9 @@
 
 1. **创建版本文档** `docs/versions/v1.3-export/`
    - `spec.md` — TF 目标与验收
-   - `general-design.md` — TF 划分、数据流、关键决策、跨 TF 状态机
-   - `detailed-design.md` — 流内步骤、函数签名、Schema、状态机/时序图 + **任务执行计划（§末尾）**
-     - 按 `general-design.md` §3 的 TF 执行顺序排列任务行
+   - `design.md` — TF 划分、数据流、关键决策、跨 TF 状态机
+   - `build.md` — 流内步骤、函数签名、Schema、状态机/时序图 + **任务执行计划（§末尾）**
+     - 按 `design.md` §3 的 TF 执行顺序排列任务行
      - 末尾追加固定行："补单测与回归用例" + "本地构建与回归验证"
      - 填写执行顺序说明（先做、可并行、必须串行）
 
@@ -62,7 +62,7 @@ TF 开发通过两个子 skill 串联：
    Closes #42
    ```
 3. **关闭 TF Issue**（标记验收结果）
-4. **更新 detailed-design.md** 执行计划
+4. **更新 build.md** 执行计划
 
 ### 阶段 3：版本收尾
 
@@ -71,7 +71,7 @@ TF 开发通过两个子 skill 串联：
 ```
 
 1. 确认所有 TF Issue 已关闭或明确延期
-2. 补齐 `detailed-design.md` 执行计划验收结果
+2. 补齐 `build.md` 执行计划验收结果
 3. 提交 worklog 记录
 4. Merge PR (squash merge)
 5. 提交版本文档（如尚未提交） — 委托 dm-commit
@@ -81,8 +81,8 @@ TF 开发通过两个子 skill 串联：
 | 规则 | 来源 |
 |------|------|
 | TF 编号需稳定，废弃 TF 保留编号标 `[DEPRECATED]` | version-rules.md §3.1 |
-| general-design 管 TF 级，detailed-design 管步骤级 | version-rules.md §3.3 |
-| 跨 TF 状态机放 general-design，单 TF 状态机放 detailed-design | version-rules.md §3.4 |
+| design 管 TF 级，build 管步骤级 | version-rules.md §3.3 |
+| 跨 TF 状态机放 design，单 TF 状态机放 build | version-rules.md §3.4 |
 | 每版本 1 PR，每 TF 1 Issue | git-flow-rules.md §2 |
 | commit: `type(scope): subject` + `Closes #id`，详见 dm-commit | git-flow-rules.md §3 |
 | 分支: `feature/<version>-<tf>-<topic>` | git-flow-rules.md §4 |
@@ -96,8 +96,8 @@ TF 开发通过两个子 skill 串联：
 | references/version-rules.md | `docs/version-rules.md` | 三件套规则详情 |
 | references/git-flow-rules.md | `docs/git-flow-rules.md` | PR/Issue/commit 规则详情 |
 | assets/spec.md | `templates/versions/vX.Y-<slug>/spec.md` | 规格模板 |
-| assets/general-design.md | `templates/versions/vX.Y-<slug>/general-design.md` | 概要设计模板 |
-| assets/detailed-design.md | `templates/versions/vX.Y-<slug>/detailed-design.md` | 详细设计 + 执行计划模板 |
+| assets/design.md | `templates/versions/vX.Y-<slug>/design.md` | 设计模板 |
+| assets/build.md | `templates/versions/vX.Y-<slug>/build.md` | 实现蓝图 + 执行计划模板 |
 | assets/tracking-matrix.md | 新增 | TF→Issue→PR 追踪模板 |
 
 ## 使用示例

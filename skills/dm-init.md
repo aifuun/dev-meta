@@ -18,7 +18,7 @@
 docs/
 ├── dev-reference.md          (必创建)
 ├── project-spec.md           (按需)
-├── project-general-design.md (按需)
+├── project-design.md (按需)
 ├── project-api-design.md     (按需)
 ├── project-schema-design.md  (按需)
 ├── project-ui-design.md      (按需)
@@ -39,7 +39,7 @@ reports/
 ### 3. 按需创建项目基线文档
 
 - `project-spec.md` — 项目目标、核心功能、非功能需求
-- `project-general-design.md` — 系统架构、模块划分、技术决策
+- `project-design.md` — 系统架构、模块划分、技术决策
 - `project-api-design.md` — API 设计（若涉及）
 - `project-schema-design.md` — 数据 Schema（若涉及）
 - `project-ui-design.md` — UI 设计系统（前端项目建议创建）
@@ -65,7 +65,7 @@ chore: initialize project docs following dev-meta
 | references/project-dev-flow.md | `docs/project-dev-flow.md` | 目录结构与文件职责详情 |
 | assets/dev-reference.md | `templates/dev-reference.md` | 项目入口模板 |
 | assets/project-spec.md | `templates/project/project-spec.md` | 项目规格模板 |
-| assets/project-general-design.md | `templates/project/project-general-design.md` | 概要设计模板 |
+| assets/project-design.md | `templates/project/project-design.md` | 设计模板 |
 | assets/project-api-design.md | `templates/project/project-api-design.md` | API 设计模板 |
 | assets/project-schema-design.md | `templates/project/project-schema-design.md` | Schema 设计模板 |
 | assets/project-ui-design.md | `templates/project/project-ui-design.md` | UI 设计模板 |
