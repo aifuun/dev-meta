@@ -1,7 +1,7 @@
 # 项目路线图
 
 > 本文档定义版本里程碑与交付节奏。
-> 特性定义见 `project-spec.md`。详细任务拆解见各版本 `tasks.md`。
+> 特性定义见 `project-spec.md`。详细任务执行计划见各版本 `detailed-design.md`。
 
 ## 1. 版本总览
 

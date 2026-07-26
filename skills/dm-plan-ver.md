@@ -2,7 +2,7 @@
 
 ## 概述
 
-版本规划与生命周期 skill，负责版本级规划：创建版本文档四件套、分支、PR、TF Issue 生成、追踪验收。逐 TF 开发由 dm-dev-tf 负责；提交格式由 dm-commit 负责。
+版本规划与生命周期 skill，负责版本级规划：创建版本文档三件套、分支、PR、TF Issue 生成、追踪验收。逐 TF 开发由 dm-dev-tf 负责；提交格式由 dm-commit 负责。
 
 ## 触发
 
@@ -22,13 +22,10 @@
 1. **创建版本文档** `docs/versions/v1.3-export/`
    - `spec.md` — TF 目标与验收
    - `general-design.md` — TF 划分、数据流、关键决策、跨 TF 状态机
-   - `detailed-design.md` — 流内步骤、函数签名、Schema、状态机/时序图
-   - `tasks.md` — 任务拆解与执行顺序。**必须完全填充，不得留空白行。**
-     - 从 `detailed-design.md` 逐 TF 提取步骤拆解 → 映射为 task 行
-     - 从 `detailed-design.md` 函数签名中提取文件路径 → "涉及文件"列
-     - 从 `general-design.md` §3 TF 依赖关系映射 → "依赖"列
-     - 末尾追加："补单测与回归用例" + "本地构建与回归验证"
-     - 填写 §2 执行顺序：推荐先做流、可并行任务、必须串行任务及原因
+   - `detailed-design.md` — 流内步骤、函数签名、Schema、状态机/时序图 + **任务执行计划（§末尾）**
+     - 按 `general-design.md` §3 的 TF 执行顺序排列任务行
+     - 末尾追加固定行："补单测与回归用例" + "本地构建与回归验证"
+     - 填写执行顺序说明（先做、可并行、必须串行）
 
 2. **创建分支**
    ```bash
@@ -65,7 +62,7 @@ TF 开发通过两个子 skill 串联：
    Closes #42
    ```
 3. **关闭 TF Issue**（标记验收结果）
-4. **更新 tasks.md** 与追踪矩阵
+4. **更新 detailed-design.md** 执行计划
 
 ### 阶段 3：版本收尾
 
@@ -74,7 +71,7 @@ TF 开发通过两个子 skill 串联：
 ```
 
 1. 确认所有 TF Issue 已关闭或明确延期
-2. 补齐 `tasks.md` 验收结果
+2. 补齐 `detailed-design.md` 执行计划验收结果
 3. 提交 worklog 记录
 4. Merge PR (squash merge)
 5. 提交版本文档（如尚未提交） — 委托 dm-commit
@@ -96,12 +93,11 @@ TF 开发通过两个子 skill 串联：
 | 资源 | 来源 | 用途 |
 |------|------|------|
 | SKILL.md | — | 上述全流程指令 + 关键规则速查 |
-| references/version-rules.md | `docs/version-rules.md` | 四件套规则详情 |
+| references/version-rules.md | `docs/version-rules.md` | 三件套规则详情 |
 | references/git-flow-rules.md | `docs/git-flow-rules.md` | PR/Issue/commit 规则详情 |
 | assets/spec.md | `templates/versions/vX.Y-<slug>/spec.md` | 规格模板 |
 | assets/general-design.md | `templates/versions/vX.Y-<slug>/general-design.md` | 概要设计模板 |
-| assets/detailed-design.md | `templates/versions/vX.Y-<slug>/detailed-design.md` | 详细设计模板 |
-| assets/tasks.md | `templates/versions/vX.Y-<slug>/tasks.md` | 任务拆分模板 |
+| assets/detailed-design.md | `templates/versions/vX.Y-<slug>/detailed-design.md` | 详细设计 + 执行计划模板 |
 | assets/tracking-matrix.md | 新增 | TF→Issue→PR 追踪模板 |
 
 ## 使用示例
@@ -109,7 +105,7 @@ TF 开发通过两个子 skill 串联：
 ```
 用户: "新建版本 v1.5-login"
 
-AI:  1. 创建 docs/versions/v1.5-login/ 四件套
+AI:  1. 创建 docs/versions/v1.5-login/ 三件套
      2. 创建分支 feature/v1.5-login
      3. 输出 PR 描述模板（标题 + 目标/范围/验收/风险）
      4. 输出 TF1-TF3 的 Issue 描述模板

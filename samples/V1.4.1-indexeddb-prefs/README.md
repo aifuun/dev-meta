@@ -6,5 +6,4 @@
 
 - `spec.md` — 交付物与验收标准
 - `general-design.md` — Transaction Flow 概要设计
-- `detailed-design.md` — Transaction Flow 详细设计
-- `tasks.md` — 任务拆分与执行顺序
+- `detailed-design.md` — Transaction Flow 详细设计与任务执行计划

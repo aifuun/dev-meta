@@ -19,10 +19,9 @@
 
 ### 2.2 版本级文档（高频更新，按版本推进）
 
-- `spec.md`
-- `general-design.md`
-- `detailed-design.md`
-- `tasks.md`
+- `spec.md` — 交付与验收
+- `general-design.md` — 流串接与分工
+- `detailed-design.md` — 实现细节与执行计划
 
 版本级文档只描述"本版本增量"，不重复项目级稳定内容。
 
@@ -88,7 +87,7 @@
 每个版本遵循以下步骤：
 
 1. 开始一个小版本（目标与范围）
-2. 建文档（spec/general/detailed/tasks）
+2. 建文档（spec/general-design/detailed-design）
 3. 建跟踪项（1 个版本 PR + 每个 TF 1 个 issue）
 4. 开发与提交（commit 规范、关联 issue）
 5. 测试与验证（按 TF 测试策略执行，记录结果）
@@ -132,7 +131,7 @@
 - `templates/versions/` 与 `templates/project/` 以 `dev-meta` 为默认模板源。
 - 新项目默认采用"引用优先"策略：
     - 在项目内声明模板来源与版本（tag 或 commit）
-    - 按版本从模板创建 `spec/general-design/detailed-design/tasks`
+    - 按版本从模板创建 `spec/general-design/detailed-design`
 - 以下场景建议复制模板到项目内：
     - 项目需要长期离线开发或受审计约束
     - 项目对模板字段有稳定扩展，且扩展不适合回写到公共模板
@@ -170,8 +169,7 @@ project-root/
 │       └── vX.Y-<slug>/
 │           ├── spec.md
 │           ├── general-design.md
-│           ├── detailed-design.md
-│           └── tasks.md
+│           └── detailed-design.md
 ├── reports/
 │   └── worklog.md
 └── templates/
@@ -187,8 +185,7 @@ project-root/
     │   └── vX.Y-<slug>/
     │       ├── spec.md
     │       ├── general-design.md
-    │       ├── detailed-design.md
-    │       └── tasks.md
+    │       └── detailed-design.md
     └── worklog.md
 ```
 

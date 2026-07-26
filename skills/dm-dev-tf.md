@@ -37,8 +37,7 @@ dm-plan-ver (版本规划)
 |------|----------|
 | `spec.md` | TF 业务目标、验收标准、验收锚点 |
 | `general-design.md` | TF 数据流、对其它 TF 的依赖、跨 TF 状态机、测试策略 |
-| `detailed-design.md` | TF 步骤、函数签名、Schema、单 TF 状态机/时序图 |
-| `tasks.md` | 映射到该 TF 的所有 task 行（涉及文件、依赖、预估） |
+| `detailed-design.md` | TF 步骤、函数签名、Schema、单 TF 状态机/时序图 + 任务执行计划 |
 
 ### 3. 确认/创建 TF Issue
 
@@ -93,7 +92,7 @@ git checkout -b feature/v<X.Y>-TF<N>-<topic>
 | 始终从 `docs/versions/` 自动检测版本，不可假定 | — |
 | 分支从版本分支切出，不从 main | git-flow-rules.md §4 |
 | topic 小写、连字符分隔，从 TF 名称推导 | git-flow-rules.md §4.1 |
-| `tasks.md` 或 `detailed-design.md` 不完整时需在概要中标注 | version-rules.md |
+| `detailed-design.md` 不完整时需在概要中标注 | version-rules.md |
 | 提交委托 dm-commit，本 skill 仅负责启动阶段 | dm-commit.md |
 
 ## Skill 资源映射

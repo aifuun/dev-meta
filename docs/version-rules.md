@@ -10,20 +10,18 @@
 docs/versions/vX.Y-<slug>/
 ├── spec.md              # Transaction Flow 目标与验收：交付什么、怎样算完成
 ├── general-design.md    # Transaction Flow 概要设计：流程如何串联、模块如何分工
-├── detailed-design.md   # Transaction Flow 详细设计：每一步怎么做、怎么落代码
-└── tasks.md              # Transaction Flow 交付计划：怎么拆分、怎么执行
+└── detailed-design.md   # Transaction Flow 详细设计与执行计划：怎么实现、怎么执行
 ```
 
 ### 创建顺序
 
-> 版本级四文档按以下顺序创建，每步都是下一步的前置条件：
+> 版本级三文档按以下顺序创建，每步都是下一步的前置条件：
 
 | 顺序 | 文档 | 回答的问题 | 前置依赖 |
 |------|------|-----------|----------|
 | 1 | `spec.md` | 交付什么？怎样算完成？ | — |
 | 2 | `general-design.md` | 流程如何串联？模块如何分工？ | spec |
-| 3 | `detailed-design.md` | 每一步怎么实现？ | general-design |
-| 4 | `tasks.md` | 怎么拆分？怎么执行？ | detailed-design |
+| 3 | `detailed-design.md` | 怎么实现？怎么执行？ | general-design |
 
 ---
 
@@ -33,8 +31,7 @@ docs/versions/vX.Y-<slug>/
 |------|------|-----------|---------|
 | `spec.md` | PM / QA / Dev | 这条 Transaction Flow 要交付什么？怎样算完成？ | 目标、交付范围、功能验收标准、架构验收标准、DoD |
 | `general-design.md` | 架构师 / Dev | 各 Transaction Flow 如何衔接？各流负责什么？ | 流程切分、顺序、模块关系图、关键架构决策与原因 |
-| `detailed-design.md` | Dev | 每个 Transaction Flow 的每一步怎么实现？ | 流内步骤、函数签名、Schema、API 契约、异常路径策略 |
-| `tasks.md` | Dev / PM | 这条 Transaction Flow 怎么交付？先后顺序是什么？ | 任务拆分列表、依赖关系、预估执行顺序 |
+| `detailed-design.md` | Dev | 每个 Flow 怎么实现？怎么执行？ | 流内步骤、函数签名、Schema、异常策略 + 任务执行计划（预估、顺序、并行/串行） |
 
 ---
 
@@ -59,8 +56,7 @@ Transaction Flow 不是章节编号，而是业务流单元。编号要稳定，
 
 ```
 1. general-design 先定义每个 Transaction Flow 的目标、边界、输入输出和依赖关系
-2. detailed-design 再展开同一个 Transaction Flow 内部的具体步骤、接口和异常处理
-3. tasks 按 Transaction Flow 的实现顺序拆解任务，便于按业务流推进交付
+2. detailed-design 再展开同一个 Transaction Flow 内部的具体步骤、接口、异常处理，末尾按执行顺序排列任务计划
 ```
 
 ### 3.3 分层收益
@@ -201,69 +197,50 @@ general-design 仅定义策略层级（单元/集成/E2E/手工）和关键场�
 
 ## 5. 状态机 / 时序图
 （当 Transaction Flow 涉及复杂异步状态或跨端交互时，补充文本状态机或时序图）
+
+## 6. 任务执行计划
+
+（表格：序号 | TF | 任务简述 | 预估 | 备注）
+
+末尾追加固定行：
+- "补单测与回归用例"（备注可填"需全部 TF 完成"）
+- "本地构建与回归验证"（备注可填"需全部 TF 完成"）
+
+### 执行顺序
+- 推荐先做：哪些 TF 必须先做及原因
+- 可并行：哪些 TF 可以并行
+- 必须串行：哪些必须串行及原因
 ```
 
----
+### 6.1 执行计划填充规则
 
-## 7. tasks.md 内容结构
-
-```
-# VX.Y 任务拆分
-
-## 1. 按 Transaction Flow 的任务列表
-（表格：序号 | 流 | 任务 | 涉及文件 | 依赖 | 预估）
-
-## 2. 执行顺序
-（按 Transaction Flow 的推荐交付顺序说明）
-```
-
-### 7.1 任务填充规则
-
-`tasks.md` 是前序三文档（spec、general-design、detailed-design）的**执行视图**。创建时必须以 `detailed-design.md` 为主要来源逐 TF 提取任务，以 `general-design.md` 补充依赖与顺序。
-
-#### 各列来源
+`detailed-design.md` §6 是前文设计的执行视图。填充时以上方各 TF 详细设计为主要来源，以 `general-design.md` 补充依赖与顺序。
 
 | 列 | 来源 | 提取方式 |
 |----|------|----------|
-| **序号** | — | 按推荐执行顺序从 1 递增编号 |
-| **流** | `general-design.md` §2 | 取该 task 所属的 TF 编号（TF1 / TF2 / …）。一个 TF 可对应多行 task |
-| **任务** | `detailed-design.md` 各 TF 的 §步骤拆解 | 将每个步骤提炼为一句可执行的任务描述 |
-| **涉及文件** | `detailed-design.md` 各 TF 的 §函数签名 | 提取函数签名所在的文件路径 |
-| **依赖** | `general-design.md` §3 + `detailed-design.md` 各 TF 的 §输入输出与前置条件 | 标注前置 TF 编号，或"无" |
-| **预估** | — | 基于步骤复杂度的人工评估（0.5d / 1d / 2d ...） |
+| **序号** | — | 按推荐执行顺序从 1 递增 |
+| **TF** | `general-design.md` §2 | TF 编号（TF1 / TF2 / …）。收尾任务填"—" |
+| **任务简述** | 本文件对应 TF 的 §步骤拆解 | 将步骤目标提炼为一句可执行描述 |
+| **预估** | — | 基于步骤复杂度的人工评估（0.5d / 1d / 2d …） |
+| **备注** | `general-design.md` §3 | 标注前置依赖、并行提示、风险标记等 |
 
 #### 填充步骤
 
-1. **读取 `general-design.md`**：
-   - 从 §2 获取所有 TF 的编号、名称与依赖关系
-   - 从 §3 确认 TF 执行顺序与串并行关系
-   - 从 §7 提取每个 TF 的测试策略（在任务末尾补充测试任务）
+1. 按 `general-design.md` §3 确认的 TF 执行顺序，为每个 TF 添加一行
+2. 末尾追加固定行："补单测与回归用例" + "本地构建与回归验证"
+3. 填写执行顺序说明（推荐先做、可并行、必须串行）
 
-2. **读取 `detailed-design.md`**：
-   - 按 TF 顺序，逐个 TF 从中提取：
-     - §步骤拆解 → 每步变为一个 task 行
-     - §函数签名与伪代码 → 提取涉及文件
-     - §输入输出与前置条件 → 确认依赖（映射到其他 TF）
-     - §异常与边界 → 如涉及独立的边界处理逻辑，可拆为单独 task
+#### 硬约束
 
-3. **补全最后一轮任务**（每个版本都应包含）：
-   - "补单测与回归用例"（流列填"全部"，依赖填所有 TF）
-   - "本地构建与回归验证"（流列填"全部"，依赖填全部）
-
-4. **填写 §2 执行顺序**：
-   - 推荐先做哪些流
-   - 哪些任务可以并行
-   - 哪些任务必须串行（含原因）
-
-#### 验收标准
-
-- tasks.md 中的每行非模板 task 都必须能从 detailed-design.md 中找到对应步骤
-- 依赖列必须与 general-design.md §3 的 TF 依赖关系一致
-- 不允许 tasks.md 留有空白模板行（Phase 1 结束时必须完全填充）
+- 执行计划中的每行必须能从上方 TF 详细设计中找到对应步骤
+- 执行顺序必须与 `general-design.md` §3 的 TF 依赖关系一致
+- Phase 1 结束时执行计划不得留空白行
 
 ---
 
-## 8. 模板目录
+---
+
+## 7. 模板目录
 
 为了让规范可直接落地，建议为每个版本目录维护对应模板：
 
@@ -271,22 +248,20 @@ general-design 仅定义策略层级（单元/集成/E2E/手工）和关键场�
 templates/versions/vX.Y-<slug>/
 ├── spec.md
 ├── general-design.md
-├── detailed-design.md
-└── tasks.md
+└── detailed-design.md
 ```
 
 模板用途：
 
 - `spec.md` 模板用于快速起草版本交付范围和验收标准。
 - `general-design.md` 模板用于快速起草 Transaction Flow 划分与流转关系。
-- `detailed-design.md` 模板用于快速起草伪代码、状态机、Schema 和边界处理。
-- `tasks.md` 模板用于快速起草按流拆解的任务列表与执行顺序。
+- `detailed-design.md` 模板用于快速起草伪代码、状态机、Schema、边界处理 + 任务执行计划。
 
-模板与正式文档必须保持字段和章节结构一致，避免出现“规范更新了、模板没跟上”的漂移。
+模板与正式文档必须保持字段和章节结构一致，避免出现"规范更新了、模板没跟上"的漂移。
 
 ---
 
-## 9. 反模式
+## 8. 反模式
 
 以下内容不应出现在对应文件中：
 
@@ -295,7 +270,6 @@ templates/versions/vX.Y-<slug>/
 | spec.md | 具体代码实现细节 | detailed-design.md |
 | general-design.md | 函数签名 | detailed-design.md |
 | detailed-design.md | 流的一句话职责总览 | general-design.md |
-| tasks.md | 功能验收标准 | spec.md |
 | spec.md | 数据 Schema | detailed-design.md |
 | general-design.md | 单 TF 内部的状态机 | detailed-design.md |
 | detailed-design.md | 跨 TF 状态机 | general-design.md |
