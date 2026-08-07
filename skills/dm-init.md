@@ -16,7 +16,6 @@
 
 ```
 docs/
-├── 01-dev-reference.md       (必创建)
 ├── 02-project-spec.md         (按需)
 ├── 03-project-design.md       (按需)
 ├── 04-project-api-design.md   (按需)
@@ -30,12 +29,11 @@ docs/reports/
 └── worklog.md
 ```
 
-### 2. 生成 dev-reference.md
+### 2. 生成 CODEBUDDY.md
 
-- 基于 `assets/dev-reference.md` 模板
-- 填写项目名、GitHub 仓库地址
-- 声明引用的 dev-meta 版本（当前为 v0.1.0）
-- 作用：人类与 AI 共读的项目清单，描述项目结构、规范来源、通用 DoD、编码约定与例外项，而非规范正文副本
+- 基于 `assets/CODEBUDDY.md` 模板，在项目根目录创建 `./CODEBUDDY.md`
+- 填写 dev-meta 仓库地址与版本（当前为 v0.1.0）
+- 作用：项目与 dev-meta 的版本绑定 + 例外项记录。通用规范（DoD、AI 协作、编码约定）由 `~/.codebuddy/CODEBUDDY.md` 全局加载，无需每个项目重复。
 
 ### 3. 按需创建项目基线文档
 
@@ -64,7 +62,7 @@ chore: initialize project docs following dev-meta
 |------|------|------|
 | SKILL.md | — | 上述流程指令 |
 | references/project-dev-flow.md | `docs/01-project-dev-flow.md` | 目录结构与文件职责详情 |
-| assets/dev-reference.md | `templates/dev-reference.md` | 项目入口模板 |
+| assets/CODEBUDDY.md | — | 项目入口模板（版本绑定 + 例外项） |
 | assets/project-spec.md | `templates/project/project-spec.md` | 项目规格模板 |
 | assets/project-design.md | `templates/project/project-design.md` | 设计模板 |
 | assets/project-api-design.md | `templates/project/project-api-design.md` | API 设计模板 |
@@ -80,8 +78,8 @@ chore: initialize project docs following dev-meta
 用户: "初始化一个新项目 shadow-player-v3"
 
 AI:  1. 创建 docs/ 目录树
-     2. 生成 docs/01-dev-reference.md（项目名: shadow-player-v3）
-     3. 询问是否需要项目基线文档
-     4. 创建 docs/reports/worklog.md
-     5. 输出初始化报告
+    2. 生成 ./CODEBUDDY.md（版本绑定 + 例外项）
+    3. 询问是否需要项目基线文档
+    4. 创建 docs/reports/worklog.md
+    5. 输出初始化报告
 ```

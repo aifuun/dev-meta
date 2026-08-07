@@ -115,10 +115,9 @@
 ### 4.1 跨项目规范引用策略
 
 - `02-version-rules.md`、`03-git-flow-rules.md` 与 `04-worklog-rules.md` 以 `dev-meta` 项目中的对应文件为统一权威来源。
-- 业务项目默认不复制规范正文，仅在项目内放置轻量入口文档 `docs/dev-reference.md`，作为人类与 AI 共读的项目清单（记录项目基本情况、规范来源与例外项）。
-- 推荐通过 `dm-init` skill 自动生成入口文档；若手动创建，入口文档模板见 `templates/dev-reference.md`。
-- 入口文档填写三项必填内容：
-    - 项目名称与仓库地址
+- 业务项目默认不复制规范正文，通过项目级 `./CODEBUDDY.md` 记录 dev-meta 版本绑定与项目例外项。通用规范（DoD、AI 协作、编码约定、工作日志指引）由 `~/.codebuddy/CODEBUDDY.md` 全局加载。
+- 推荐通过 `dm-init` skill 自动生成；若手动创建，模板见 `docs/05-codebuddy-management.md`。
+- 项目级 `CODEBUDDY.md` 填写两项必填内容：
     - 规范来源仓库与版本（tag 或 commit）
     - 本项目例外项（如无则写"无"）
 - 仅在以下场景复制规范正文到项目内：
