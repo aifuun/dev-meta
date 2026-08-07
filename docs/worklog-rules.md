@@ -7,7 +7,7 @@
 每个项目的 worklog 固定位于：
 
 ```
-reports/worklog.md
+docs/reports/worklog.md
 ```
 
 ## 2. 文件结构

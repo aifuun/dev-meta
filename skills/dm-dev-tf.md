@@ -110,7 +110,7 @@ git checkout -b feature/v<X.Y>-TF<N>-<topic>
 用户: "开始 TF3"
 
 AI:  1. 检测版本: docs/versions/v0.2-auth/ → v0.2
-     2. 读取四件套，提取 TF3 相关内容
+     2. 读取三件套，提取 TF3 相关内容
      3. 确认 Issue #15 [TF3] 会话管理 → 已创建，未关闭
      4. 创建分支: feature/v0.2-TF3-session-management
      5. 输出开发概要:

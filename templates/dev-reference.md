@@ -30,11 +30,11 @@
 |---|---|---|
 | 版本三件套 | `templates/versions/vX.Y-<slug>/` | 每个小版本从模板创建 spec / design / build |
 | 项目基线 | `templates/project/` | 项目初始化时按需创建 project-spec / design / api-design / schema-design / ui-design / deployment / roadmap |
-| 工作日志 | `templates/worklog.md` | **复制**到 `reports/worklog.md`，每天更新 |
+| 工作日志 | `templates/worklog.md` | **复制**到 `docs/reports/worklog.md`，每天更新 |
 
 ## 4. 工作日志使用指引
 
-1. 项目初始化时，将 `templates/worklog.md` 复制到 `reports/worklog.md`
+1. 项目初始化时，将 `templates/worklog.md` 复制到 `docs/reports/worklog.md`
 2. 修改文件头部的项目名，开始记录
 3. **每天结束时更新**：在「每日工作总结」表顶部加一行，在下方新增日期章节
 4. 当日有 commit 则列出；无 commit 则在「其他工作」中记录讨论、决策、操作

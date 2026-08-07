@@ -25,7 +25,7 @@ docs/
 ├── project-deployment.md     (按需)
 ├── project-roadmap.md        (按需)
 └── versions/
-reports/
+docs/reports/
 └── worklog.md
 ```
 
@@ -48,7 +48,7 @@ reports/
 
 ### 4. 初始化 worklog
 
-- 基于 `assets/worklog.md` 创建 `reports/worklog.md`
+- 基于 `assets/worklog.md` 创建 `docs/reports/worklog.md`
 
 ### 5. 提交
 
@@ -81,6 +81,6 @@ chore: initialize project docs following dev-meta
 AI:  1. 创建 docs/ 目录树
      2. 生成 docs/dev-reference.md（项目名: shadow-player-v3）
      3. 询问是否需要项目基线文档
-     4. 创建 reports/worklog.md
+     4. 创建 docs/reports/worklog.md
      5. 输出初始化报告
 ```

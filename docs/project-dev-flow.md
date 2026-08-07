@@ -170,7 +170,7 @@ project-root/
 │           ├── spec.md
 │           ├── design.md
 │           └── build.md
-├── reports/
+├── docs/reports/
 │   └── worklog.md
 └── templates/
     ├── project/

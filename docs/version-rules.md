@@ -300,6 +300,7 @@ templates/versions/vX.Y-<slug>/
 |-----------|------|--------|
 | spec.md | 具体代码实现细节 | build.md |
 | design.md | 函数签名 | build.md |
+| design.md | 源代码/代码片段 | build.md |
 | build.md | 流的一句话职责总览 | design.md |
 | spec.md | 数据 Schema | build.md |
 | design.md | 单 TF 内部的状态机 | build.md |

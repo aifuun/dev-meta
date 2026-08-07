@@ -7,10 +7,12 @@
 | Skill | 触发场景 | 职责 | 频率 |
 |-------|----------|------|------|
 | `dm-init` | 初始化新项目 | 创建 docs 目录树、生成 dev-reference.md、初始化项目基线文档与 worklog | 低频 |
-| `dm-plan-ver` | 新建版本 / 关闭版本 | 创建版本文档四件套、分支/PR、TF Issue、追踪验收 | 中频 |
+| `dm-plan-ver` | 新建版本 / 关闭版本 | 创建版本文档三件套、分支/PR、TF Issue、追踪验收 | 中频 |
 | `dm-dev-tf` | 开始开发某个 TF | 读取版本文档、确认 Issue、创建 TF 分支、输出开发概要 | 高频 |
 | `dm-log` | 每日记录工作 | 追加工作总结、维护待办与里程碑 | 每日 |
 | `dm-commit` | 提交变更 | type 向导、格式校验、footer 关联 Issue，确保 commit 一致性 | 频繁 |
+| `dm-report` | 生成阶段报告 | 从 worklog 提取数据，按模板输出周报/月报/自定义周期报告 | 每周 |
+| `dm-adr` | 记录技术决策 | 按 ADR 格式维护架构/技术选型决策日志 | 按需 |
 
 ## Skill 关系
 
@@ -19,12 +21,16 @@ dm-init
     │
     └── 项目初始化后，后续版本迭代用 dm-plan-ver
             │
-            ├── 每个版本开始 → 创建四件套 + 分支 + PR + Issue
+            ├── 每个版本开始 → 创建三件套 + 分支 + PR + Issue
             ├── 每个 TF 启动 → dm-dev-tf（读文档、建分支、出概要）
             ├── 每个 TF 完成 → dm-commit + 关 Issue + 更新追踪
             └── 版本收尾 → merge PR + 补齐验收
                                     │
 dm-log ← 每日穿插，记录所有工作 ──→ dm-commit (统一提交出口)
+                                    │
+                               dm-report ← 阶段性汇总，生成周报
+
+dm-adr ← 按需穿插，记录技术决策 ──→ dm-commit (统一提交出口)
 ```
 
 ## 使用说明
@@ -56,6 +62,8 @@ cp -r skills/dm-* .codebuddy/skills/
 | 关闭版本 | "关闭版本 v1.2，准备 merge" |
 | 记录工作 | "记录今天的工作" |
 | 提交变更 | "commit" / "帮我 commit" |
+| 生成报告 | "生成周报" / "本周报告" |
+| 记录决策 | "记录一个技术决策" / "创建 ADR" |
 
 ### 典型项目生命周期
 
@@ -87,7 +95,7 @@ cp -r skills/dm-* .codebuddy/skills/
 
 ## 共享资源
 
-五个 skill 共享 `dev-meta` 仓库中的规范文件与模板，通过 `references/` 和 `assets/` 分发：
+当前已定义的 skill 共享 `dev-meta` 仓库中的规范文件与模板，通过 `references/` 和 `assets/` 分发：
 
 | 资源类型 | 文件 | 使用方 |
 |----------|------|--------|
@@ -100,3 +108,4 @@ cp -r skills/dm-* .codebuddy/skills/
 | 模板 | `templates/versions/vX.Y-<slug>/*` | dm-plan-ver |
 | 模板 | `templates/worklog.md` | dm-log |
 | 规范 | `docs/git-flow-rules.md` | dm-commit |
+| 规范 | `docs/worklog-rules.md` | dm-log, dm-report |

@@ -14,7 +14,7 @@
 
 ### 1. 定位文件
 
-找到当前项目的 `reports/worklog.md`。若不存在，基于 `templates/worklog.md` 创建。
+找到当前项目的 `docs/reports/worklog.md`。若不存在，基于 `templates/worklog.md` 创建。
 
 ### 2. 追加每日工作总结
 
@@ -83,7 +83,7 @@ chore: update worklog — <一句话总结>
 ```
 用户: "记录今天的工作"
 
-AI:  1. 读取 reports/worklog.md
+AI:  1. 读取 docs/reports/worklog.md
      2. 追加每日表行：| 2026-07-21 | 新增状态机分层规则... |
      3. 追加详细日志章节：
         ### 2026-07-21
