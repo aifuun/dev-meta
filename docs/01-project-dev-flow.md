@@ -9,19 +9,19 @@
 
 ### 2.1 项目级文档（长期稳定，低频更新）
 
-- `project-spec.md`：项目目标、边界、非目标、成功指标。
-- `project-design.md`：系统架构、模块边界、关键技术决策。
-- `project-api-design.md`：接口契约、错误模型、兼容与版本策略。
-- `project-schema-design.md`：数据模型、命名规范、迁移策略。
-- `project-ui-design.md`：设计系统、组件库、设计 Token、适配策略。
-- `project-deployment.md`：环境拓扑、CI/CD、基础设施、可观测性、发布流程。
-- `project-roadmap.md`：版本规划、依赖关系、里程碑。
+- `02-project-spec.md`：项目目标、边界、非目标、成功指标。
+- `03-project-design.md`：系统架构、模块边界、关键技术决策。
+- `04-project-api-design.md`：接口契约、错误模型、兼容与版本策略。
+- `05-project-schema-design.md`：数据模型、命名规范、迁移策略。
+- `06-project-ui-design.md`：设计系统、组件库、设计 Token、适配策略。
+- `07-project-deployment.md`：环境拓扑、CI/CD、基础设施、可观测性、发布流程。
+- `08-project-roadmap.md`：版本规划、依赖关系、里程碑。
 
 ### 2.2 版本级文档（高频更新，按版本推进）
 
-- `spec.md` — 交付与验收
-- `design.md` — 流串接与分工
-- `build.md` — 实现细节与执行计划
+- `200-spec.md` — 交付与验收
+- `300-design.md` — 流串接与分工
+- `400-build.md` — 实现细节与执行计划
 
 版本级文档只描述"本版本增量"，不重复项目级稳定内容。
 
@@ -114,7 +114,7 @@
 
 ### 4.1 跨项目规范引用策略
 
-- `version-rules.md`、`git-flow-rules.md` 与 `worklog-rules.md` 以 `dev-meta` 项目中的对应文件为统一权威来源。
+- `02-version-rules.md`、`03-git-flow-rules.md` 与 `04-worklog-rules.md` 以 `dev-meta` 项目中的对应文件为统一权威来源。
 - 业务项目默认不复制规范正文，仅在项目内放置轻量入口文档 `docs/dev-reference.md`，作为人类与 AI 共读的项目清单（记录项目基本情况、规范来源与例外项）。
 - 推荐通过 `dm-init` skill 自动生成入口文档；若手动创建，入口文档模板见 `templates/dev-reference.md`。
 - 入口文档填写三项必填内容：
@@ -145,7 +145,7 @@
 
 ## 5. 最小治理规则
 
-版本级治理的权威来源为 `git-flow-rules.md`。项目级硬性底线：
+版本级治理的权威来源为 `03-git-flow-rules.md`。项目级硬性底线：
 
 - 版本结束：必须有验收记录与复盘结论。
 
@@ -154,39 +154,40 @@
 ```text
 project-root/
 ├── docs/
-│   ├── project-dev-flow.md
-│   ├── project-spec.md
-│   ├── project-design.md
-│   ├── project-api-design.md
-│   ├── project-schema-design.md
-│   ├── project-ui-design.md
-│   ├── project-deployment.md
-│   ├── project-roadmap.md
-│   ├── version-rules.md
-│   ├── git-flow-rules.md
-│   ├── worklog-rules.md
-│   └── versions/
-│       └── vX.Y-<slug>/
-│           ├── spec.md
-│           ├── design.md
-│           └── build.md
-├── docs/reports/
+│   ├── 01-project-dev-flow.md
+│   ├── 02-project-spec.md
+│   ├── 03-project-design.md
+│   ├── 04-project-api-design.md
+│   ├── 05-project-schema-design.md
+│   ├── 06-project-ui-design.md
+│   ├── 07-project-deployment.md
+│   ├── 08-project-roadmap.md
+│   ├── 09-versions/
+│   │   └── vX.Y-<slug>/
+│   │       ├── 100-schedule.md
+│   │       ├── 200-spec.md
+│   │       ├── 300-design.md
+│   │       └── 400-build.md
+│   ├── reports/
+│   │   └── worklog.md
+│   └── adrs/
+│       └── adr-001.md
+├── templates/
+│   ├── project/
+│   │   ├── project-spec.md
+│   │   ├── project-design.md
+│   │   ├── project-api-design.md
+│   │   ├── project-schema-design.md
+│   │   ├── project-ui-design.md
+│   │   ├── project-deployment.md
+│   │   └── project-roadmap.md
+│   ├── versions/
+│   │   └── vX.Y-<slug>/
+│   │       ├── 100-schedule.md
+│   │       ├── 200-spec.md
+│   │       ├── 300-design.md
+│   │       └── 400-build.md
 │   └── worklog.md
-└── templates/
-    ├── project/
-    │   ├── project-spec.md
-    │   ├── project-design.md
-    │   ├── project-api-design.md
-    │   ├── project-schema-design.md
-    │   ├── project-ui-design.md
-    │   ├── project-deployment.md
-    │   └── project-roadmap.md
-    ├── versions/
-    │   └── vX.Y-<slug>/
-│       ├── spec.md
-│       ├── design.md
-│       └── build.md
-    └── worklog.md
 ```
 
 ## 7. 使用建议（单人开发）

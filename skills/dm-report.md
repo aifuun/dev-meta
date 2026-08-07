@@ -48,8 +48,8 @@ PM / 产品经理。报告语言面向功能交付、业务价值、里程碑进
 | 规则 | 来源 |
 |------|------|
 | 默认周期为本周一至周日 | — |
-| 报告必须基于 worklog.md 实际数据 | worklog-rules.md |
-| 不编造 worklog 中不存在的内容 | worklog-rules.md |
+| 报告必须基于 worklog.md 实际数据 | 04-worklog-rules.md |
+| 不编造 worklog 中不存在的内容 | 04-worklog-rules.md |
 | 不记录 commit hash、代码细节、具体日期 | — |
 | 使用功能 / 用户视角语言，面向 PM | — |
 | 文件名用当天日期：`docs/reports/weekly-<当天>.md` / `docs/reports/report-<当天>.md` | — |
@@ -65,7 +65,7 @@ PM / 产品经理。报告语言面向功能交付、业务价值、里程碑进
 | 资源 | 来源 | 用途 |
 |------|------|------|
 | SKILL.md | — | 流程指令 + 规则速查 |
-| references/worklog-rules.md | `docs/worklog-rules.md` | 日志规范详情 |
+| references/worklog-rules.md | `docs/04-worklog-rules.md` | 日志规范详情 |
 | assets/report-template.md | — | 周报模板 |
 
 ## 使用示例

@@ -35,9 +35,10 @@ dm-plan-ver (版本规划)
 
 | 文档 | 提取内容 |
 |------|----------|
-| `spec.md` | TF 业务目标、验收标准、验收锚点 |
-| `design.md` | TF 数据流、对其它 TF 的依赖、跨 TF 状态机、测试策略 |
-| `build.md` | TF 步骤、函数签名、Schema、单 TF 状态机/时序图 + 任务执行计划 |
+| `100-schedule.md` | 该 TF 对应工作包的状态 |
+| `200-spec.md` | TF 业务目标、验收标准、验收锚点 |
+| `300-design.md` | TF 数据流、对其它 TF 的依赖、跨 TF 状态机、测试策略 |
+| `400-build.md` | TF 步骤、函数签名、Schema、单 TF 状态机/时序图 + 任务执行计划 |
 
 ### 3. 确认/创建 TF Issue
 
@@ -54,7 +55,7 @@ git checkout -b feature/v<X.Y>-TF<N>-<topic>
 
 - `<X.Y>`：从版本目录名提取
 - `<N>`：TF 编号
-- `<topic>`：用户传入则直接用；否则从 `design.md` 中该 TF 的一句话职责推导（如 `credential-validation`、`data-preprocessing`）
+- `<topic>`：用户传入则直接用；否则从 `300-design.md` 中该 TF 的一句话职责推导（如 `credential-validation`、`data-preprocessing`）
 
 ### 5. 输出开发概要
 
@@ -63,7 +64,7 @@ git checkout -b feature/v<X.Y>-TF<N>-<topic>
 ```
 ## TF<N> 开发概要 — <flow-name>
 
-**目标**：<spec.md 的一句话目标>
+**目标**：<200-spec.md 的一句话目标>
 **分支**：feature/v<X.Y>-TF<N>-<topic>
 **Issue**：#<N>
 
@@ -77,9 +78,9 @@ git checkout -b feature/v<X.Y>-TF<N>-<topic>
 
 ### 测试策略
 - 级别：<unit / integration / e2e>
-- 关键场景：<来自 design.md>
+- 关键场景：<来自 300-design.md>
 
-### 开发步骤（来自 build.md）
+### 开发步骤（来自 400-build.md）
 1. <步骤>
 2. <步骤>
 ...
@@ -90,9 +91,9 @@ git checkout -b feature/v<X.Y>-TF<N>-<topic>
 | 规则 | 来源 |
 |------|------|
 | 始终从 `docs/versions/` 自动检测版本，不可假定 | — |
-| 分支从版本分支切出，不从 main | git-flow-rules.md §4 |
-| topic 小写、连字符分隔，从 TF 名称推导 | git-flow-rules.md §4.1 |
-| `build.md` 不完整时需在概要中标注 | version-rules.md |
+| 分支从版本分支切出，不从 main | 03-git-flow-rules.md §4 |
+| topic 小写、连字符分隔，从 TF 名称推导 | 03-git-flow-rules.md §4.1 |
+| `400-build.md` 不完整时需在概要中标注 | 02-version-rules.md |
 | 提交委托 dm-commit，本 skill 仅负责启动阶段 | dm-commit.md |
 
 ## Skill 资源映射
@@ -101,8 +102,8 @@ git checkout -b feature/v<X.Y>-TF<N>-<topic>
 |------|------|------|
 | SKILL.md | — | 上述启动流程指令 + 规则速查 |
 | dm-plan-ver SKILL.md | — | 版本规划上下文、分支命名规范 |
-| dm-plan-ver references/version-rules.md | `docs/version-rules.md` | TF 文档结构 |
-| dm-plan-ver references/git-flow-rules.md | `docs/git-flow-rules.md` | 分支/Issue 规范 |
+| dm-plan-ver references/version-rules.md | `docs/02-version-rules.md` | TF 文档结构 |
+| dm-plan-ver references/git-flow-rules.md | `docs/03-git-flow-rules.md` | 分支/Issue 规范 |
 
 ## 使用示例
 
@@ -110,7 +111,7 @@ git checkout -b feature/v<X.Y>-TF<N>-<topic>
 用户: "开始 TF3"
 
 AI:  1. 检测版本: docs/versions/v0.2-auth/ → v0.2
-     2. 读取三件套，提取 TF3 相关内容
+     2. 读取四件套，提取 TF3 相关内容
      3. 确认 Issue #15 [TF3] 会话管理 → 已创建，未关闭
      4. 创建分支: feature/v0.2-TF3-session-management
      5. 输出开发概要:

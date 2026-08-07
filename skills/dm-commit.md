@@ -79,11 +79,11 @@ TF 相关提交：
 
 | 规则 | 来源 |
 |------|------|
-| 强制格式 `type(scope): subject` | git-flow-rules.md §3.1 |
-| type 集合（8 种） | git-flow-rules.md §3.3 |
-| subject ≤ 50 字符 | git-flow-rules.md §3.4 |
-| TF 提交须关联 Issue | git-flow-rules.md §2.3 |
-| 细小变更可省略 body/footer | git-flow-rules.md §8 |
+| 强制格式 `type(scope): subject` | 03-git-flow-rules.md §3.1 |
+| type 集合（8 种） | 03-git-flow-rules.md §3.3 |
+| subject ≤ 50 字符 | 03-git-flow-rules.md §3.4 |
+| TF 提交须关联 Issue | 03-git-flow-rules.md §2.3 |
+| 细小变更可省略 body/footer | 03-git-flow-rules.md §8 |
 
 ## 常见模式
 
@@ -118,7 +118,7 @@ Closes #42
 | 资源 | 来源 | 用途 |
 |------|------|------|
 | SKILL.md | — | 上述流程指令 + 规则速查 |
-| references/git-flow-rules.md | `docs/git-flow-rules.md` | commit 规范详情 |
+| references/git-flow-rules.md | `docs/03-git-flow-rules.md` | commit 规范详情 |
 
 ## 使用示例
 
@@ -137,7 +137,7 @@ AI:  1. 检查暂存区 (git diff --staged)
 ```
 用户: "TF2 完成了，帮我 commit"
 
-AI:  1. 读取 spec.md 确认 TF2 验收标准
+AI:  1. 读取 200-spec.md 确认 TF2 验收标准
      2. 按 dm-commit 规范构建 commit message
      3. type: feat, scope: <TF 相关模块>
      4. footer: Closes #<TF2 issue>

@@ -17,10 +17,10 @@
 
 | 规范 | 路径 | 说明 |
 |---|---|---|
-| 项目开发流程 | `docs/project-dev-flow.md` | 两层文档体系、小版本执行步骤、文档边界规则 |
-| 版本文档规范 | `docs/version-rules.md` | spec / design / build 结构与职责 |
-| Git 工作流规范 | `docs/git-flow-rules.md` | 分支命名、commit 规范、PR/Issue 关联规则 |
-| 工作日志规范 | `docs/worklog-rules.md` | 每日工作总结 + 详细日志 + 待办 + 里程碑结构与记录规则 |
+| 项目开发流程 | `docs/01-project-dev-flow.md` | 两层文档体系、小版本执行步骤、文档边界规则 |
+| 版本文档规范 | `docs/02-version-rules.md` | schedule / spec / design / build 结构与职责 |
+| Git 工作流规范 | `docs/03-git-flow-rules.md` | 分支命名、commit 规范、PR/Issue 关联规则 |
+| 工作日志规范 | `docs/04-worklog-rules.md` | 每日工作总结 + 详细日志 + 待办 + 里程碑结构与记录规则 |
 
 ## 3. 模板目录
 
@@ -28,7 +28,7 @@
 
 | 模板 | 路径 | 用途 |
 |---|---|---|
-| 版本三件套 | `templates/versions/vX.Y-<slug>/` | 每个小版本从模板创建 spec / design / build |
+| 版本四件套 | `templates/versions/vX.Y-<slug>/` | 每个小版本从模板创建 100-schedule / 200-spec / 300-design / 400-build |
 | 项目基线 | `templates/project/` | 项目初始化时按需创建 project-spec / design / api-design / schema-design / ui-design / deployment / roadmap |
 | 工作日志 | `templates/worklog.md` | **复制**到 `docs/reports/worklog.md`，每天更新 |
 

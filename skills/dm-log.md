@@ -2,7 +2,7 @@
 
 ## 概述
 
-每日工作日志 skill，按 `worklog-rules.md` 规范追加工作记录、维护待办与里程碑。
+每日工作日志 skill，按 `04-worklog-rules.md` 规范追加工作记录、维护待办与里程碑。
 
 ## 触发
 
@@ -64,18 +64,18 @@ chore: update worklog — <一句话总结>
 
 | 规则 | 来源 |
 |------|------|
-| 每日表行顶部插入，更新次数用 `（更新了 n 次）` | worklog-rules.md |
-| commit 用 `` `abc1234` `` 格式，简述用中文 | worklog-rules.md |
-| 一个日期章节对应一个 `###`，允许多次编辑 | worklog-rules.md |
-| 待办状态用统一标注，勿混用 | worklog-rules.md |
-| 禁止：粘贴大段日志、未完成先标记✅、总结与详情矛盾 | worklog-rules.md |
+| 每日表行顶部插入，更新次数用 `（更新了 n 次）` | 04-worklog-rules.md |
+| commit 用 `` `abc1234` `` 格式，简述用中文 | 04-worklog-rules.md |
+| 一个日期章节对应一个 `###`，允许多次编辑 | 04-worklog-rules.md |
+| 待办状态用统一标注，勿混用 | 04-worklog-rules.md |
+| 禁止：粘贴大段日志、未完成先标记✅、总结与详情矛盾 | 04-worklog-rules.md |
 
 ## Skill 资源映射
 
 | 资源 | 来源 | 用途 |
 |------|------|------|
 | SKILL.md | — | 上述流程指令 + 规则速查 |
-| references/worklog-rules.md | `docs/worklog-rules.md` | 日志规范详情 |
+| references/worklog-rules.md | `docs/04-worklog-rules.md` | 日志规范详情 |
 | assets/worklog.md | `templates/worklog.md` | 新建项目时复制 |
 
 ## 使用示例

@@ -1,6 +1,6 @@
 # Samples
 
-这里放基于 `docs/version-rules.md` 生成的版本样例。
+这里放基于 `docs/02-version-rules.md` 生成的版本样例。
 
 ## 当前样例
 

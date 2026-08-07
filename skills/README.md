@@ -7,7 +7,8 @@
 | Skill | 触发场景 | 职责 | 频率 |
 |-------|----------|------|------|
 | `dm-init` | 初始化新项目 | 创建 docs 目录树、生成 dev-reference.md、初始化项目基线文档与 worklog | 低频 |
-| `dm-plan-ver` | 新建版本 / 关闭版本 | 创建版本文档三件套、分支/PR、TF Issue、追踪验收 | 中频 |
+| `dm-plan-ver` | 新建版本 / 关闭版本 | 创建版本文档四件套、分支/PR、TF Issue、追踪验收 | 中频 |
+| `dm-schedule` | 版本排程 | 生成按优先级排序的扁平工作包列表，附带防沉迷红线 | 中频 |
 | `dm-dev-tf` | 开始开发某个 TF | 读取版本文档、确认 Issue、创建 TF 分支、输出开发概要 | 高频 |
 | `dm-log` | 每日记录工作 | 追加工作总结、维护待办与里程碑 | 每日 |
 | `dm-commit` | 提交变更 | type 向导、格式校验、footer 关联 Issue，确保 commit 一致性 | 频繁 |
@@ -21,7 +22,8 @@ dm-init
     │
     └── 项目初始化后，后续版本迭代用 dm-plan-ver
             │
-            ├── 每个版本开始 → 创建三件套 + 分支 + PR + Issue
+            ├── 版本规划完成后 → dm-schedule（排程：工作包列表 + 红线）
+            ├── 每个版本开始 → 创建四件套 + 分支 + PR + Issue
             ├── 每个 TF 启动 → dm-dev-tf（读文档、建分支、出概要）
             ├── 每个 TF 完成 → dm-commit + 关 Issue + 更新追踪
             └── 版本收尾 → merge PR + 补齐验收
@@ -57,6 +59,7 @@ cp -r skills/dm-* .codebuddy/skills/
 |----------|----------|
 | 初始化项目 | "初始化一个新项目 `my-app`" |
 | 开始新版本 | "新建版本 v1.2-login" |
+| 生成排程 | "排程" / "为 v1.0 排程" |
 | 开始开发 TF | "开始 TF3" / "/dm-dev-tf 3 auth" |
 | 完成一个 TF | "TF2 完成了，帮我 commit" |
 | 关闭版本 | "关闭版本 v1.2，准备 merge" |
@@ -99,13 +102,12 @@ cp -r skills/dm-* .codebuddy/skills/
 
 | 资源类型 | 文件 | 使用方 |
 |----------|------|--------|
-| 规范 | `docs/project-dev-flow.md` | dm-init |
-| 规范 | `docs/version-rules.md` | dm-plan-ver |
-| 规范 | `docs/git-flow-rules.md` | dm-plan-ver |
-| 规范 | `docs/worklog-rules.md` | dm-log |
+| 规范 | `docs/01-project-dev-flow.md` | dm-init |
+| 规范 | `docs/02-version-rules.md` | dm-plan-ver, dm-schedule |
+| 规范 | `docs/03-git-flow-rules.md` | dm-plan-ver, dm-commit |
+| 规范 | `docs/04-worklog-rules.md` | dm-log, dm-report |
 | 模板 | `templates/dev-reference.md` | dm-init |
 | 模板 | `templates/project/*` | dm-init |
 | 模板 | `templates/versions/vX.Y-<slug>/*` | dm-plan-ver |
+| 模板 | `templates/versions/vX.Y-<slug>/100-schedule.md` | dm-schedule |
 | 模板 | `templates/worklog.md` | dm-log |
-| 规范 | `docs/git-flow-rules.md` | dm-commit |
-| 规范 | `docs/worklog-rules.md` | dm-log, dm-report |
