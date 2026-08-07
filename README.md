@@ -21,3 +21,5 @@
 - [templates/worklog.md](https://github.com/aifuun/dev-meta/blob/main/templates/worklog.md) — 工作日志模板
 - [templates/versions/](https://github.com/aifuun/dev-meta/tree/main/templates/versions) — 版本文档模板（与规范文件一一对应）
 - [templates/project/](https://github.com/aifuun/dev-meta/tree/main/templates/project) — 项目级文档模板（project-spec / design / api-design / schema-design / roadmap）
+- [skills/](https://github.com/aifuun/dev-meta/tree/main/skills) — Skill 设计文档（dm-init / dm-plan-ver / dm-schedule / dm-dev-tf / dm-log / dm-commit / dm-report / dm-adr）
+- [samples/](https://github.com/aifuun/dev-meta/tree/main/samples) — 版本文档样例（V1.4.1-indexeddb-prefs）

@@ -1,6 +1,6 @@
 # dev-meta 工作日志
 
-> 最后更新：2026-07-21
+> 最后更新：2026-08-07
 
 ---
 
@@ -26,7 +26,45 @@
 
 | 日期 | 工作总结 |
 |------|---------|
+| **2026-08-07** | 项目文档审查与修复（5 项优化）：CODEBUDDY.md 狗食、dev-flow §2.2 补 500-schedule、README 补 skills+samples、sample 补 schedule、worklog 更新 |
+| **2026-08-07** | CODEBUDDY 机制重构：dev-reference.md → 项目级 CODEBUDDY.md；创建 CODEBUDDY-global.md 作为 source of truth；新增 docs/05-codebuddy-management.md 管理层规范 |
+| **2026-08-07** | 仓库公开：移除敏感信息检查后公开 dev-meta；README 文件列表改为 GitHub 可点击链接 |
 | **2026-07-21** | 全文档一致性检查与修复（6 项问题）；项目级模板补齐与跨项目入口机制落地；worklog 规范制定；README 补完；测试策略纳入 design 与 dev-flow；user-level skills (dm-flow/dm-init) 同步更新；新增文档创建顺序速查表（更新了 2 次） |
+
+---
+
+## 2026-08-07
+
+### 其他工作（讨论 / 决策 / 分析）
+
+- **项目文档审查**：按 dev-meta 工作流全面审查项目文档，发现 5 项可优化项并逐一修复。
+- **CODEBUDDY.md 狗食**：dev-meta 自身缺少项目级 CODEBUDDY.md，已创建并绑定 v0.1.0 版本。commits: pending
+- **dev-flow §2.2 补全**：版本级文档列表中补充 `500-schedule.md`，与 `02-version-rules.md` 和实际模板保持一致。
+- **README 补目录**：文件列表新增 `skills/` 和 `samples/` 目录链接。
+- **samples 补 schedule**：`V1.4.1-indexeddb-prefs` 缺少 `500-schedule.md`，已按模板与 400-build 任务执行计划对齐补全。
+- **version-rules 术语修正**："三文档"→"四文档"、"三件套"→"四件套"。
+
+---
+
+## 2026-08-07（CODEBUDDY 机制重构）
+
+### 其他工作（讨论 / 决策 / 分析）
+
+- **dev-reference.md → CODEBUDDY.md 迁移**：删除 `templates/dev-reference.md` 和 `dm-init/assets/dev-reference.md`，改用项目根 `./CODEBUDDY.md` 作为版本绑定入口。
+- **CODEBUDDY-global.md**：创建 `docs/CODEBUDDY-global.md` 作为 `~/.codebuddy/CODEBUDDY.md` 的 source of truth，实现 Git 版本控制 + 部署副本模式。
+- **05-codebuddy-management.md**：新增管理层规范文档，定义两层架构（全局层 vs 项目层）、加载机制、修改流程、部署命令。
+- **dm-init 更新**：SKILL.md + design doc 同步更新：Step 2 生成 CODEBUDDY.md 而非 dev-reference.md。
+- **跨引用更新**：`~/.codebuddy/CODEBUDDY.md`、`skills/README.md`、`01-project-dev-flow.md`、`README.md` 中所有 dev-reference 引用均更新。
+
+---
+
+## 2026-08-07（仓库公开）
+
+### 其他工作（讨论 / 决策 / 分析）
+
+- **敏感信息检查**：全面扫描无密码、密钥、邮箱后，将 dev-meta 从私有改为公开仓库。
+- **README 链接化**：所有文档/目录列表改为 GitHub 可点击 URL，方便外部浏览。
+- **链接验证**：确认所有 GitHub blob/tree 链接可正常访问。
 
 ---
 
@@ -57,6 +95,7 @@
 
 | 日期 | 里程碑 |
 |------|--------|
+| 2026-08-07 | CODEBUDDY 机制重构完成；dev-meta 仓库公开；文档链接化与补全 |
 | 2026-07-21 | 测试策略纳入 design；dm-flow/dm-init skills 同步；文档创建顺序速查表落地 |
 | 2026-07-21 | worklog 规范制定；跨项目入口机制（dev-reference.md）落地；6 个项目接入 |
 | 2026-07-21 | 全文档一致性检查通过；项目级模板补齐 |
