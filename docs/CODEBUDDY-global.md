@@ -8,6 +8,21 @@
 本文件由 dev-meta 维护，CodeBuddy 每次会话自动加载。
 业务项目通过 `./CODEBUDDY.md` 绑定 dev-meta 版本及例外项，无需复制规范正文。
 
+## dev-meta 规范来源
+
+- 仓库：[https://github.com/aifuun/dev-meta](https://github.com/aifuun/dev-meta)
+- 工作流总览：[https://github.com/aifuun/dev-meta#工作流](https://github.com/aifuun/dev-meta#%E5%B7%A5%E4%BD%9C%E6%B5%81)
+
+### 规范文档导航
+
+| 场景 | 查阅 | 说明 |
+|------|------|------|
+| 项目初始化、文档分层、模板使用 | [01-project-dev-flow](https://github.com/aifuun/dev-meta/blob/main/docs/01-project-dev-flow.md) | 项目全生命周期流程与文档边界规则 |
+| 版本四件套结构、TF 设计原则 | [02-version-rules](https://github.com/aifuun/dev-meta/blob/main/docs/02-version-rules.md) | spec/design/build/schedule 职责与内容结构 |
+| 分支策略、commit 格式、PR 流程 | [03-git-flow-rules](https://github.com/aifuun/dev-meta/blob/main/docs/03-git-flow-rules.md) | Git 开发流与 commit 规范 |
+| 工作日志格式与维护规则 | [04-worklog-rules](https://github.com/aifuun/dev-meta/blob/main/docs/04-worklog-rules.md) | 每日总结、详细日志、待办、里程碑 |
+| CODEBUDDY 两层架构与部署 | [05-codebuddy-management](https://github.com/aifuun/dev-meta/blob/main/docs/05-codebuddy-management.md) | 全局层 vs 项目层、source of truth 修改流程 |
+
 ## 通用 DoD (Definition of Done)
 
 每个 PR / commit / TF 交付前应满足：
