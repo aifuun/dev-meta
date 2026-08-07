@@ -164,7 +164,7 @@ project-root/
 │   ├── 08-project-roadmap.md
 │   ├── 09-versions/
 │   │   └── vX.Y-<slug>/
-│   │       ├── 100-schedule.md
+│   │       ├── 500-schedule.md
 │   │       ├── 200-spec.md
 │   │       ├── 300-design.md
 │   │       └── 400-build.md
@@ -183,7 +183,7 @@ project-root/
 │   │   └── project-roadmap.md
 │   ├── versions/
 │   │   └── vX.Y-<slug>/
-│   │       ├── 100-schedule.md
+│   │       ├── 500-schedule.md
 │   │       ├── 200-spec.md
 │   │       ├── 300-design.md
 │   │       └── 400-build.md

@@ -28,7 +28,7 @@
 
 | 模板 | 路径 | 用途 |
 |---|---|---|
-| 版本四件套 | `templates/versions/vX.Y-<slug>/` | 每个小版本从模板创建 100-schedule / 200-spec / 300-design / 400-build |
+| 版本四件套 | `templates/versions/vX.Y-<slug>/` | 每个小版本从模板创建 500-schedule / 200-spec / 300-design / 400-build |
 | 项目基线 | `templates/project/` | 项目初始化时按需创建 project-spec / design / api-design / schema-design / ui-design / deployment / roadmap |
 | 工作日志 | `templates/worklog.md` | **复制**到 `docs/reports/worklog.md`，每天更新 |
 
@@ -50,13 +50,25 @@
 - [ ] 涉及文档已同步更新
 - [ ] worklog 已记录
 
-## 6. 编码约定
+## 6. AI 协作约定
+
+### 多文件变更优先脚本化
+
+对跨度大的同类变更，遵循"脚本优先、编辑兜底"原则：
+
+1. **先评估**：变更涉及 ≥ 3 个文件，且逻辑为简单文本替换/匹配
+2. **可脚本则脚本**：用 `sed`、`awk`、`bash` 或 Python 脚本批量执行，一次到位
+3. **不可脚本再编辑**：涉及结构调序、上下文判断、条件性替换时，逐文件用 AI 编辑
+
+目的：减少 token 消耗、保证多文件一致性、避免手工逐文件编辑的遗漏与漂移。
+
+## 7. 编码约定
 
 - 禁止魔术数字（用命名常量）
 - 单文件 ≤ 300 行
 - 公共函数有注释说明意图
 
-## 7. 本项目例外
+## 8. 本项目例外
 
 <!-- 如无例外项，写"无"；如有，逐条列出差异及理由 -->
 

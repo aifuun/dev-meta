@@ -39,7 +39,7 @@
 
 ### 2. 生成工作包列表
 
-创建 `docs/versions/vX.Y-<slug>/100-schedule.md`。按优先级顺序填充：
+创建 `docs/versions/vX.Y-<slug>/500-schedule.md`。按优先级顺序填充：
 
 1. **基础搭建** — 仓库脚手架、设计 token、品牌资产
 2. **核心 UX** — 主用户流程
@@ -61,7 +61,7 @@
 | 每版本强制跨领域覆盖 | — |
 | 扁平优先级列表，不按周分组 | — |
 | 延期砍功能，不推迟日期 | — |
-| 文件路径：`docs/versions/vX.Y-<slug>/100-schedule.md` | 02-version-rules.md |
+| 文件路径：`docs/versions/vX.Y-<slug>/500-schedule.md` | 02-version-rules.md |
 | 提交委托 dm-commit | dm-commit |
 
 ## Skill 资源映射
@@ -69,7 +69,7 @@
 | 资源 | 来源 | 用途 |
 |------|------|------|
 | SKILL.md | — | 流程指令 + 规则速查 |
-| assets/100-schedule-template.md | — | 排程模板 |
+| assets/500-schedule-template.md | — | 排程模板 |
 
 ## 使用示例
 
@@ -77,7 +77,7 @@
 用户: "为 v1.0-mvp 排程"
 
 AI:  1. 确认：上线卡点？量化目标？
-     2. 生成 docs/versions/v1.0-mvp/100-schedule.md
+     2. 生成 docs/versions/v1.0-mvp/500-schedule.md
      3. 按优先级填充工作包：
         | # | ID | 类别 | 工作内容 | 难度 | 预估工时 | 验收标准 | 状态 |
         |---|-----|------|---------|------|---------|---------|------|

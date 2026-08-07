@@ -2,7 +2,7 @@
 
 ## 概述
 
-版本规划与生命周期 skill，负责版本级规划：创建版本文档四件套（100-schedule / 200-spec / 300-design / 400-build）、分支、PR、TF Issue 生成、追踪验收。逐 TF 开发由 dm-dev-tf 负责；提交格式由 dm-commit 负责。
+版本规划与生命周期 skill，负责版本级规划：创建版本文档四件套（500-schedule / 200-spec / 300-design / 400-build）、分支、PR、TF Issue 生成、追踪验收。逐 TF 开发由 dm-dev-tf 负责；提交格式由 dm-commit 负责。
 
 ## 触发
 
@@ -20,7 +20,7 @@
 ```
 
 1. **创建版本文档** `docs/versions/v1.3-export/`
-   - `100-schedule.md` — 工作包列表与执行顺序
+   - `500-schedule.md` — 工作包列表与执行顺序
    - `200-spec.md` — TF 目标与验收
    - `300-design.md` — TF 划分、数据流、关键决策、跨 TF 状态机
    - `400-build.md` — 流内步骤、函数签名、Schema、状态机/时序图 + **任务执行计划（§末尾）**

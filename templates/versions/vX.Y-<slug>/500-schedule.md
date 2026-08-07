@@ -1,4 +1,4 @@
-# 📅 ${VERSION_DIR}/100-schedule.md
+# 📅 ${VERSION_DIR}/500-schedule.md
 ## 🚀 ${PROJECT} v${VERSION} — 版本排程
 
 > **关联 Roadmap 版本：** `v${VERSION}-${SLUG}`

@@ -109,5 +109,5 @@ cp -r skills/dm-* .codebuddy/skills/
 | 模板 | `templates/dev-reference.md` | dm-init |
 | 模板 | `templates/project/*` | dm-init |
 | 模板 | `templates/versions/vX.Y-<slug>/*` | dm-plan-ver |
-| 模板 | `templates/versions/vX.Y-<slug>/100-schedule.md` | dm-schedule |
+| 模板 | `templates/versions/vX.Y-<slug>/500-schedule.md` | dm-schedule |
 | 模板 | `templates/worklog.md` | dm-log |
