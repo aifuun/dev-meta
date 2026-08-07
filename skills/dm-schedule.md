@@ -47,6 +47,20 @@
 4. **质量走查** — 跨设备测试、bug 修复
 5. **正式发布** — 商店提交、营销推广
 
+### 2.1 Dev 工作包粒度：以 TF 为原子单位
+
+dev 工作包必须以 **Transaction Flow (TF)** 为单位组织，每个 TF 是不可分割的原子工作包：
+
+| 粒度 | 允许？ |
+|------|--------|
+| TF 级（一个 dev 工作包 = 一个 TF） | ✅ 必须 |
+| 步骤级（如"创建 yaml"、"配置 webpack"） | ❌ 禁止 |
+
+- 每个 dev 工作包 = 一个 TF，工作内容栏写 TF 名称 + 一行摘要 + `详见 400-build §N`
+- TF 内部的具体步骤由 `400-build.md` 承载，不在 schedule 表格中展开
+- 工时取 `400-build.md` 中该 TF 的总和
+- 非 dev 工作包（product / marketing / biz / qa / goal）不受此限制
+
 ### 3. 定义红线
 
 四铁律默认保留，除非用户显式覆盖。
@@ -61,6 +75,7 @@
 | 每版本强制跨领域覆盖 | — |
 | 扁平优先级列表，不按周分组 | — |
 | 延期砍功能，不推迟日期 | — |
+| dev 工作包必须以 TF 为原子单位，不可拆步骤 | 02-version-rules.md |
 | 文件路径：`docs/versions/vX.Y-<slug>/500-schedule.md` | 02-version-rules.md |
 | 提交委托 dm-commit | dm-commit |
 
