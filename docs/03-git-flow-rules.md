@@ -69,8 +69,10 @@ type(scope): subject
 
 ### 4.2 合并策略
 
-- 单人开发默认 `squash merge`。
+- 默认使用 **merge commit（`git merge --no-ff`）保留历史 commit**，不使用 squash。
+- 合并后相关 TF issue 由 `Closes #id` footer 自动关闭，其余手动关闭。
 - 合并前执行最小自检：范围正确、链接完整、验收可追溯。
+- 版本收尾的完整流程由 `dm-close-ver` 执行。
 
 ## 5. PR 模板（最小字段）
 

@@ -29,7 +29,7 @@ dm-init     →  架构基线  →  契约基线  →  路线规划  →  小版
 ### Git 开发流
 
 ```
-版本 PR  →  TF Issue  →  TF 分支  →  commit  →  review  →  merge  →  关 Issue
+版本 PR  →  TF Issue  →  commit  →  merge（保留历史）  →  关 Issue  →  清理分支
 ```
 
 ### 工作日志
@@ -45,7 +45,7 @@ dm-init  ──→  dm-plan-ver  ──→  dm-schedule（排程）
                    │
                    ├── dm-dev-tf（TF 开发）
                    ├── dm-commit（统一提交出口）
-                   └── 版本收尾
+                   └── dm-close-ver（版本收尾）
 
 dm-log  ←── 每日穿插  ←──→  dm-commit
 dm-report  ←── 阶段周报
@@ -55,7 +55,8 @@ dm-adr  ←── 按需穿插  ←──→  dm-commit
 | Skill | 职责 | 频率 |
 |-------|------|------|
 | `dm-init` | 初始化项目骨架，生成 CODEBUDDY.md + docs 目录树 | 低频 |
-| `dm-plan-ver` | 开/关版本，创建四件套 + 分支/PR/Issue | 中频 |
+| `dm-plan-ver` | 开版本，创建四件套 + 分支/PR/Issue | 中频 |
+| `dm-close-ver` | 关版本，就绪审计 + 保留历史 merge + 关 Issue + 清理分支 | 中频 |
 | `dm-schedule` | 版本排程，工作包列表 + 防沉迷红线 | 中频 |
 | `dm-dev-tf` | 启动 TF，读文档 + 确认 Issue + 出开发概要（开发在版本分支上） | 高频 |
 | `dm-commit` | type 向导 + 格式校验 + Issue 关联 | 频繁 |
@@ -86,5 +87,5 @@ dm-adr  ←── 按需穿插  ←──→  dm-commit
 - [templates/worklog.md](https://github.com/aifuun/dev-meta/blob/main/templates/worklog.md) — 工作日志模板
 - [templates/versions/](https://github.com/aifuun/dev-meta/tree/main/templates/versions) — 版本文档模板（与规范文件一一对应）
 - [templates/project/](https://github.com/aifuun/dev-meta/tree/main/templates/project) — 项目级文档模板（project-spec / design / api-design / schema-design / roadmap）
-- [skills/](https://github.com/aifuun/dev-meta/tree/main/skills) — Skill 设计文档（dm-init / dm-plan-ver / dm-schedule / dm-dev-tf / dm-log / dm-commit / dm-report / dm-adr）
+- [skills/](https://github.com/aifuun/dev-meta/tree/main/skills) — Skill 设计文档（dm-init / dm-plan-ver / dm-close-ver / dm-schedule / dm-dev-tf / dm-log / dm-commit / dm-report / dm-adr）
 - [samples/](https://github.com/aifuun/dev-meta/tree/main/samples) — 版本文档样例（V1.4.1-indexeddb-prefs）

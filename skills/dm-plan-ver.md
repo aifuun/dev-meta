@@ -2,14 +2,13 @@
 
 ## 概述
 
-版本规划与生命周期 skill，负责版本级规划：创建版本文档四件套（500-schedule / 200-spec / 300-design / 400-build）、分支、PR、TF Issue 生成、追踪验收。逐 TF 开发由 dm-dev-tf 负责；提交格式由 dm-commit 负责。
+版本启动 skill，负责版本级规划与启动：创建版本文档四件套（500-schedule / 200-spec / 300-design / 400-build）、分支、PR、TF Issue 生成。逐 TF 开发由 dm-dev-tf 负责；提交格式由 dm-commit 负责；版本收尾由 dm-close-ver 负责。
 
 ## 触发
 
 - "新建版本 v1.2-payment"
 - "开始 vX.Y"
 - "创建 TF 文档"
-- "关闭版本 v1.2"
 
 ## 执行流程
 
@@ -66,17 +65,13 @@ TF 开发通过两个子 skill 串联：
 3. **关闭 TF Issue**（标记验收结果）
 4. **更新 500-schedule.md** 工作包状态 + tracking-matrix
 
-### 阶段 3：版本收尾
+### 阶段 3：版本收尾（委托 dm-close-ver）
 
 ```
 用户: "关闭版本 v1.3-export"
 ```
 
-1. 确认所有 TF Issue 已关闭或明确延期
-2. 核对 `500-schedule.md` 工作包状态全部 ✅ 或明确延期
-3. 提交 worklog 记录
-4. Merge PR (squash merge)
-5. 提交版本文档（如尚未提交） — 委托 dm-commit
+用户要求关闭版本时，委托 **dm-close-ver**。本 skill 不再处理收尾；dm-close-ver 拥有完整流程（就绪审计 → 收尾执行 → 保留历史的 merge → 关闭 TF Issue → 清理分支 → 关闭后确认）。
 
 ## 关键规则速查
 
@@ -88,7 +83,7 @@ TF 开发通过两个子 skill 串联：
 | 每版本 1 PR，每 TF 1 Issue | 03-git-flow-rules.md §2 |
 | commit: `type(scope): subject` + `Closes #id`，详见 dm-commit | 03-git-flow-rules.md §3 |
 | 分支: `feature/<version>-<tf>-<topic>` | 03-git-flow-rules.md §4 |
-| 合并: 默认 squash merge | 03-git-flow-rules.md §4.2 |
+| 收尾: 委托 dm-close-ver（保留历史 merge，不用 squash） | dm-close-ver.md |
 
 ## Skill 资源映射
 
@@ -126,7 +121,5 @@ AI:  1. 确认验收标准
 
 用户: "关闭版本 v1.5-login"
 
-AI:  1. 检查全部 TF 已关闭
-     2. 输出 merge 建议
-     3. 提醒更新 worklog
+AI:  委托 dm-close-ver 处理版本收尾（就绪审计 → merge 保留历史 → 关闭 TF Issue → 清理分支 → 关闭报告）
 ```

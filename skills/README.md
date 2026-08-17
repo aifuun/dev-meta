@@ -7,7 +7,8 @@
 | Skill | 触发场景 | 职责 | 频率 |
 |-------|----------|------|------|
 | `dm-init` | 初始化新项目 | 创建 docs 目录树、生成 CODEBUDDY.md（版本绑定+例外）、初始化基线文档与 worklog | 低频 |
-| `dm-plan-ver` | 新建版本 / 关闭版本 | 创建版本文档四件套、分支/PR、TF Issue、追踪验收 | 中频 |
+| `dm-plan-ver` | 新建版本 | 创建版本文档四件套、分支/PR、TF Issue | 中频 |
+| `dm-close-ver` | 关闭版本 | 就绪审计、保留历史 merge、关闭 TF Issue、清理分支、关闭报告 | 中频 |
 | `dm-schedule` | 版本排程 | 生成按优先级排序的扁平工作包列表，附带防沉迷红线 | 中频 |
 | `dm-dev-tf` | 开始开发某个 TF | 读取版本文档、确认/创建 Issue、在现有版本分支上输出开发概要（不处理分支） | 高频 |
 | `dm-log` | 每日记录工作 | 追加工作总结、维护待办与里程碑 | 每日 |
@@ -26,7 +27,7 @@ dm-init
             ├── 每个版本开始 → 创建四件套 + 分支 + PR + Issue
             ├── 每个 TF 启动 → dm-dev-tf（读文档、确认 Issue、出概要；开发在版本分支上）
             ├── 每个 TF 完成 → dm-commit + 关 Issue + 更新追踪
-            └── 版本收尾 → merge PR + 补齐验收
+            └── 版本收尾 → dm-close-ver（就绪审计 + merge 保留历史 + 关 Issue + 清理分支）
                                     │
 dm-log ← 每日穿插，记录所有工作 ──→ dm-commit (统一提交出口)
                                     │
@@ -93,7 +94,7 @@ cp -r skills/dm-* .codebuddy/skills/
 | 条件 | 适用 skill | 说明 |
 |------|------------|------|
 | Git 仓库已初始化 | dm-init / dm-plan-ver | 版本管理依赖 Git |
-| `gh` CLI（可选） | dm-plan-ver | 用于自动创建 PR/Issue，未安装则生成文本描述手动粘贴 |
+| `gh` CLI（可选） | dm-plan-ver / dm-close-ver | dm-plan-ver 创建 PR/Issue；dm-close-ver 合并 PR / 关闭 Issue，未安装则手动执行 |
 | 项目中已有 `./CODEBUDDY.md` | dm-plan-ver / dm-log | 确保项目已绑定 dev-meta 规范 |
 
 ## 共享资源
@@ -103,8 +104,8 @@ cp -r skills/dm-* .codebuddy/skills/
 | 资源类型 | 文件 | 使用方 |
 |----------|------|--------|
 | 规范 | `docs/01-project-dev-flow.md` | dm-init |
-| 规范 | `docs/02-version-rules.md` | dm-plan-ver, dm-schedule |
-| 规范 | `docs/03-git-flow-rules.md` | dm-plan-ver, dm-commit |
+| 规范 | `docs/02-version-rules.md` | dm-plan-ver, dm-schedule, dm-close-ver |
+| 规范 | `docs/03-git-flow-rules.md` | dm-plan-ver, dm-commit, dm-close-ver |
 | 规范 | `docs/04-worklog-rules.md` | dm-log, dm-report |
 | 模板 | `~/.codebuddy/skills/dm-init/assets/CODEBUDDY.md` | dm-init（版本绑定+例外项，通用规范见 $HOME CODEBUDDY.md） |
 | 模板 | `templates/project/*` | dm-init |
