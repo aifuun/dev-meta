@@ -2,11 +2,11 @@
 
 ## 概述
 
-TF 开发引导 skill，负责读取版本文档上下文、确认/创建 TF Issue、创建 TF 分支、输出开发概要。是 dm-plan-ver Phase 2 中 TF 开发的"启动端"。
+TF 开发引导 skill，负责读取版本文档上下文、确认/创建 TF Issue、输出开发概要。开发直接在现有版本分支上进行，TF 不处理分支创建/删除。是 dm-plan-ver Phase 2 中 TF 开发的"启动端"。
 
 ## 关系
 
-dm-dev-tf 嵌入 dm-plan-ver 的 Phase 2（TF 开发）。dm-plan-ver 负责版本级规划（文档、分支、Issue、PR）；dm-dev-tf 负责逐 TF 的开发引导（读上下文、建分支、出概要）。开发完成后由 dm-commit 负责提交。
+dm-dev-tf 嵌入 dm-plan-ver 的 Phase 2（TF 开发）。dm-plan-ver 负责版本级规划（文档、分支、Issue、PR），**分支的创建/删除属于版本级职责**，不在 TF 级处理。dm-dev-tf 负责逐 TF 的开发引导（读上下文、确认/创建 Issue、出概要）。开发完成后由 dm-commit 负责提交。
 
 ```
 dm-plan-ver (版本规划)
@@ -45,19 +45,7 @@ dm-plan-ver (版本规划)
 - 若 Phase 1 已创建该 TF Issue，确认编号与状态
 - 若未创建，输出 Issue 内容：标题 `[TFx] <flow-name>`，包含目标、完成标准、依赖、验收方法
 
-### 4. 创建 TF 分支
-
-从版本分支切出：
-
-```bash
-git checkout -b feature/v<X.Y>-TF<N>-<topic>
-```
-
-- `<X.Y>`：从版本目录名提取
-- `<N>`：TF 编号
-- `<topic>`：用户传入则直接用；否则从 `300-design.md` 中该 TF 的一句话职责推导（如 `credential-validation`、`data-preprocessing`）
-
-### 5. 输出开发概要
+### 4. 输出开发概要
 
 结构化输出：
 
@@ -65,7 +53,7 @@ git checkout -b feature/v<X.Y>-TF<N>-<topic>
 ## TF<N> 开发概要 — <flow-name>
 
 **目标**：<200-spec.md 的一句话目标>
-**分支**：feature/v<X.Y>-TF<N>-<topic>
+**分支**：feature/v<X.Y>-<slug>（当前版本分支，不新建）
 **Issue**：#<N>
 
 ### 关键文件
@@ -91,8 +79,7 @@ git checkout -b feature/v<X.Y>-TF<N>-<topic>
 | 规则 | 来源 |
 |------|------|
 | 始终从 `docs/versions/` 自动检测版本，不可假定 | — |
-| 分支从版本分支切出，不从 main | 03-git-flow-rules.md §4 |
-| topic 小写、连字符分隔，从 TF 名称推导 | 03-git-flow-rules.md §4.1 |
+| 直接在版本分支 `feature/vX.Y-<slug>` 上开发，**不创建/删除分支** | 03-git-flow-rules.md §4 |
 | `400-build.md` 不完整时需在概要中标注 | 02-version-rules.md |
 | 提交委托 dm-commit，本 skill 仅负责启动阶段 | dm-commit.md |
 
@@ -101,23 +88,22 @@ git checkout -b feature/v<X.Y>-TF<N>-<topic>
 | 资源 | 来源 | 用途 |
 |------|------|------|
 | SKILL.md | — | 上述启动流程指令 + 规则速查 |
-| dm-plan-ver SKILL.md | — | 版本规划上下文、分支命名规范 |
+| dm-plan-ver SKILL.md | — | 版本规划上下文、当前版本分支名 |
 | dm-plan-ver references/version-rules.md | `docs/02-version-rules.md` | TF 文档结构 |
-| dm-plan-ver references/git-flow-rules.md | `docs/03-git-flow-rules.md` | 分支/Issue 规范 |
+| dm-plan-ver references/git-flow-rules.md | `docs/03-git-flow-rules.md` | Issue 规范（分支归版本级，不在本 skill 处理） |
 
 ## 使用示例
 
 ```
 用户: "开始 TF3"
 
-AI:  1. 检测版本: docs/versions/v0.2-auth/ → v0.2
+AI:  1. 检测版本: docs/versions/v0.2-auth/ → v0.2（当前分支 feature/v0.2-auth）
      2. 读取四件套，提取 TF3 相关内容
      3. 确认 Issue #15 [TF3] 会话管理 → 已创建，未关闭
-     4. 创建分支: feature/v0.2-TF3-session-management
-     5. 输出开发概要:
+     4. 输出开发概要（不新建分支，直接在 feature/v0.2-auth 上开发）:
         ## TF3 开发概要 — 会话管理
         **目标**: 实现 token 签发、校验与刷新
-        **分支**: feature/v0.2-TF3-session-management
+        **分支**: feature/v0.2-auth（当前版本分支，不新建）
         **Issue**: #15
         ### 关键文件
         - src/auth/session.ts — session 管理主逻辑

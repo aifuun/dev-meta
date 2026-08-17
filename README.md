@@ -57,7 +57,7 @@ dm-adr  ←── 按需穿插  ←──→  dm-commit
 | `dm-init` | 初始化项目骨架，生成 CODEBUDDY.md + docs 目录树 | 低频 |
 | `dm-plan-ver` | 开/关版本，创建四件套 + 分支/PR/Issue | 中频 |
 | `dm-schedule` | 版本排程，工作包列表 + 防沉迷红线 | 中频 |
-| `dm-dev-tf` | 启动 TF，读文档 + 建分支 + 出开发概要 | 高频 |
+| `dm-dev-tf` | 启动 TF，读文档 + 确认 Issue + 出开发概要（开发在版本分支上） | 高频 |
 | `dm-commit` | type 向导 + 格式校验 + Issue 关联 | 频繁 |
 | `dm-log` | 每日总结 + 详细日志 + 待办 + 里程碑 | 每日 |
 | `dm-report` | 从 worklog 提取生成周报/阶段报告 | 每周 |

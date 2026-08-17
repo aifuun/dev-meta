@@ -49,7 +49,7 @@
 
 TF 开发通过两个子 skill 串联：
 
-- **dm-dev-tf** — TF 启动：读文档、确认 Issue、建分支、出开发概要
+- **dm-dev-tf** — TF 启动：读文档、确认/创建 Issue、出开发概要（开发在版本分支上，不建分支）
 - **dm-commit** — TF 提交：`type(scope): subject` + `Closes #id`
 
 ```

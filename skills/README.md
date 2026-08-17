@@ -9,7 +9,7 @@
 | `dm-init` | 初始化新项目 | 创建 docs 目录树、生成 CODEBUDDY.md（版本绑定+例外）、初始化基线文档与 worklog | 低频 |
 | `dm-plan-ver` | 新建版本 / 关闭版本 | 创建版本文档四件套、分支/PR、TF Issue、追踪验收 | 中频 |
 | `dm-schedule` | 版本排程 | 生成按优先级排序的扁平工作包列表，附带防沉迷红线 | 中频 |
-| `dm-dev-tf` | 开始开发某个 TF | 读取版本文档、确认 Issue、创建 TF 分支、输出开发概要 | 高频 |
+| `dm-dev-tf` | 开始开发某个 TF | 读取版本文档、确认/创建 Issue、在现有版本分支上输出开发概要（不处理分支） | 高频 |
 | `dm-log` | 每日记录工作 | 追加工作总结、维护待办与里程碑 | 每日 |
 | `dm-commit` | 提交变更 | type 向导、格式校验、footer 关联 Issue，确保 commit 一致性 | 频繁 |
 | `dm-report` | 生成阶段报告 | 从 worklog 提取数据，按模板输出周报/月报/自定义周期报告 | 每周 |
@@ -24,7 +24,7 @@ dm-init
             │
             ├── 版本规划完成后 → dm-schedule（排程：工作包列表 + 红线）
             ├── 每个版本开始 → 创建四件套 + 分支 + PR + Issue
-            ├── 每个 TF 启动 → dm-dev-tf（读文档、建分支、出概要）
+            ├── 每个 TF 启动 → dm-dev-tf（读文档、确认 Issue、出概要；开发在版本分支上）
             ├── 每个 TF 完成 → dm-commit + 关 Issue + 更新追踪
             └── 版本收尾 → merge PR + 补齐验收
                                     │
