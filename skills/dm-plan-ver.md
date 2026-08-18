@@ -2,7 +2,16 @@
 
 ## 概述
 
-版本启动 skill，负责版本级规划与启动：创建版本文档四件套（500-schedule / 200-spec / 300-design / 400-build）、分支、PR、TF Issue 生成。逐 TF 开发由 dm-dev-tf 负责；提交格式由 dm-commit 负责；版本收尾由 dm-close-ver 负责。
+版本启动 skill，负责版本级规划与启动：创建版本文档四件套、分支、PR、TF Issue 生成与追踪。
+
+## 职责边界
+
+| 职责 | 归属 |
+|------|------|
+| 创建版本文档四件套 + 分支 + PR + TF Issue | ✅ 本 skill |
+| TF 逐流开发启动 | 委托 dm-dev-tf |
+| 提交格式 | 委托 dm-commit |
+| 版本收尾（merge / 关 Issue / 清理分支） | 委托 dm-close-ver |
 
 ## 触发
 
@@ -10,25 +19,53 @@
 - "开始 vX.Y"
 - "创建 TF 文档"
 
+## 核心概念
+
+### 四件套结构
+
+版本目录 `docs/versions/vX.Y-<slug>/` 下的四个文档，按依赖顺序创建：
+
+| 文档 | 回答的问题 | 前置依赖 |
+|------|-----------|----------|
+| `500-schedule.md` | 什么时候做什么？按什么顺序？ | build（委托 dm-schedule） |
+| `200-spec.md` | 交付什么？怎样算完成？ | — |
+| `300-design.md` | 流程如何串联？模块如何分工？ | spec |
+| `400-build.md` | 怎么实现？怎么执行？ | design |
+
+### 执行顺序矩阵（400-build §末尾）
+
+400-build 末尾的执行顺序矩阵承载 **顺序、环节与依赖约束**：
+
+| 列 | 内容 |
+|----|------|
+| 序号 | 推荐执行顺序，从 1 递增 |
+| 环节 | 所属交付环节（开发/部署/联调/测试/发布…），使环节顺序与 schedule 对齐 |
+| TF | TF 编号（TF1/TF2…），收尾任务填"—" |
+| 备注 | 前置依赖、并行提示、风险标记 |
+
+- **dev TF 的矩阵行须含「代码 + 部署 + 联调」环节**（部署/联调归 dev，不归 qa）。
+- 末尾追加固定行："补单测与回归用例" + "本地构建与回归验证"。
+- 任务简述、预估工时、状态由 `500-schedule.md` 承载，不在矩阵重复。
+- 环节完整定义见 `dm-schedule`「核心概念」环节↔类别表（唯一权威）。
+
+### 追踪矩阵（tracking-matrix）
+
+为每个 TF 生成 Issue 后，用追踪矩阵维护 TF→Issue→PR→验收的状态：
+
+| TF | Issue | PR | 验收 |
+|----|-------|-----|------|
+| TF1 | #xx | #xx | ⬜ |
+
 ## 执行流程
 
-### 阶段 1：版本启动
+### 阶段 1：版本启动（核心）
 
 ```
 用户: "新建版本 v1.3-export"
 ```
 
-1. **创建版本文档** `docs/versions/v1.3-export/`
-   - `500-schedule.md` — 工作包列表与执行顺序
-   - `200-spec.md` — TF 目标与验收
-   - `300-design.md` — TF 划分、数据流、关键决策、跨 TF 状态机
-   - `400-build.md` — 流内步骤、函数签名、Schema、状态机/时序图 + **执行顺序矩阵（§末尾）**
-     - 按 `300-design.md` §3 的 TF 执行顺序排列矩阵行
-     - 每行标注**环节**（开发/部署/联调/测试/发布），使环节顺序与 schedule 对齐
-     - 末尾追加固定行："补单测与回归用例" + "本地构建与回归验证"
-     - 填写执行顺序说明（先做、可并行、必须串行）
-     - dev TF 的矩阵行须含「代码 + 部署 + 联调」环节（部署/联调归 dev，不归 qa）
-     - 任务简述、预估工时、状态由 `500-schedule.md` 承载，不在矩阵重复
+1. **创建版本文档** `docs/versions/v1.3-export/`（四件套，顺序见「核心概念」）
+   - `400-build.md` 的执行顺序矩阵按 `300-design.md` §3 的 TF 执行顺序排列，每行标注环节
 
 2. **创建分支**
    ```bash
@@ -43,12 +80,11 @@
 4. **为每个 TF 生成 Issue**
    - 标题：`[TF1] 数据收集与预处理`
    - 填写：目标、完成标准、依赖、验收方法
-   - 关联到版本 PR
-   - 输出追踪矩阵
+   - 关联到版本 PR，输出追踪矩阵
 
-### 阶段 2：TF 开发
+### 阶段 2：TF 开发（委托）
 
-TF 开发通过两个子 skill 串联：
+TF 开发通过两个子 skill 串联，本 skill 不直接执行：
 
 - **dm-dev-tf** — TF 启动：读文档、确认/创建 Issue、出开发概要（开发在版本分支上，不建分支）
 - **dm-commit** — TF 提交：`type(scope): subject` + `Closes #id`
@@ -88,7 +124,7 @@ TF 开发通过两个子 skill 串联：
 | 收尾: 委托 dm-close-ver（保留历史 merge，不用 squash） | dm-close-ver.md |
 | 执行顺序矩阵行含环节；dev TF 含代码+部署+联调（部署/联调归 dev） | 02-version-rules.md §2.2 |
 
-## Skill 资源映射
+## 资源映射
 
 | 资源 | 来源 | 用途 |
 |------|------|------|
@@ -97,7 +133,7 @@ TF 开发通过两个子 skill 串联：
 | references/git-flow-rules.md | `docs/03-git-flow-rules.md` | PR/Issue/commit 规则详情 |
 | assets/200-spec.md | `templates/versions/vX.Y-<slug>/200-spec.md` | 规格模板 |
 | assets/300-design.md | `templates/versions/vX.Y-<slug>/300-design.md` | 设计模板 |
-| assets/400-build.md | `templates/versions/vX.Y-<slug>/400-build.md` | 实现蓝图 + 执行计划模板 |
+| assets/400-build.md | `templates/versions/vX.Y-<slug>/400-build.md` | 实现蓝图 + 执行顺序矩阵模板 |
 | assets/tracking-matrix.md | 新增 | TF→Issue→PR 追踪模板 |
 
 ## 使用示例
