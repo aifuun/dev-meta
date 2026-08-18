@@ -24,8 +24,10 @@
    - `300-design.md` — TF 划分、数据流、关键决策、跨 TF 状态机
    - `400-build.md` — 流内步骤、函数签名、Schema、状态机/时序图 + **执行顺序矩阵（§末尾）**
      - 按 `300-design.md` §3 的 TF 执行顺序排列矩阵行
+     - 每行标注**环节**（开发/部署/联调/测试/发布），使环节顺序与 schedule 对齐
      - 末尾追加固定行："补单测与回归用例" + "本地构建与回归验证"
      - 填写执行顺序说明（先做、可并行、必须串行）
+     - dev TF 的矩阵行须含「代码 + 部署 + 联调」环节（部署/联调归 dev，不归 qa）
      - 任务简述、预估工时、状态由 `500-schedule.md` 承载，不在矩阵重复
 
 2. **创建分支**
@@ -84,6 +86,7 @@ TF 开发通过两个子 skill 串联：
 | commit: `type(scope): subject` + `Closes #id`，详见 dm-commit | 03-git-flow-rules.md §3 |
 | 分支: `feature/<version>-<tf>-<topic>` | 03-git-flow-rules.md §4 |
 | 收尾: 委托 dm-close-ver（保留历史 merge，不用 squash） | dm-close-ver.md |
+| 执行顺序矩阵行含环节；dev TF 含代码+部署+联调（部署/联调归 dev） | 02-version-rules.md §2.2 |
 
 ## Skill 资源映射
 
