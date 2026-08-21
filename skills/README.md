@@ -2,15 +2,17 @@
 
 本目录为 `dev-meta` 规范体系对应的 CodeBuddy Skills 设计文档。每个 skill 封装一套标准化开发流程，让 AI 在任何项目中自动遵循 dev-meta 规范。
 
+> **所有 skill 设计文档须遵循 [skill-doc-principles.md](skill-doc-principles.md) 的核心原则**（概念驱动结构、单一权威、职责边界、双端一致、面向 AI 可遍历）。新增或重构 skill 文档时先阅读该文档。
+
 ## Skill 总览
 
 | Skill | 触发场景 | 职责 | 频率 |
 |-------|----------|------|------|
 | `dm-init` | 初始化新项目 | 创建 docs 目录树、生成 CODEBUDDY.md（版本绑定+例外）、初始化基线文档与 worklog | 低频 |
-| `dm-plan-ver` | 新建版本 | 创建版本文档四件套、分支/PR、TF Issue | 中频 |
+| `dm-plan-ver` | 新建版本 | 创建版本文档四件套（200-spec/300-design 产出前执行需求级/架构级 grill 收敛决策）、分支/PR、TF Issue | 中频 |
 | `dm-close-ver` | 关闭版本 | 就绪审计、保留历史 merge、关闭 TF Issue、清理分支、关闭报告 | 中频 |
 | `dm-schedule` | 版本排程 | 生成按优先级排序的扁平工作包列表，附带防沉迷红线 | 中频 |
-| `dm-dev-tf` | 开始开发某个 TF | 读取版本文档、确认/创建 Issue、在现有版本分支上输出开发概要（不处理分支） | 高频 |
+| `dm-dev-tf` | 开始开发某个 TF | 读取版本文档、确认/创建 Issue、在现有版本分支上输出开发概要（300-design 不完整时含实现级 grill，不处理分支） | 高频 |
 | `dm-log` | 每日记录工作 | 追加工作总结、维护待办与里程碑 | 每日 |
 | `dm-commit` | 提交变更 | type 向导、格式校验、footer 关联 Issue，确保 commit 一致性 | 频繁 |
 | `dm-report` | 生成阶段报告 | 从 worklog 提取数据，按模板输出周报/月报/自定义周期报告 | 每周 |
@@ -25,7 +27,9 @@ dm-init
             │
             ├── 版本规划完成后 → dm-schedule（排程：工作包列表 + 红线）
             ├── 每个版本开始 → 创建四件套 + 分支 + PR + Issue
+            │                            （200-spec/300-design 产出前执行需求级/架构级 grill，问答沉淀进文档）
             ├── 每个 TF 启动 → dm-dev-tf（读文档、确认 Issue、出概要；开发在版本分支上）
+            │                            （300-design 不完整时，出概要前执行实现级 grill）
             ├── 每个 TF 完成 → dm-commit + 关 Issue + 更新追踪
             └── 版本收尾 → dm-close-ver（就绪审计 + merge 保留历史 + 关 Issue + 清理分支）
                                     │
@@ -68,6 +72,8 @@ cp -r skills/dm-* .codebuddy/skills/
 | 提交变更 | "commit" / "帮我 commit" |
 | 生成报告 | "生成周报" / "本周报告" |
 | 记录决策 | "记录一个技术决策" / "创建 ADR" |
+
+> **grill（决策收敛）是 dm-plan-ver / dm-dev-tf 流程内的内嵌步骤，非独立 skill，无需显式触发**：AI 在产出 200-spec、300-design、开发概要前自动执行（需求级/架构级/实现级），问答沉淀进文档，技术选型类触发 dm-adr。原则见 skill-doc-principles §7。
 
 ### 典型项目生命周期
 

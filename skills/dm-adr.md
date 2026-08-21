@@ -4,12 +4,46 @@
 
 架构决策记录 skill，按 ADR 格式维护技术决策日志。每项重大技术选型（云服务、基础设施、框架、协议、数据存储等）对应一篇独立 ADR，存放于 `docs/adrs/`。
 
+## 职责边界
+
+| 职责 | 归属 |
+|------|------|
+| 生成/维护 ADR | ✅ 本 skill |
+| ADR 索引（`docs/adrs/README.md`） | ✅ 本 skill |
+| ADR 提交 | 委托 dm-commit |
+
 ## 触发
 
 - "记录一个技术决策"
 - "创建 ADR"
 - "我们决定用 X 做 Y"
 - "为什么选择了 X？"（查询已有 ADR）
+
+## 核心概念
+
+### ADR 五段式格式
+
+每篇 ADR 按固定五段式组织，一篇只记录一个决策：
+
+| 段落 | 内容 |
+|------|------|
+| 背景 Context | 为什么需要这个决策 |
+| 决策 Decision | 我们选择了什么 |
+| 原因 Rationale | 为什么选它（关键取舍） |
+| 后果 Consequences | ✅ 正面影响 / ⚠️ 代价 / 🔧 后续动作 |
+| 替代方案 Alternatives | 被否掉的可选方案（可选） |
+
+### 状态转换
+
+ADR 有生命周期，不可修改已接受原文，只能转换状态：
+
+```
+Proposed → Accepted → Deprecated
+                 → Superseded (by ADR-NNN)
+```
+
+- **Accepted**：已采纳的 ADR 不可改原文；需变化时更新旧 ADR 状态并创建新 ADR
+- **Superseded**：被新 ADR 替代，需双向交叉引用
 
 ## 执行流程
 
@@ -23,7 +57,7 @@
 
 ### 3. 撰写 ADR
 
-按五段式格式：背景 → 决策 → 原因 → 后果 → 替代方案（可选）。一篇 ADR 只记录一个决策。
+按「核心概念」的五段式格式撰写。一篇 ADR 只记录一个决策。
 
 ### 4. 创建文件
 
@@ -41,13 +75,6 @@
 
 委托 dm-commit，格式：`docs(adr): add ADR-NNN — <decision title>`
 
-## 状态转换
-
-```
-Proposed → Accepted → Deprecated
-                 → Superseded (by ADR-NNN)
-```
-
 ## 关键规则速查
 
 | 规则 | 来源 |
@@ -57,8 +84,9 @@ Proposed → Accepted → Deprecated
 | 已接受的 ADR 不可修改原文，需更新状态并创建新 ADR | — |
 | 替代关系需双向交叉引用 | — |
 | 文件路径固定 `docs/adrs/adr-NNN.md` | — |
+| 提交委托 dm-commit | dm-commit |
 
-## Skill 资源映射
+## 资源映射
 
 | 资源 | 来源 | 用途 |
 |------|------|------|

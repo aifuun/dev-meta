@@ -63,9 +63,10 @@ type(scope): subject
 
 ### 4.1 分支命名
 
-- `feature/<version>-<tf>-<topic>`
-- `fix/<version>-<tf>-<topic>`
-- `docs/<version>-<topic>`
+- 分支为**版本级**：每个版本 1 个长期分支，**TF 不单独建分支**（开发直接在版本分支上进行）。
+- `feature/v<version>-<slug>`：功能版本（slug 取自版本目录名 `v<version>-<slug>`）
+- `fix/v<version>-<slug>`：修复版本
+- `docs/v<version>-<slug>`：纯文档版本
 
 ### 4.2 合并策略
 
