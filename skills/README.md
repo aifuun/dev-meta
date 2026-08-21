@@ -17,6 +17,7 @@
 | `dm-commit` | 提交变更 | type 向导、格式校验、footer 关联 Issue，确保 commit 一致性 | 频繁 |
 | `dm-report` | 生成阶段报告 | 从 worklog 提取数据，按模板输出周报/月报/自定义周期报告 | 每周 |
 | `dm-adr` | 记录技术决策 | 按 ADR 格式维护架构/技术选型决策日志 | 按需 |
+| `dm-grillme-plan` | 通用需求 Plan 前逼问决策 | 非版本类需求写代码/出方案前的「提问→回答→沉淀」决策收敛，输出 Final Plan（版本类走 dm-plan-ver/dm-dev-tf 内嵌 grill） | 按需 |
 
 ## Skill 关系
 
@@ -72,8 +73,11 @@ cp -r skills/dm-* .codebuddy/skills/
 | 提交变更 | "commit" / "帮我 commit" |
 | 生成报告 | "生成周报" / "本周报告" |
 | 记录决策 | "记录一个技术决策" / "创建 ADR" |
+| 规划前逼问 | "/grill-me" / "规划前先拷问我" / "先 pressure-test 这个方案" |
 
-> **grill（决策收敛）是 dm-plan-ver / dm-dev-tf 流程内的内嵌步骤，非独立 skill，无需显式触发**：AI 在产出 200-spec、300-design、开发概要前自动执行（需求级/架构级/实现级），问答沉淀进文档，技术选型类触发 dm-adr。原则见 skill-doc-principles §7。
+> **grill（决策收敛）双轨制**（原则见 skill-doc-principles §7）：
+> - **版本类需求**：grill 内嵌于 `dm-plan-ver` / `dm-dev-tf`，无需显式触发——AI 在产出 200-spec、300-design、开发概要前自动执行（需求级/架构级/实现级），问答沉淀进文档，技术选型类触发 `dm-adr`。
+> - **非版本类通用需求**：走独立 skill `dm-grillme-plan`（触发词 `/grill-me` 等），在写代码/出方案前显式逼问决策并沉淀 Final Plan 到 `docs/plans/<topic>-grill.md`。两轨不重复 grill 逻辑。
 
 ### 典型项目生命周期
 
