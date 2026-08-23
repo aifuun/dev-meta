@@ -139,6 +139,7 @@ TF 开发通过两个子 skill 串联，本 skill 不直接执行：
 | 收尾: 委托 dm-close-ver（保留历史 merge，不用 squash） | dm-close-ver.md |
 | 执行顺序矩阵行含环节；dev TF 含代码+部署+联调（部署/联调归 dev） | 02-version-rules.md §2.2 |
 | `200-spec.md`/`300-design.md` 产出前须执行需求级/架构级 grill，问答沉淀进文档，不留在对话流 | skill-doc-principles.md §7 |
+| `400-build.md` 对算法/隐性契约类函数须含「关键行为契约（关键测试用例）」，薄胶水/CRUD 可省略；测试职责分层见 02-version-rules.md §3.5 | templates/400-build.md + 02-version-rules.md §3.5 |
 
 ## 资源映射
 

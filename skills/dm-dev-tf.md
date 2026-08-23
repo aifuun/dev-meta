@@ -92,8 +92,10 @@ TF 开发概要从版本四件套提取，各文档提供不同视角：
 - 外部依赖：<列表或"无">
 
 ### 测试策略
-- 级别：<unit / integration / e2e>
-- 关键场景：<来自 300-design.md>
+- 级别：<unit / integration / e2e>（来自 300-design.md §7）
+- 关键场景：<来自 300-design.md §7>
+- 行为预期：<来自 400-build.md 关键行为契约；dm-dev-tf 据此生成真实单测，不重新定义行为>
+- 测试职责分层见 `docs/02-version-rules.md` §3.5
 
 ### 开发步骤（来自 400-build.md，含部署/联调环节）
 1. <步骤>
