@@ -18,6 +18,7 @@
 | `dm-report` | 生成阶段报告 | 从 worklog 提取数据，按模板输出周报/月报/自定义周期报告 | 每周 |
 | `dm-adr` | 记录技术决策 | 按 ADR 格式维护架构/技术选型决策日志 | 按需 |
 | `dm-grillme-plan` | 通用需求 Plan 前逼问决策 | 非版本类需求写代码/出方案前的「提问→回答→沉淀」决策收敛，输出 Final Plan（版本类走 dm-plan-ver/dm-dev-tf 内嵌 grill） | 按需 |
+| `dm-cleanup` | 技术债清理 + 仓库卫生 | 版本/TF 之外的跨文件清理（正确性/注释/死代码/重复结构/占位常量标注）与仓库卫生（.gitignore + 误提交文件 `git rm --cached`），验证后委托 dm-close-ver | 按需 |
 
 ## Skill 关系
 
@@ -74,6 +75,7 @@ cp -r skills/dm-* .codebuddy/skills/
 | 生成报告 | "生成周报" / "本周报告" |
 | 记录决策 | "记录一个技术决策" / "创建 ADR" |
 | 规划前逼问 | "/grill-me" / "规划前先拷问我" / "先 pressure-test 这个方案" |
+| 技术债清理 / 仓库卫生 | "/dm-cleanup" / "清理技术债" / "做一下仓库卫生" |
 
 > **grill（决策收敛）双轨制**（原则见 skill-doc-principles §7）：
 > - **版本类需求**：grill 内嵌于 `dm-plan-ver` / `dm-dev-tf`，无需显式触发——AI 在产出 200-spec、300-design、开发概要前自动执行（需求级/架构级/实现级），问答沉淀进文档，技术选型类触发 `dm-adr`。
