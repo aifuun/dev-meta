@@ -45,7 +45,7 @@ dm-close-ver (关版本) ← 独立 skill，接收 dm-plan-ver 交接
 
 ### Phase B：收尾执行（Do the close）
 
-5. **执行顺序矩阵核对** — `400-build.md` 固定收尾行（补单测/回归、构建验证）已完成
+5. **执行顺序矩阵核对** — `400-build.md` 固定收尾行（补单测/回归、构建验证）已完成（测试职责分层见 `docs/06-contract-based-dev.md` §3）
 6. **worklog 补全** — 版本周期内所有工作已记录（委托 dm-log）
 7. **文档收尾** — 版本文档确认提交（委托 dm-commit）
 

@@ -65,7 +65,7 @@ chore: initialize project docs following dev-meta
 | assets/CODEBUDDY.md | — | 项目入口模板（版本绑定 + 例外项） |
 | assets/project-spec.md | `templates/project/project-spec.md` | 项目规格模板 |
 | assets/project-design.md | `templates/project/project-design.md` | 设计模板 |
-| assets/project-api-design.md | `templates/project/project-api-design.md` | API 设计模板 |
+| assets/project-api-design.md | `templates/project/project-api-design.md` | API 设计模板（接口契约规范见 `docs/06-contract-based-dev.md` §2.1） |
 | assets/project-schema-design.md | `templates/project/project-schema-design.md` | Schema 设计模板 |
 | assets/project-ui-design.md | `templates/project/project-ui-design.md` | UI 设计模板 |
 | assets/project-deployment.md | `templates/project/project-deployment.md` | 部署运维模板 |
