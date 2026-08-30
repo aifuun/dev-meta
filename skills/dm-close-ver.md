@@ -71,11 +71,21 @@ dm-close-ver (关版本) ← 独立 skill，接收 dm-plan-ver 交接
     git branch -d feature/vX.Y-<slug>
     ```
 
-11. **版本标记**（可选）— 用 tag 打版本号：
+11. **版本标记**（必做）— 用 **annotated tag** 打版本号，message 须含「版本 + 必要信息」：
+    - tag 命名：`v<X.Y.Z>`（与版本目录 `vX.Y-<slug>`、PR `[Vx.y.z]` 一致；`<X.Y>` 取自版本目录，`<Z>` 为补丁号，首个版本为 `.0`）
+    - message 必要字段：`version`（含 slug）、`scope`（本次交付范围摘要）、`merge`（merge commit 哈希，作回滚点）、`issues`（关闭的 TF Issue 清单）
     ```bash
-    git tag v<X.Y.Z>
+    git tag -a v<X.Y.Z> -m "$(cat <<'EOF'
+    version: vX.Y.Z (slug: <slug>)
+    scope: <交付范围一句话摘要>
+    merge: <merge commit 哈希>
+    issues: #<id1> #<id2> ...
+    EOF
+    )"
     git push origin --tags
     ```
+    - 若版本目录未提供 `<Z>`（补丁号），默认 `.0`；若用户要求其他补丁号，沿用其指定
+    - tag 必须推送（`--tags`），否则远端无版本锚点
 
 12. **追踪矩阵归档** — 更新/归档 tracking-matrix
 
@@ -99,6 +109,7 @@ dm-close-ver (关版本) ← 独立 skill，接收 dm-plan-ver 交接
 | **commit 未关联 Issue** | 历史 commit 无 `Refs`/`Closes` footer | 记录到关闭报告中，人工补关联（不改写历史） |
 | **误用 squash** | 合并后 TF 历史被压平 | 确认分支已推送后，用 merge commit 方式重建或记录回滚点 |
 | **遗留引用** | main 上仍有指向版本分支的引用 | 修正文档/配置，更新 roadmap |
+| **tag 未推送** | `git tag` 本地有但 `git ls-remote --tags` 无 | `git push origin --tags` 补推；tag 是版本锚点，不可遗漏 |
 
 ## 关键规则速查
 
@@ -111,6 +122,7 @@ dm-close-ver (关版本) ← 独立 skill，接收 dm-plan-ver 交接
 | 收尾阶段禁止新功能 commit | — |
 | 合并后删除已合并分支 | 03-git-flow-rules §9 |
 | 关闭版本后更新 roadmap | 01-project-dev-flow |
+| 版本标记用 annotated tag `v<X.Y.Z>`，message 含 version/scope/merge/issues，必推送 `--tags` | 本 skill §11 |
 
 ## 输出
 
@@ -142,5 +154,11 @@ AI:  1. 就绪性审计:
         git push origin main
      4. 关闭 TF Issue: 确认 #21/#22 已自动关闭(Closes footer)
      5. 清理分支: git branch -d feature/v1.5-login
-     6. 输出关闭报告
+     6. 打版本 tag:
+        git tag -a v1.5.0 -m "version: v1.5.0 (slug: login)
+        scope: 登录表单 + 验证流程
+        merge: <merge commit 哈希>
+        issues: #21 #22"
+        git push origin --tags
+     7. 输出关闭报告
 ```
