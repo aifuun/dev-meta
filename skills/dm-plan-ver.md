@@ -140,6 +140,7 @@ TF 开发通过两个子 skill 串联，本 skill 不直接执行：
 | 执行顺序矩阵行含环节；dev TF 含代码+部署+联调（部署/联调归 dev） | 02-version-rules.md §2.2 |
 | `200-spec.md`/`300-design.md` 产出前须执行需求级/架构级 grill，问答沉淀进文档，不留在对话流 | skill-doc-principles.md §7 |
 | `400-build.md` 对算法/隐性契约类函数须含「关键行为契约（关键测试用例）」，薄胶水/CRUD 可省略；测试职责分层见 docs/06-contract-based-dev.md §3 | templates/400-build.md + docs/06-contract-based-dev.md §3 |
+| `400-build.md` 须覆盖契约质量基线维度（错误/幂等/兼容/不变量等，见 docs/06-contract-based-dev.md §2.5）；缺维度须在 grill/设计阶段补齐 | docs/06-contract-based-dev.md §2.5 |
 
 ## 资源映射
 
