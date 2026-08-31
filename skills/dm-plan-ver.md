@@ -144,6 +144,10 @@ TF 开发通过两个子 skill 串联，本 skill 不直接执行：
 
 | `400-build.md` 对算法/隐性契约类函数须含「关键行为契约（关键测试用例）」，薄胶水/CRUD 可省略；测试职责分层见 docs/06-contract-based-dev.md §3 | templates/400-build.md + docs/06-contract-based-dev.md §3 |
 | `400-build.md` 须覆盖契约质量基线维度（错误/幂等/兼容/不变量等，见 docs/06-contract-based-dev.md §2.5）；缺维度须在 grill/设计阶段补齐 | docs/06-contract-based-dev.md §2.5 |
+| 契约须标注四要素（归属/方向/不变性/真值来源）+ 域-序号编号；质量维度作为不变性项落地 | docs/06-contract-based-dev.md §2.6 |
+| 失败面契约：纯函数式失败返回空/原值而非 nil；严禁静默危险失败，须调用前拦截显式暴露 | docs/06-contract-based-dev.md §2.7 |
+| 契约演进治理：破坏性变更走 dm-adr；纯增量 PR 标注；新接口回写总目录（无主防护） | docs/06-contract-based-dev.md §5 |
+| 可观测性诊断契约：400-build 行为契约须含诊断契约（关键路径 observe 包装 + 状态留痕 + 无静默吞错），见 docs/07-observability-driven-dev.md §2.1/§3/§7 | docs/07-observability-driven-dev.md |
 
 ## 资源映射
 

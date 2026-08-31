@@ -29,7 +29,13 @@ docs/reports/
 └── worklog.md
 ```
 
-### 2. 生成 CODEBUDDY.md
+### 2. 植入可观测性基线（ODD）
+
+按 `docs/07-observability-driven-dev.md` 在脚手架阶段植入可观测性基线，预防式杜绝裸 `print` / 静默吞错：
+- 引入 `observe(...)` 诊断包装器（07 §4，Swift 须 `#if DEBUG` 隔离、生产零开销）；
+- 约定错误 / 降级路径须结构化诊断（黑匣子 07 §3），无静默吞错；高开销节点（IO / 推理 / 跨进程）须含 `Elapsed Time` + 资源指标（07 §2.3）。
+
+### 3. 生成 CODEBUDDY.md
 
 - 基于 `assets/CODEBUDDY.md` 模板，在项目根目录创建 `./CODEBUDDY.md`
 - 填写 dev-meta 仓库地址与版本（当前为 v0.1.0）
@@ -71,6 +77,7 @@ chore: initialize project docs following dev-meta
 | assets/project-deployment.md | `templates/project/project-deployment.md` | 部署运维模板 |
 | assets/project-roadmap.md | `templates/project/project-roadmap.md` | 路线图模板 |
 | assets/worklog.md | `templates/worklog.md` | 工作日志模板 |
+| 可观测性基线（observe 包装器 + ODD 约定） | `docs/07-observability-driven-dev.md` | 脚手架阶段植入，预防裸 print / 静默吞错 |
 
 ## 使用示例
 

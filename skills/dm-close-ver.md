@@ -40,6 +40,7 @@ dm-close-ver (关版本) ← 独立 skill，接收 dm-plan-ver 交接
 2. **工作包状态核对** — `500-schedule.md` 全部 ✅ 或明确延期
 3. **验收追溯** — 每个 TF 是否有可核对的验收结果（对照 `200-spec.md` 标准）
 4. **未提交变更** — 检查工作区/暂存区是否干净（`git status`）
+5. **可观测性 DoD** — 无裸露日志（关键路径经 `observe` 包装）、无静默吞错、高开销节点（推理/IO/跨进程）有诊断快照（见 `docs/07-observability-driven-dev.md` §7 DoD）
 
 > 任一不满足 → 先修复再继续，不跳过。
 
@@ -109,6 +110,7 @@ dm-close-ver (关版本) ← 独立 skill，接收 dm-plan-ver 交接
 | **commit 未关联 Issue** | 历史 commit 无 `Refs`/`Closes` footer | 记录到关闭报告中，人工补关联（不改写历史） |
 | **误用 squash** | 合并后 TF 历史被压平 | 确认分支已推送后，用 merge commit 方式重建或记录回滚点 |
 | **遗留引用** | main 上仍有指向版本分支的引用 | 修正文档/配置，更新 roadmap |
+| **ODD DoD 未达标** | 关键路径有裸露 print / 静默吞错 / 高开销节点无诊断快照 | 补 `observe` 结构化诊断（07 §2.1/§3/§4），`#if DEBUG` 隔离 |
 | **tag 未推送** | `git tag` 本地有但 `git ls-remote --tags` 无 | `git push origin --tags` 补推；tag 是版本锚点，不可遗漏 |
 
 ## 关键规则速查
@@ -123,6 +125,7 @@ dm-close-ver (关版本) ← 独立 skill，接收 dm-plan-ver 交接
 | 合并后删除已合并分支 | 03-git-flow-rules §9 |
 | 关闭版本后更新 roadmap | 01-project-dev-flow |
 | 版本标记用 annotated tag `v<X.Y.Z>`，message 含 version/scope/merge/issues，必推送 `--tags` | 本 skill §11 |
+| 合并前须过 ODD DoD：无裸露日志 / 无静默吞错 / 高开销节点有诊断快照（07 §7） | docs/07-observability-driven-dev.md §7 |
 
 ## 输出
 

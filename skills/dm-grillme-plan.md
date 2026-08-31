@@ -44,7 +44,7 @@ AI 提问 → 用户回答 → 沉淀文档
 |------|--------|---------|
 | 目标边界级 | 范围 / 完成标准 / 排除项 / 降级 | 交付边界在哪？什么算 done？哪些明确不做？信息不全怎么降级？ |
 | 架构技术级 | 数据流 / 模块边界 / 异常 / 兼容 / 选型 | 数据怎么流转？模块边界？异常处理？向下兼容？技术选型？ |
-| 实现降级级 | 并发边界 / 依赖集成 / 测试策略 / 契约质量 | 高并发边界？外部依赖如何集成？测试怎么覆盖？错误/幂等/兼容/不变量契约是否齐全？（契约规范见 `docs/06-contract-based-dev.md` §2.5 / §3） |
+| 实现降级级 | 并发边界 / 依赖集成 / 测试策略 / 契约质量 / **可观测性盲区** | 高并发边界？外部依赖如何集成？测试怎么覆盖？错误/幂等/兼容/不变量契约是否齐全？**可观测性盲区：错误/降级路径有无结构化诊断（07 §2.1/§3）？有无静默吞错 / 裸露日志？高开销节点是否含耗时+资源指标（07 §2.3）？**（契约规范见 `docs/06-contract-based-dev.md` §2.5 / §3，可观测性见 `docs/07-observability-driven-dev.md`） |
 
 ### Final Plan 结构
 
@@ -92,6 +92,7 @@ AI 提问 → 用户回答 → 沉淀文档
 | grill 阶段不产出实现代码 / 最终方案 | skill-doc-principles §7 |
 | 问答须沉淀进 Final Plan 文档，不留在对话流 | skill-doc-principles §7 |
 | 技术选型类回答触发 dm-adr | skill-doc-principles §7 |
+| grill 须暴露可观测性盲区：静默吞错 / 无结构化诊断 / 裸露日志须在 Final Plan 标注，引用 docs/07-observability-driven-dev.md | docs/07-observability-driven-dev.md |
 | Final Plan 结构唯一权威在 assets/grill-plan-template.md | — |
 
 ## 资源映射

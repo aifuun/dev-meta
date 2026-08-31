@@ -84,6 +84,7 @@ Proposed → Accepted → Deprecated
 | 已接受的 ADR 不可修改原文，需更新状态并创建新 ADR | — |
 | 替代关系需双向交叉引用 | — |
 | 文件路径固定 `docs/adrs/adr-NNN.md` | — |
+| 可观测性架构级取舍（采样粒度 / computeUnits / 预编译模型 / 诊断分级）须走 ADR | docs/07-observability-driven-dev.md §6 |
 | 提交委托 dm-commit | dm-commit |
 
 ## 资源映射

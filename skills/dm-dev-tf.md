@@ -117,6 +117,10 @@ TF 开发概要从版本四件套提取，各文档提供不同视角：
 | `400-build.md` 不完整时需在概要中标注 | 02-version-rules.md |
 | `300-design.md` 对当前 TF 不完整时，出概要前须执行实现级 grill，问答沉淀进文档 | skill-doc-principles.md §7 |
 | 提交委托 dm-commit，本 skill 仅负责启动阶段 | dm-commit.md |
+| 契约须标注四要素（归属/方向/不变性/真值来源）+ 域-序号编号；质量维度作为不变性项落地 | docs/06-contract-based-dev.md §2.6 |
+| 失败面契约：纯函数式失败返回空/原值而非 nil；严禁静默危险失败，须调用前拦截显式暴露（隐性契约债核查见 §2.7） | docs/06-contract-based-dev.md §2.7 |
+| 契约演进治理：破坏性变更走 dm-adr；纯增量 PR 标注；新接口回写总目录（无主防护） | docs/06-contract-based-dev.md §5 |
+| 诊断契约：行为预期来自 400-build；错误/降级路径须结构化诊断（07 §2.1/§3），高开销节点（推理/IO/跨进程）须含 Elapsed Time + 资源指标（07 §2.3）；复用 observe 包装器（07 §4），无静默吞错 | docs/07-observability-driven-dev.md |
 
 ## 资源映射
 

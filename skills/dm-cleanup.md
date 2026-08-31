@@ -80,7 +80,7 @@
 
 - lint 0 错误。
 - 相关测试通过（如 iOS：`xcodebuild test`，确认重构未破坏行为，尤其坐标范围断言）。
-- 隐性契约债扫描：清理时若发现空 `catch` 吞错误、魔术数字冒充契约、未标注幂等 / 不变量等，标注为「隐性契约债」并记入扫描清单（契约质量基线见 `docs/06-contract-based-dev.md` §2.5）。
+- 隐性契约债扫描：清理时若发现空 `catch` 吞错误、魔术数字冒充契约、未标注幂等 / 不变量、或「静默危险失败 / 依赖返回值兜底」等，标注为「隐性契约债」并记入扫描清单（契约质量基线见 `docs/06-contract-based-dev.md` §2.5；失败面契约见 §2.7）。特别地，「静默吞错 / 空 catch / 裸露 print / 依赖返回值兜底」属可观测性债（ODD），清理时须按 `docs/07-observability-driven-dev.md` §2.1 / §3 补 `observe` 结构化诊断（含 Input Snapshot / Resource Metrics，`#if DEBUG` 隔离），使 AI 能一次定位。
 
 ### 6. 仓库卫生收尾
 
@@ -103,6 +103,10 @@
 | 优先复用已有纯函数，不另写重复逻辑 | 核心概念·复用纯函数 |
 | 验证门槛：lint 0 + 相关测试通过 才路由收尾 | 执行流程·验证 |
 | 中文稿与英文 SKILL.md 双端结构一致 | 核心概念·双端一致 |
+| 契约须标注四要素（归属/方向/不变性/真值来源）+ 域-序号编号；质量维度作为不变性项落地 | docs/06-contract-based-dev.md §2.6 |
+| 失败面契约：纯函数式失败返回空/原值而非 nil；严禁静默危险失败，须调用前拦截显式暴露 | docs/06-contract-based-dev.md §2.7 |
+| 契约演进治理：破坏性变更走 dm-adr；纯增量 PR 标注；新接口回写总目录（无主防护） | docs/06-contract-based-dev.md §5 |
+| 可观测性债：静默吞错 / 空 catch / 裸露 print / 依赖返回值兜底 = 隐性契约债，清理时须按 07 §2.1/§3 补 observe 结构化诊断 | docs/07-observability-driven-dev.md |
 
 ## 资源映射
 
