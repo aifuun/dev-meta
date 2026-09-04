@@ -148,6 +148,7 @@ TF 开发通过两个子 skill 串联，本 skill 不直接执行：
 | 失败面契约：纯函数式失败返回空/原值而非 nil；严禁静默危险失败，须调用前拦截显式暴露 | docs/06-contract-based-dev.md §2.7 |
 | 契约演进治理：破坏性变更走 dm-adr；纯增量 PR 标注；新接口回写总目录（无主防护） | docs/06-contract-based-dev.md §5 |
 | 可观测性诊断契约：400-build 行为契约须含诊断契约（关键路径 observe 包装 + 状态留痕 + 无静默吞错），见 docs/07-observability-driven-dev.md §2.1/§3/§7 | docs/07-observability-driven-dev.md |
+| 版本计划须可拆成单文件批次（AI 执行粒度 = 单文件重构/单函数修复），供逐 Batch 推进，见 docs/08-small-batch-iteration.md | docs/08-small-batch-iteration.md |
 
 ## 资源映射
 

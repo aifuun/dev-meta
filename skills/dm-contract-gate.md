@@ -83,6 +83,7 @@
 | Gate 3：交付前对齐 MANIFEST 指纹 + contract_verified，未对齐不合并 | docs/06 §2.8 |
 | 机器可校验优先：关键契约须可 parse（JSON Schema/Contract.swift/OpenAPI） | docs/06 §2.8 |
 | 门禁失败须结构化诊断（07 黑匣子） | docs/07 §6 / §3 |
+| Gate 2 含可观测性 DoD：改后无 observe 包装 / 无出口 Assert（映射空须 assertionFailure）视为门禁未过 | docs/07 §2.5 |
 | 落地实现委托 dm-dev-tf，本 skill 只守门禁 | 职责边界 |
 
 ## 资源映射

@@ -90,7 +90,7 @@
 1. 开始一个小版本（目标与范围）
 2. 建文档（spec/design/build）
 3. 建跟踪项（1 个版本 PR + 每个 TF 1 个 issue）
-4. 开发与提交（commit 规范、关联 issue）
+4. 开发与提交（commit 规范、关联 issue；**对 AI 执行粒度须缩到单文件重构 / 单函数修复，按 docs/08-small-batch-iteration.md 三 Batch 推进**）
 5. 测试与验证（按 TF 测试策略执行，记录结果）
 6. 验收与收尾（验收记录、关闭 issue、合并 PR）
 7. 复盘与归档（变更总结、遗留项）

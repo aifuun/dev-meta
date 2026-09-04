@@ -76,6 +76,21 @@ dm-adr  ←── 按需穿插  ←──→  dm-commit
 ./CODEBUDDY.md              ← 项目：dev-meta 版本绑定 + 例外项
 ```
 
+### AI 协作三支柱闭环
+
+AI 不直接承接「人类视角的小版本」，而是以「单文件 / 单函数」为执行粒度，并在契约只读 + 可观测 + 小批迭代 三支柱约束下工作：
+
+```mermaid
+flowchart LR
+    C[06 §2.8 契约只读<br/>改前有界] --> O[07 可观测性<br/>日志是眼睛·改后可见]
+    O --> M[08 Micro-Batching<br/>小批+上下文重置·改中可控]
+    M --> C
+```
+
+- `docs/06` 契约只读：AI 改前只 diff 契约，不自改 SSOT。
+- `docs/07` 可观测性：写逻辑即写观测，编译器 / 脚本门禁把问题原样回抛。
+- `docs/08` 小版本迭代：Commit 级三 Batch + Context Flush（New Session），切断长尾混乱。
+
 ## 文件
 
 - [docs/01-project-dev-flow.md](https://github.com/aifuun/dev-meta/blob/main/docs/01-project-dev-flow.md) — 项目级开发流程与文档分层骨架
@@ -84,6 +99,8 @@ dm-adr  ←── 按需穿插  ←──→  dm-commit
 - [docs/04-worklog-rules.md](https://github.com/aifuun/dev-meta/blob/main/docs/04-worklog-rules.md) — 工作日志规范（每日工作总结 + 详细日志 + 待办 + 里程碑）
 - [docs/05-codebuddy-management.md](https://github.com/aifuun/dev-meta/blob/main/docs/05-codebuddy-management.md) — CODEBUDDY.md 管理规范：两层架构（全局层 vs 项目层）、加载机制、迁移说明
 - [docs/06-contract-based-dev.md](https://github.com/aifuun/dev-meta/blob/main/docs/06-contract-based-dev.md) — 契约式开发规范（三层契约 + 测试职责分层，唯一权威）
+- [docs/07-observability-driven-dev.md](https://github.com/aifuun/dev-meta/blob/main/docs/07-observability-driven-dev.md) — 可观测性驱动开发规范（日志是 AI 的眼睛）
+- [docs/08-small-batch-iteration.md](https://github.com/aifuun/dev-meta/blob/main/docs/08-small-batch-iteration.md) — 小版本迭代规范（Micro-Batching + Context Flush，唯一权威）
 - [docs/CODEBUDDY-global.md](https://github.com/aifuun/dev-meta/blob/main/docs/CODEBUDDY-global.md) — 全局规范原始版本：`~/.codebuddy/CODEBUDDY.md` 的 source of truth，在此修改后部署生效
 - [templates/worklog.md](https://github.com/aifuun/dev-meta/blob/main/templates/worklog.md) — 工作日志模板
 - [templates/versions/](https://github.com/aifuun/dev-meta/tree/main/templates/versions) — 版本文档模板（与规范文件一一对应）

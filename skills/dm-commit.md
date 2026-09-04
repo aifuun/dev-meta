@@ -66,6 +66,8 @@ TF 相关提交：
 
 构建完整的 commit message，执行 `git commit`。**除非用户明确要求，否则不主动 commit。**
 
+> 在 `docs/08-small-batch-iteration.md` 的 Micro-Batching 节奏下，一个 TF 拆为三 Batch，每完成一个**绿灯 Batch** 即生成一个 commit（均 `Refs #同一 TF`）。本步骤仍在用户显式说 commit / 调 dm-commit 时触发，AI 不自发提交；下个 Batch 混乱时由**用户** `git reset --hard` 退回上一个绿灯 commit（AI 不自发，遵守 git 安全协议）。
+
 ### 7. 校验
 
 提交后验证：

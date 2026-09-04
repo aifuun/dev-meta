@@ -29,6 +29,16 @@
 
 诊断日志的 `Input Snapshot` 须含可被交叉引用的特征（如 `imageSize`、`conf`、契约编号 `COORD-001`），使 AI 能把日志与代码 / ADR / 版本文档对上，防漂移（06 §2.6 四要素）。
 
+### 2.5 写逻辑即写观测（可观测性防线，AI 硬约束）
+
+AI 盲目修改的根因是「改完代码看不到运行状态，全靠脑补」。因此可观测性不是事后补丁，而是**写业务逻辑的同时必须落地的防线**：
+
+- **AI 写逻辑 = 同时写观测**：实现任何关键节点（状态机切换、边界条件、错误捕获、映射/查表）时，必须同步注入结构化日志（`observe` 包装器，§4）与出口 Assert。逻辑与观测不可分离提交。
+- **出口 Assert 兜底**：映射/查表结果为空、状态非法、坐标越界等「不该发生但会发生」的点，必须 `assertionFailure` / `preconditionFailure`（或等价断言），把隐性错转为显性崩溃日志，而非静默返回空值（呼应 06 §2.7 失败面契约）。
+- **范式（Swift）**：写 `DetectionBoxRenderer` 时，每次函数出口打印结构化 Log（含输入 Tensor 维度、处理时长、类别映射结果）；若 `mapped_name == nil` 必须抛 `assertionFailure("category_id=\(id) mapped_name=nil")`。AI 看到该日志可精确定位字典缺失，而非瞎改渲染视图。
+
+> 以上「写逻辑即写观测」为 **07 §2.5 唯一权威**；模板与 skill 只引用本小节，不重定义。
+
 ## 3. 诊断黑匣子规范（Diagnostic Snapshot Spec，唯一权威）
 
 任何被包装函数在异常或性能越界时，输出日志须含以下 **5+ 核心要素**，供 AI 直接解析：
@@ -99,6 +109,21 @@ enum Observability {
 
 iOS 受限环境（Share Extension 等）建议 `Resource Metrics` 接入 `MemorySampler`（见 PochiHide `Shared/MemorySampler.swift`），在 `metadata` 中补 `memoryMB` / `deltaMB`。
 
+**出口 Assert + 出口日志范式（呼应 §2.5 写逻辑即写观测）**：在映射/查表/边界函数出口同步打印结构化结果并兜底空值，把隐性错转为显性崩溃日志：
+
+```swift
+func mapCategoryName(_ id: Int) -> String {
+    let mapped = categoryDict[id]            // 查表
+    // 出口日志：含输入 id + 映射结果，供 AI 一次定位
+    #if DEBUG
+    print("==> [MAP] DetectionBoxRenderer.mapCategoryName | id: \(id) | mapped: \(mapped ?? "nil")")
+    #endif
+    // 出口 Assert：映射为空 = 不该发生但会发生，转显性崩溃而非静默返回
+    assert(mapped != nil, "category_id=\(id) mapped_name=nil — 字典缺失，检查 DetectionCategory 契约")
+    return mapped ?? "unknown"
+}
+```
+
 ### 4.2 Python（装饰器模式）
 
 ```python
@@ -153,6 +178,15 @@ export async function observeStage<T>(stageName: string, metadata: Record<string
 [投喂 AI] ──► "根据这份诊断日志和契约，精准修复 X 文件"
 ```
 
+### 5.1 Log-Driven 排查纪律（禁止自然语言描述现象）
+
+系统报错或结果不符预期时，**绝对不要向 AI 描述现象**（如「图片上标签没显示出来」）。自然语言现象描述迫使 AI 猜想根因，容易瞎改无关模块。
+
+**正确做法：贴出可观测性产物**——终端结构化 Log（`[AI-DEBUG-CONTEXT]`）、Crash 堆栈、Tracing ID、Assert 消息。AI 对结构化日志的解析力远超对现象描述的猜测；当看到 `[ERROR] category_id=3 mapped_name=nil` 时，能直接定位字典缺失，而不会跑去改渲染视图。
+
+- 用户侧：提交排查时优先粘贴日志原文，现象描述仅作辅助上下文。
+- AI 侧：收到自然语言现象而无日志时，应先要求对方贴 `[AI-DEBUG-CONTEXT]`，不得基于现象直接改码（呼应 §2.5 写逻辑即写观测——日志是 AI 的眼睛）。
+
 **推荐提问 Prompt 模版**（提交 AI 时直接套用）：
 
 ```text
@@ -180,14 +214,16 @@ export async function observeStage<T>(stageName: string, metadata: Record<string
 | `skills/dm-close-ver.md` | Phase A 就绪性审计须加 ODD DoD 检查（无裸露日志 / 无静默吞错 / 高开销节点有诊断快照），合并前闸门 |
 | `skills/dm-init.md` | 脚手架阶段植入 `observe` 包装器（§4）+ ODD 基线（无裸 print、错误须结构化诊断），预防式防盲 |
 | `skills/dm-adr.md` | 可观测性架构级取舍（如 computeUnits / 采样粒度 / 预编译模型 / 诊断分级）走 ADR 记录 |
-| `skills/dm-contract-gate.md` | 断言门禁的「报错原样抛回」是 ODD 闭环在契约层的延伸——门禁失败时须输出结构化诊断（含契约快照 + 不一致 diff），便于 AI 一次定位（呼应 07 §2.1/§3）；门禁脚本见 samples/contract-gate/ |
+| `skills/dm-contract-gate.md` | 断言门禁的「报错原样抛回」是 ODD 闭环在契约层的延伸——门禁失败时须输出结构化诊断（含契约快照 + 不一致 diff），便于 AI 一次定位（呼应 07 §2.1/§3）；门禁须含可观测性 DoD（改后无 observe 包装 / 无出口 Assert 视为未过，呼应 07 §2.5）；门禁脚本见 samples/contract-gate/ |
 | `docs/05-codebuddy-management.md` | `observe` 包装器可沉淀为 project snippet / 模板，新模块直接复用 |
 
 ## 7. DoD / 行动清单（合并前核对）
 
 - [ ] **无裸露日志**：关键路径全部经 `observe(...)` 包装器，不散落原始 `print` / `console.log`。
+- [ ] **写逻辑即写观测**：关键节点（状态切换/边界/映射/错误捕获）实现时同步注入结构化日志 + 出口 Assert（07 §2.5），逻辑与观测不可分离提交。
 - [ ] **无静默吞错**：所有 `try-catch` / 降级分支均有诊断快照留痕（06 §2.7）。
 - [ ] **高开销节点覆盖**：文件 I/O、网络、模型推理、跨进程调用均含 `Elapsed Time` + 关键资源指标。
+- [ ] **Log-Driven 排查**：报错时只贴结构化日志/Crash/Trace，不向 AI 描述自然语言现象（07 §5.1）。
 - [ ] **验证闭环**：故意构造坏数据测试时，控制台能准确输出 `[AI-DEBUG-CONTEXT]`，复制给 AI 后能一次性定位并给出修复。
 
 > 以上 ODD 规范为**唯一权威**；模板与 skill 只引用本小节，不重定义。
