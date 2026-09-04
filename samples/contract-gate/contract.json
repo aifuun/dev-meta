@@ -1,0 +1,7 @@
+{
+  "contract_version": "2.3.0",
+  "output_tensor": "var_1438",
+  "classes": ["avatar", "chat_bubble", "nickname", "title"],
+  "shipping_classes": [0, 1],
+  "coordinate_system": "uikit-normalized"
+}

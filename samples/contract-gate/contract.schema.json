@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Detector Contract (sample)",
+  "description": "Machine-checkable contract for the detection module. This file is the SSOT the gate verifies against — see docs/06 §2.8.",
+  "type": "object",
+  "required": ["contract_version", "output_tensor", "classes", "coordinate_system"],
+  "properties": {
+    "contract_version": {
+      "type": "string",
+      "description": "Semantic version of the contract; bump on any breaking change (dm-adr required)."
+    },
+    "output_tensor": {
+      "type": "string",
+      "enum": ["var_1438"],
+      "description": "CoreML output feature name; changing it is a breaking change."
+    },
+    "classes": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Full class list (4-class detection)."
+    },
+    "shipping_classes": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "description": "Indices actually shipped/obscured by the host app."
+    },
+    "coordinate_system": {
+      "type": "string",
+      "enum": ["uikit-normalized"],
+      "description": "Origin top-left, y down, range 0..1. Must never silently change."
+    }
+  }
+}

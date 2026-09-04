@@ -103,6 +103,26 @@
 
 > 以上失败面契约为**唯一权威**；模板与 skill 只引用本小节，不重定义。
 
+### 2.8 契约只读纪律与断言门禁（唯一权威）
+
+§2.5/§2.6/§2.7 规定契约「写到位、可追溯、失败面怎么表达」；本节规定「契约文件怎么被机器校验、AI 怎么对待契约」，把 §5 演进治理的「破坏性变更走 dm-adr」升级为**机器化卡口**：AI 在关键节点被强制先校验、再行动。
+
+**机器可校验契约（门禁成立前提）**
+- 关键契约（API / Schema / 跨文件调用不变性）须有**可 parse 的单源真理文件**，至少其一：`OpenAPI` / `JSON Schema` / `Protobuf` / Swift `Protocol` / 显式 `Contract` 类型（如 `DetectorContract.swift`）。纯 Markdown 契约（如 `400-build.md` 行为契约表）无法自动校验，须尽可能提炼为上述可 parse 形式，或至少保证字段可被脚本提取。
+- `templates/project/project-schema-design.md` 的接口/Schema 设计须以 `JSON Schema` 等可校验格式承载，作为门禁输入。
+
+**契约只读纪律（AI 操作约束）**
+- 契约文件视为**只读**：AI 改实现代码前，先对契约文件做 `diff`，确认改动不打破契约；**严禁 AI 自行改写契约本身**。
+- 确需改契约时分级处理，与 §5 一致：破坏性 / 改语义 → 先走 `dm-adr` 申请，调用方适配后再回写；纯增量追加新条目 → 允许，但须在 PR 描述显式标注「纯增量」，并回写编号（无主防护）。
+
+**自动化断言门禁（Contract Assertion Gate，三道卡口）**
+- **Gate 1 改前卡口（Pre-Implementation）**：AI 写第一行业务代码前，先读取并 `diff` 契约文件，确认本次修改不破坏既有契约；若触及契约，先向用户提出申请、获许可才继续。不看契约，不准动代码。
+- **Gate 2 改后卡口（Post-Implementation）**：AI 完成多文件修改、准备告知用户「改好了」之前，须先在后台静默运行本地门禁（如 `xcrun swiftc -parse`、`python3 package_dist.py --verify`、`MANIFEST` 哈希校验、JSON Schema 校验）。**门禁没绿（编译不过 / 断言失败 / 哈希对不上）绝对不向用户邀功**——直接拦截输出，把终端报错原样抛回自身，在契约框架内自我修复，直到门禁变绿。
+- **Gate 3 交付卡口（Delivery）**：用户指令「提交代码 / 打包 `dist/` / 调 `dm-commit`」时，触发最终门禁，校验 `MANIFEST.json` 文件清单、`sha256` 指纹与 `contract_verified` 状态是否全部对齐；未对齐即报错抛回，禁止带病合并。
+- 门禁范式（SHA256 清单 + `contract_verified` 字段 + `--verify` 失败即非 0 退出）见 `samples/contract-gate/`；执行入口与三阶段闭环见 `skills/dm-contract-gate.md`。
+
+> 以上「契约只读 + 断言门禁」为**唯一权威**；模板与 skill 只引用本小节，不重定义。
+
 ## 3. 测试职责分层（唯一权威）
 
 测试相关内容按以下分层归属，**三处不重复、不冲突**：
@@ -131,6 +151,7 @@
 | 失败面契约 | 纯函数式失败返回空/原值而非 nil；严禁静默危险失败，须调用前拦截显式暴露（§2.7） |
 | 可观测性诊断契约 | 错误/失败/降级路径须结构化诊断快照（07 §2.1/§3），无静默吞错、无裸露日志；受限环境附资源指标（07 §2.3），见 docs/07-observability-driven-dev.md |
 | 契约演进治理 | 破坏性变更走 dm-adr；纯增量 PR 标注；新接口回写总目录（无主防护）（§5） |
+| 契约只读 + 断言门禁 | 契约文件须机器可校验（可 parse 单源）；AI 改逻辑前先 diff 契约、严禁自改契约（破坏须走 §5 dm-adr）；改后/交付前以 sha256+contract_verified 门禁校验，没绿不交付、报错原样抛回，见 §2.8 / skills/dm-contract-gate.md / samples/contract-gate/ |
 
 ## 5. 契约演进治理（唯一权威）
 
@@ -156,5 +177,6 @@
 | `skills/dm-dev-tf.md` | 行为预期来自 400-build 行为契约；契约质量核查见 §2.5；失败面契约见 §2.7；结构化诊断见 07，指针 |
 | `skills/dm-cleanup.md` | 隐性契约债标注参考 §2.5 / §2.7（含静默危险失败）；静默吞错/裸露日志债见 07，指针 |
 | `skills/dm-grillme-plan.md` | 实现降级级 grill 含契约质量维度（§2.5 / §3）；须 probe 可观测性盲区，见 07，指针 |
-| `skills/dm-update-contract.md`（待定） | 契约新增 / 修订 / 回写总目录的执行入口，遵循 §5 演进治理 |
+| `skills/dm-contract-gate.md` | 断言门禁执行入口：§2.8 三道卡口（改前 diff / 改后校验 / 交付校验）落地为 Skill，机器可校验契约 + 报错抛回闭环；参考脚本见 samples/contract-gate/ |
+| `skills/dm-update-contract.md`（待定） | 契约新增 / 修订 / 回写总目录的执行入口，遵循 §5 演进治理；与 dm-contract-gate 职责不同（前者改契约、后者守门禁），并行不冲突 |
 | `docs/07-observability-driven-dev.md` | ODD 可观测性驱动开发：诊断契约 / 黑匣子规范 / 无侵入包装器（observe）；是 §2.5（失败透明）/§2.6（provenance 反查）/§2.7（结构化诊断快照）的运行时暴露层，互补；双向引用见 07 §6 |

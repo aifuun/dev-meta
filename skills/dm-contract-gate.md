@@ -1,0 +1,131 @@
+# dm-contract-gate
+
+## 概述
+
+契约断言门禁 skill，是 `docs/06-contract-based-dev.md` §2.8 的执行入口。在「改代码前 / 改代码后 / 提 commit 打包」三道关键卡口强制校验契约——AI 改逻辑前先 diff 契约、改完先跑门禁、交付前对齐 MANIFEST 指纹，门禁没绿不准向用户交付，报错原样抛回自我修复。
+
+## 职责边界
+
+| 职责 | 归属 |
+|------|------|
+| 改前 diff 契约、判定是否破坏契约 | ✅ 本 skill |
+| 改后 / 交付前跑门禁脚本（sha256 + contract_verified + 编译/类型校验） | ✅ 本 skill |
+| 门禁失败 → 报错原样抛回、契约框架内自我修复 | ✅ 本 skill |
+| 契约需破坏性变更（改语义/签名/坐标口径） | 委托 `dm-adr`（06 §5） |
+| 契约纯增量追加 + 回写编号 | 委托用户 PR 标注（06 §5），本 skill 仅提示 |
+| 落地实现代码 | 委托 `dm-dev-tf`（本 skill 只守门禁，不写业务） |
+
+## 触发
+
+- 用户指令「帮我改 X 功能」「修复 Y Bug」「实现 Z」→ **Gate 1 改前卡口**
+- AI 完成多文件修改、准备告知「改好了」之前 → **Gate 2 改后卡口**（自动，不待用户触发）
+- 用户指令「提交代码」「打包 dist/」「commit」或调用 `dm-commit` → **Gate 3 交付卡口**
+- 用户显式说「跑契约门禁」「校验契约」「contract gate」
+
+## 核心概念
+
+### 契约只读（Schema & Interface First）
+
+契约文件是单源真理（SSOT），须为可 parse 形式（`Contract.swift` / `JSON Schema` / `OpenAPI` / `Protobuf` / Swift `Protocol` / `400-build.md` 行为契约表）。AI 改实现前先 diff 契约，确认不破坏既有不变性；**严禁 AI 自行改写契约本身**。
+
+### 三道卡口
+
+- **Gate 1 改前**：写第一行业务代码前，读取并 diff 契约，确认不破坏公开契约；若触及契约，先向用户提出申请、获许可才继续。不看契约，不准动代码。
+- **Gate 2 改后**：准备交付前静默跑本地门禁（`xcrun swiftc -parse` / `python3 package_dist.py --verify` / `MANIFEST` 哈希校验 / JSON Schema 校验）。**没绿绝不向用户邀功**——拦截输出，把终端报错原样抛回自身，在契约框架内修复到门禁变绿。
+- **Gate 3 交付**：commit / 打包前校验 `MANIFEST.json` 文件清单、`sha256` 指纹、`contract_verified` 状态全部对齐；未对齐即报错抛回，禁止带病合并。
+
+### SHA256 + contract_verified 范式
+
+门禁产物 `MANIFEST.json` 含每个文件的 `sha256` 与顶层 `contract_verified` 布尔；`--verify` 失败即非 0 退出，供 CI / git hook / AI 抛回。范式实现见 `samples/contract-gate/verify_contract.py`，对齐 `package_dist.py` 实践。
+
+## 执行流程
+
+### 1. 定位契约 SSOT 文件
+
+按项目识别契约载体：
+
+| 契约类型 | 典型文件 |
+|----------|----------|
+| Swift 契约门面 | `DetectorContract.swift` / `Contract.swift` / 公开 `Protocol` |
+| Schema 契约 | `*.schema.json` / `project-schema-design.md` 内联 JSON Schema |
+| API 契约 | `OpenAPI`（`openapi.yaml`）/ `project-api-design.md` |
+| 版本行为契约 | `docs/versions/vX.Y-<slug>/400-build.md` §1.x / §2.3 / §3.3 |
+
+### 2. Gate 1 改前卡口（Pre-Implementation）
+
+- 读取契约文件，与本次需求做 diff 判定：改动是否触及契约不变性（签名 / 字段 / 坐标口径 / 失败面行为）。
+- 未触及 → 允许继续实现。
+- 触及但属纯增量（新增接口 / 新域）→ 提示用户在 PR 标注「纯增量」并回写编号（06 §5）。
+- 触及且破坏语义 → **暂停**，走 `dm-adr` 申请破坏性变更，获批准并调用方适配后再继续。
+
+### 3. Gate 2 改后卡口（Post-Implementation）
+
+- AI 完成修改、准备输出前，**静默**运行门禁脚本（见资源映射）。
+- 通过 → 将 `contract_verified` 置 `true`，继续向用户交付。
+- 失败 → **绝对不邀功**，捕获终端报错，原样抛回自身，定位漏改点，在契约框架内补丁修复；回到本步重跑，直到门禁变绿。
+
+### 4. Gate 3 交付卡口（Delivery）
+
+- 用户「提交 / 打包」时，触发最终门禁：校验 `MANIFEST.json` 的文件列表、`sha256`、与 `contract_verified` 是否一致。
+- 不一致 → 报错抛回，禁止 `dm-commit` 通过；一致 → 放行交付。
+
+### 5. 结构化诊断（失败时）
+
+门禁失败时按 `docs/07-observability-driven-dev.md` §3 输出黑匣子快照：含契约快照（`Input Snapshot` = 当前契约 SSOT 摘录）+ 不一致 diff + 资源/命令上下文，便于 AI 一次定位（呼应 07 §2.1/§2.3）。
+
+## 关键规则速查
+
+| 规则 | 来源 |
+|------|------|
+| 契约文件只读，AI 严禁自改；破坏须走 dm-adr，纯增量须 PR 标注 | docs/06 §2.8 / §5 |
+| Gate 1：改前先 diff 契约，不看契约不准动代码 | docs/06 §2.8 |
+| Gate 2：改后门禁没绿绝不向用户邀功，报错原样抛回自我修复 | docs/06 §2.8 |
+| Gate 3：交付前对齐 MANIFEST 指纹 + contract_verified，未对齐不合并 | docs/06 §2.8 |
+| 机器可校验优先：关键契约须可 parse（JSON Schema/Contract.swift/OpenAPI） | docs/06 §2.8 |
+| 门禁失败须结构化诊断（07 黑匣子） | docs/07 §6 / §3 |
+| 落地实现委托 dm-dev-tf，本 skill 只守门禁 | 职责边界 |
+
+## 资源映射
+
+| 资源 | 来源 | 用途 |
+|------|------|------|
+| SKILL.md | — | 上述三阶段门禁流程 + 规则速查 |
+| `samples/contract-gate/verify_contract.py` | `samples/contract-gate/` | 可复用门禁脚本（sha256 MANIFEST + contract_verified + JSON Schema 校验 + `--verify` 非 0 退出） |
+| `samples/contract-gate/contract.schema.json` | `samples/contract-gate/` | 机器可校验契约样例（JSON Schema） |
+| `docs/06-contract-based-dev.md` §2.8 | `docs/06` | 契约只读 + 三道卡口权威规范 |
+| `docs/07-observability-driven-dev.md` §3 | `docs/07` | 门禁失败结构化诊断（黑匣子） |
+
+## 使用示例
+
+```
+【场景：让 AI 修复类别映射问题】
+
+用户: 帮我把 VisionDetector 里类别映射逻辑改一下，支持 4 类检测。
+
+AI (Gate 1 自动触发):
+  读取 DetectionCategory / DetectorContract 契约...
+  - 判定：改动涉及 DetectionCategory.names。
+  - 约束：names 为 private static let，禁止外部覆盖，须直接改字典。
+  - 确认：未破坏公开 Protocol 契约，允许继续。
+
+[修改 VisionDetector.swift...]
+
+AI (Gate 2 自动触发，后台静默):
+  $ xcrun swiftc -parse PochiHide-CoreML-Spike/*.swift
+  ❌ DetectionBoxRenderer.swift:260: 'DetectionCategory' has no member 'names'
+  → 捕获报错，自我修复：漏改 DetectionBoxRenderer 调用点。
+  $ xcrun swiftc -parse ... → ✅ 0 errors
+  $ python3 package_dist.py --verify → ✅ MANIFEST (contract_verified: true)
+
+AI: 修复完成！已通过编译门禁与 MANIFEST 契约断言，3 个调用点已同步。
+```
+
+```
+【场景：交付前 Gate 3】
+
+用户: 提交代码
+
+AI:
+  触发 Gate 3：校验 MANIFEST.json（文件数 / sha256 / contract_verified）...
+  ✅ 对齐 → 放行 dm-commit。
+```

@@ -180,6 +180,7 @@ export async function observeStage<T>(stageName: string, metadata: Record<string
 | `skills/dm-close-ver.md` | Phase A 就绪性审计须加 ODD DoD 检查（无裸露日志 / 无静默吞错 / 高开销节点有诊断快照），合并前闸门 |
 | `skills/dm-init.md` | 脚手架阶段植入 `observe` 包装器（§4）+ ODD 基线（无裸 print、错误须结构化诊断），预防式防盲 |
 | `skills/dm-adr.md` | 可观测性架构级取舍（如 computeUnits / 采样粒度 / 预编译模型 / 诊断分级）走 ADR 记录 |
+| `skills/dm-contract-gate.md` | 断言门禁的「报错原样抛回」是 ODD 闭环在契约层的延伸——门禁失败时须输出结构化诊断（含契约快照 + 不一致 diff），便于 AI 一次定位（呼应 07 §2.1/§3）；门禁脚本见 samples/contract-gate/ |
 | `docs/05-codebuddy-management.md` | `observe` 包装器可沉淀为 project snippet / 模板，新模块直接复用 |
 
 ## 7. DoD / 行动清单（合并前核对）
