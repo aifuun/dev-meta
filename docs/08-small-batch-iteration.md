@@ -19,12 +19,12 @@ AI 在多个文件间来回拉扯、陷入「长尾混乱」的根因，是 Task
 
 ## 2. Commit 级 Micro-Batching（三 Batch）
 
-一个 AI 可安全承接的 TF 内改动，按依赖顺序拆为三个 Batch，每完成一个**绿灯 Batch** 即提交（提交动作由用户触发，见 §2.4 护栏）：
+一个 AI 可安全承接的 TF 内改动，按依赖顺序拆为三个 Batch，每完成一个**绿灯 Batch** 即提交（提交动作由用户触发，见 §2.1 护栏）：
 
 | Batch | 内容 | 卡口校验 |
 |-------|------|----------|
 | **Batch 1** | 契约接口与数据模型（如 `DetectorContract.swift` 新增字段、`*.schema.json` 字段） | 编译检查 / Schema 校验通过，不破坏已有构建 |
-| **Batch 2** | Core 逻辑实现（**单文件**） | 单元测试通过 |
+| **Batch 2** | Core 逻辑实现（**单文件**） | 单元测试通过（Agentic TDD 轻量范式，见 §2.2） |
 | **Batch 3** | 接入 UI / 调用点（多文件适配） | 集成校验通过 |
 
 - 顺序不可逆：先契约、再 Core、后接入（与 `docs/02-version-rules.md` 的 `400-build.md` 执行顺序矩阵一致）。
@@ -40,6 +40,19 @@ git reset --hard <上一个绿灯 commit>
 
 - 这是破坏性操作，**仅限用户显式请求**；AI 不自发执行 `reset --hard` / `push --force`（遵守 git 安全协议与「AI 不主动 commit」护栏）。
 - 回退后走 §3 Context Flush，开 New Session 而非在同一长对话里硬救。
+
+### 2.2 Batch 2 逻辑断言 = Agentic TDD 轻量范式
+
+传统人类主导的 TDD（Red-Green-Refactor 全流程）在 AI 辅助下太重：写测试的 Prompt 成本常高于写逻辑、AI 写的测试也会假 Pass（无真实 Assert / 预期写错）、测试与业务双线拉扯使维护成本翻倍。故**不引入全量 TDD**，仅以「契约即测试（Contract-as-a-Test）」轻量补全 `dm-contract-gate` 未覆盖的**业务逻辑断言**缺口（门禁已覆盖接口/类型/指纹合法性，但无法断言「1080p 输入后 BBox ∈ [0,1]」这类算法正确性）。
+
+Agentic TDD 的落地纪律（挂载进 Batch 2 卡口，非独立流程）：
+
+1. **仅核心算法层强制**：纯算法 / 数据转换 / 坐标映射 / 状态机 / 加解密等核心逻辑须有测试；**UI / 视图 / 布局绝对不写 TDD**，靠静态检查与人工 Preview。
+2. **测试归项目自身，门禁只读取**：单测（`swift test` / `pytest`）是项目代码的一部分；`dm-contract-gate` 的 Gate 2（改后校验）只调用并读取其全绿结果，不"拥有"单测。
+3. **独立进程跑，AI 不自证 Green**：测试必须在独立进程（门禁脚本 / CI）执行，非 0 即失败；禁止 AI 在同一会话内"表演" Red→Green 后自报通过。
+4. **AI 生成的测试 Assert 同样受 07 §2.5 约束**：必须断言具体边界值（空输入、极值、越界），禁止无断言的假 Green——否则只是把"假 Pass 业务代码"换成"假 Pass 测试代码"。
+
+> Agentic TDD 与 07 可观测性、06 契约门禁同构：测试进程是「真相源」，AI 是「生成器」，门禁是「卡口」，三者分离。
 
 ## 3. Context Flush / 一文一议（New Session）
 
@@ -60,7 +73,7 @@ git reset --hard <上一个绿灯 commit>
 | `docs/02-version-rules.md` §2.2 | TF 为 dev 工作包原子；Batch 是 TF 内的更小执行纪律，不冲突 |
 | `docs/03-git-flow-rules.md` §2.3 | TF 内 micro-batch 多 commit 均 `Refs` 同一 TF；`reset --hard` 仅用户显式 |
 | `docs/06-contract-based-dev.md` §2.8 | 契约只读：新会话只带契约 SSOT（呼应 §3 Context Flush） |
-| `docs/07-observability-driven-dev.md` | 可观测性：日志是 AI 的眼睛，Batch 卡口校验产物即观测数据 |
+| `docs/07-observability-driven-dev.md` | 可观测性：日志是 AI 的眼睛，Batch 卡口校验产物即观测数据；§2.5 约束 AI 生成的测试 Assert（见 §2.2 Agentic TDD） |
 | `skills/dm-dev-tf.md` | 三 Batch 执行纪律入口 |
 | `skills/dm-commit.md` | 每绿灯 Batch 即 commit（用户触发） |
 | `skills/dm-plan-ver.md` | 版本计划须可拆成单文件批次 |

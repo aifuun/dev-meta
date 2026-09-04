@@ -36,6 +36,7 @@ AI 盲目修改的根因是「改完代码看不到运行状态，全靠脑补�
 - **AI 写逻辑 = 同时写观测**：实现任何关键节点（状态机切换、边界条件、错误捕获、映射/查表）时，必须同步注入结构化日志（`observe` 包装器，§4）与出口 Assert。逻辑与观测不可分离提交。
 - **出口 Assert 兜底**：映射/查表结果为空、状态非法、坐标越界等「不该发生但会发生」的点，必须 `assertionFailure` / `preconditionFailure`（或等价断言），把隐性错转为显性崩溃日志，而非静默返回空值（呼应 06 §2.7 失败面契约）。
 - **范式（Swift）**：写 `DetectionBoxRenderer` 时，每次函数出口打印结构化 Log（含输入 Tensor 维度、处理时长、类别映射结果）；若 `mapped_name == nil` 必须抛 `assertionFailure("category_id=\(id) mapped_name=nil")`。AI 看到该日志可精确定位字典缺失，而非瞎改渲染视图。
+- **AI 生成的单元测试 Assert 同样适用本条**：在 `docs/08-small-batch-iteration.md` §2.2 的 Agentic TDD 范式下，AI 生成的测试必须断言具体边界值（空输入、极值、越界），禁止无断言的假 Green（呼应 06 §2.7 失败面契约）。
 
 > 以上「写逻辑即写观测」为 **07 §2.5 唯一权威**；模板与 skill 只引用本小节，不重定义。
 

@@ -90,8 +90,12 @@
 1. 开始一个小版本（目标与范围）
 2. 建文档（spec/design/build）
 3. 建跟踪项（1 个版本 PR + 每个 TF 1 个 issue）
-4. 开发与提交（commit 规范、关联 issue；**对 AI 执行粒度须缩到单文件重构 / 单函数修复，按 docs/08-small-batch-iteration.md 三 Batch 推进**）
-5. 测试与验证（按 TF 测试策略执行，记录结果）
+4. 开发（**按 docs/08-small-batch-iteration.md 三 Batch 推进，对 AI 执行粒度须缩到单文件重构 / 单函数修复**）：
+   - **Batch 1** 契约接口与数据模型 → 编译 / Schema 校验通过
+   - **Batch 2** Core 逻辑单文件 → 单元测试通过（核心算法层采用 docs/08 §2.2 Agentic TDD 轻量范式：仅核心逻辑、独立进程跑、Assert 受 docs/07 §2.5 约束；UI/视图不写 TDD）
+   - **Batch 3** 接入 UI / 调用点 → 集成校验通过
+   - 每完成一个绿灯 Batch 由用户触发 commit（均 `Refs #同一TF`，见 docs/03 §2.3）；下个 Batch 混乱时由用户 `git reset --hard` 退回（AI 不自发，见 docs/08 §2.1）
+5. 测试与验证（Batch 2 逻辑断言走 Agentic TDD 挂入门禁；Batch 3 集成校验走人工 Preview + 静态检查；记录结果）
 6. 验收与收尾（验收记录、关闭 issue、合并 PR）
 7. 复盘与归档（变更总结、遗留项）
 
