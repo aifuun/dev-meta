@@ -1,0 +1,9 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# IDE / tool generated (session plans)
+.codebuddy/plans/
+
+# OS
+.DS_Store
