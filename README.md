@@ -15,8 +15,8 @@
 ### 项目全生命周期
 
 ```
-dm-init     →  架构基线  →  契约基线  →  路线规划  →  小版本迭代  →  归档
-(project-spec)  (design)   (api/schema)  (roadmap)    (plan-ver)     (回收)
+dm-init-docs  →  00 PRD  →  01 技术规格  →  02 系统设计  →  03 契约  →  06 可观测性  →  05 路线规划  →  plan-ver
+(00~06 骨架 + ./CODEBUDDY.md 版本绑定)                                                        (小版本迭代)
 ```
 
 ### 版本迭代（每个小版本）
@@ -90,6 +90,7 @@ flowchart LR
 - `docs/06` 契约只读：AI 改前只 diff 契约，不自改 SSOT。
 - `docs/07` 可观测性：写逻辑即写观测，编译器 / 脚本门禁把问题原样回抛。
 - `docs/08` 小版本迭代：Commit 级三 Batch + Context Flush（New Session），切断长尾混乱。
+- `docs/09` 架构设计指南：把 06/07/08 落到「架构形状」——人定边界（Facade/事件总线）、AI 填内部（单文件/单函数），含可直接复制的 AI 防腐规则。
 
 ## 文件
 
@@ -101,9 +102,11 @@ flowchart LR
 - [docs/06-contract-based-dev.md](https://github.com/aifuun/dev-meta/blob/main/docs/06-contract-based-dev.md) — 契约式开发规范（三层契约 + 测试职责分层，唯一权威）
 - [docs/07-observability-driven-dev.md](https://github.com/aifuun/dev-meta/blob/main/docs/07-observability-driven-dev.md) — 可观测性驱动开发规范（日志是 AI 的眼睛）
 - [docs/08-small-batch-iteration.md](https://github.com/aifuun/dev-meta/blob/main/docs/08-small-batch-iteration.md) — 小版本迭代规范（Micro-Batching + Context Flush，唯一权威）
+- [docs/09-ai-architecture-guide.md](https://github.com/aifuun/dev-meta/blob/main/docs/09-ai-architecture-guide.md) — AI 辅助开发架构设计指南（人的设计规范 + AI 执行边界，唯一权威）
 - [docs/CODEBUDDY-global.md](https://github.com/aifuun/dev-meta/blob/main/docs/CODEBUDDY-global.md) — 全局规范原始版本：`~/.codebuddy/CODEBUDDY.md` 的 source of truth，在此修改后部署生效
 - [templates/worklog.md](https://github.com/aifuun/dev-meta/blob/main/templates/worklog.md) — 工作日志模板
 - [templates/versions/](https://github.com/aifuun/dev-meta/tree/main/templates/versions) — 版本文档模板（与规范文件一一对应）
-- [templates/project/](https://github.com/aifuun/dev-meta/tree/main/templates/project) — 项目级文档模板（project-spec / design / api-design / schema-design / roadmap）
-- [skills/](https://github.com/aifuun/dev-meta/tree/main/skills) — Skill 设计文档（dm-init / dm-plan-ver / dm-close-ver / dm-schedule / dm-dev-tf / dm-log / dm-commit / dm-report / dm-adr）
+- [templates/project/docs/](https://github.com/aifuun/dev-meta/tree/main/templates/project/docs) — 项目级文档模板（00 PRD / 01 技术规格 / 02 系统设计 / 03 契约 / 04 UI-UX / 05 路线图 / 06 可观测性）
+- [templates/CODEBUDDY.md](https://github.com/aifuun/dev-meta/blob/main/templates/CODEBUDDY.md) — 项目层 CODEBUDDY 模板（版本绑定 + 例外项）
+- [skills/](https://github.com/aifuun/dev-meta/tree/main/skills) — Skill 设计文档（dm-init-docs / dm-plan-ver / dm-close-ver / dm-schedule / dm-dev-tf / dm-log / dm-commit / dm-report / dm-adr / dm-arch-design / dm-contract-gate / dm-grillme-plan / dm-cleanup）
 - [samples/](https://github.com/aifuun/dev-meta/tree/main/samples) — 版本文档样例（V1.4.1-indexeddb-prefs）

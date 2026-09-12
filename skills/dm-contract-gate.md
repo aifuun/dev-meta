@@ -47,8 +47,8 @@
 | 契约类型 | 典型文件 |
 |----------|----------|
 | Swift 契约门面 | `DetectorContract.swift` / `Contract.swift` / 公开 `Protocol` |
-| Schema 契约 | `*.schema.json` / `project-schema-design.md` 内联 JSON Schema |
-| API 契约 | `OpenAPI`（`openapi.yaml`）/ `project-api-design.md` |
+| Schema 契约 | `*.schema.json` / `docs/03_CONTRACTS_AND_API.md` §3 内联 JSON Schema |
+| API 契约 | `OpenAPI`（`openapi.yaml`）/ `docs/03_CONTRACTS_AND_API.md` §2 |
 | 版本行为契约 | `docs/versions/vX.Y-<slug>/400-build.md` §1.x / §2.3 / §3.3 |
 
 ### 2. Gate 1 改前卡口（Pre-Implementation）
@@ -84,6 +84,7 @@
 | 机器可校验优先：关键契约须可 parse（JSON Schema/Contract.swift/OpenAPI） | docs/06 §2.8 |
 | 门禁失败须结构化诊断（07 黑匣子） | docs/07 §6 / §3 |
 | Gate 2 含可观测性 DoD：改后无 observe 包装 / 无出口 Assert（映射空须 assertionFailure）视为门禁未过 | docs/07 §2.5 |
+| 可观测性 DoD 已由 `verify_contract.py --source-dir` 脚本化（扫描裸打点 vs 结构化断言/包装信号） | samples/contract-gate |
 | 落地实现委托 dm-dev-tf，本 skill 只守门禁 | 职责边界 |
 
 ## 资源映射
@@ -91,7 +92,7 @@
 | 资源 | 来源 | 用途 |
 |------|------|------|
 | SKILL.md | — | 上述三阶段门禁流程 + 规则速查 |
-| `samples/contract-gate/verify_contract.py` | `samples/contract-gate/` | 可复用门禁脚本（sha256 MANIFEST + contract_verified + JSON Schema 校验 + `--verify` 非 0 退出） |
+| `samples/contract-gate/verify_contract.py` | `samples/contract-gate/` | 可复用门禁脚本（sha256 MANIFEST + contract_verified + JSON Schema 校验 + `--verify --source-dir` 可观测性 DoD 静态扫描 + 非 0 退出） |
 | `samples/contract-gate/contract.schema.json` | `samples/contract-gate/` | 机器可校验契约样例（JSON Schema） |
 | `docs/06-contract-based-dev.md` §2.8 | `docs/06` | 契约只读 + 三道卡口权威规范 |
 | `docs/07-observability-driven-dev.md` §3 | `docs/07` | 门禁失败结构化诊断（黑匣子） |

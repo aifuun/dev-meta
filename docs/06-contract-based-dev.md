@@ -17,7 +17,7 @@
 ### 2.1 L1 接口 / API 契约（基线级）
 
 - **定义**：模块间调用顺序、前置条件、返回值 / 错误码约定。
-- **载体**：`templates/project/project-api-design.md` §1（接口契约模板）；`templates/versions/vX.Y-<slug>/400-build.md` §1.2（版本内模块共用的 API 契约）。
+- **载体**：`templates/project/docs/03_CONTRACTS_AND_API.md` §2（接口契约模板）；`templates/versions/vX.Y-<slug>/400-build.md` §1.2（版本内模块共用的 API 契约）。
 - **时机**：项目初始化阶段，架构基线完成后建立契约基线（见 `docs/01-project-dev-flow.md` §3.3）；每个版本在 400-build 中维护。
 - **字段**：接口名 / 方法 / 入参 / 出参 / 错误码 / 调用顺序 / 前置条件 / 返回值约定。
 
@@ -109,7 +109,7 @@
 
 **机器可校验契约（门禁成立前提）**
 - 关键契约（API / Schema / 跨文件调用不变性）须有**可 parse 的单源真理文件**，至少其一：`OpenAPI` / `JSON Schema` / `Protobuf` / Swift `Protocol` / 显式 `Contract` 类型（如 `DetectorContract.swift`）。纯 Markdown 契约（如 `400-build.md` 行为契约表）无法自动校验，须尽可能提炼为上述可 parse 形式，或至少保证字段可被脚本提取。
-- `templates/project/project-schema-design.md` 的接口/Schema 设计须以 `JSON Schema` 等可校验格式承载，作为门禁输入。
+- `templates/project/docs/03_CONTRACTS_AND_API.md` 的接口/Schema 设计须以 `JSON Schema` 等可校验格式承载，作为门禁输入。
 
 **契约只读纪律（AI 操作约束）**
 - 契约文件视为**只读**：AI 改实现代码前，先对契约文件做 `diff`，确认改动不打破契约；**严禁 AI 自行改写契约本身**。
@@ -172,7 +172,7 @@
 | `docs/02-version-rules.md` §1.2 / 300-design 职责 / §3.5 | API 契约 / TF 契约 / 测试分层指针 |
 | `templates/versions/vX.Y-<slug>/400-build.md` §1.2 / §2.3 / §3.3 | L1 / L3 载体，行为契约指针 |
 | `templates/versions/vX.Y-<slug>/300-design.md` §7 | 测试策略指针 |
-| `templates/project/project-api-design.md` §1 | L1 接口契约模板指针 |
+| `templates/project/docs/03_CONTRACTS_AND_API.md` §2 | L1 接口契约模板指针 |
 | `skills/dm-plan-ver.md` | 400-build 须含行为契约 + 契约质量基线（§2.5）；契约记录（§2.6）/ 失败面（§2.7）/ 演进治理（§5）指针；诊断契约嵌入见 07 |
 | `skills/dm-dev-tf.md` | 行为预期来自 400-build 行为契约；契约质量核查见 §2.5；失败面契约见 §2.7；结构化诊断见 07，指针 |
 | `skills/dm-cleanup.md` | 隐性契约债标注参考 §2.5 / §2.7（含静默危险失败）；静默吞错/裸露日志债见 07，指针 |

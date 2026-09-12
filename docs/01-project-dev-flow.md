@@ -9,13 +9,15 @@
 
 ### 2.1 项目级文档（长期稳定，低频更新）
 
-- `02-project-spec.md`：项目目标、边界、非目标、成功指标。
-- `03-project-design.md`：系统架构、模块边界、关键技术决策。
-- `04-project-api-design.md`：接口契约、错误模型、兼容与版本策略。
-- `05-project-schema-design.md`：数据模型、命名规范、迁移策略。
-- `06-project-ui-design.md`：设计系统、组件库、设计 Token、适配策略。
-- `07-project-deployment.md`：环境拓扑、CI/CD、基础设施、可观测性、发布流程。
-- `08-project-roadmap.md`：版本规划、依赖关系、里程碑。
+- `00_PRODUCT_REQUIREMENTS.md`：业务背景、用户痛点、User Story、业务验收标准（**业务根**，只被下游引用）。
+- `01_TECHNICAL_SPEC.md`：技术选型、边界约束、测试策略、部署基线。
+- `02_SYSTEM_DESIGN.md`：系统架构、组件分层、数据流、并发/状态机模型。
+- `03_CONTRACTS_AND_API.md`：**契约 SSOT**：不可变式、API 契约、存储 Schema、错误码。
+- `04_UI_UX_DESIGN.md`（可选）：交互流程、视图五态、组件规范（纯后端/CLI 跳过）。
+- `05_ROADMAP_AND_COMPLIANCE.md`：Milestone、版本切分（Epoch）、合规/安全/隐私。
+- `06_OBSERVABILITY.md`：`docs/07-observability-driven-dev.md` 规范的项目实例化。
+
+> **依赖方向**：`00 → 01 → 02 → 03 → 04/05`，`02/03 → 06`。每篇头部声明流向，只被下游引用、不反向引用下游。由 `dm-init-docs` 生成。
 
 ### 2.2 版本级文档（高频更新，按版本推进）
 
@@ -32,18 +34,18 @@
 
 | 顺序 | 文档 | 何时创建 | 前置依赖 |
 |------|------|----------|----------|
-| 1 | `project-spec.md` | 项目初始化 | — |
-| 2 | `project-design.md` | 架构基线建立 | project-spec |
-| 3 | `project-api-design.md` | 契约基线建立 | project-design |
-| 3 | `project-schema-design.md` | 数据基线建立 | project-design |
-| 4 | `project-roadmap.md` | 版本路线规划 | 以上全部 |
-| * | `project-ui-design.md` | 按需（有 UI 时） | project-design |
-| * | `project-deployment.md` | 按需（有部署时） | project-design |
+| 1 | `00_PRODUCT_REQUIREMENTS.md` | 项目初始化 | — |
+| 2 | `01_TECHNICAL_SPEC.md` | 技术基线建立 | 00 |
+| 3 | `02_SYSTEM_DESIGN.md` | 架构基线建立 | 00, 01 |
+| 4 | `03_CONTRACTS_AND_API.md` | 契约基线建立 | 01, 02 |
+| 5 | `06_OBSERVABILITY.md` | 可观测性实例化 | 02, 03 |
+| 6 | `05_ROADMAP_AND_COMPLIANCE.md` | 版本路线规划 | 以上全部 |
+| * | `04_UI_UX_DESIGN.md` | 按需（有 UI 时） | 00, 03 |
 
 ### 3.1 项目初始化
 
 输入：业务目标、约束、团队能力、时间边界。
-输出：`project-spec.md` 初稿。
+输出：`00_PRODUCT_REQUIREMENTS.md` 初稿。
 
 检查点：
 
@@ -53,8 +55,8 @@
 
 ### 3.2 架构基线建立
 
-输入：`project-spec.md`。
-输出：`project-design.md`。
+输入：`00_PRODUCT_REQUIREMENTS.md`。
+输出：`01_TECHNICAL_SPEC.md`、`02_SYSTEM_DESIGN.md`。
 
 检查点：
 
@@ -64,18 +66,19 @@
 
 ### 3.3 契约与数据基线建立
 
-输入：架构基线。
-输出：`project-api-design.md`、`project-schema-design.md`。
+输入：架构基线（`01_TECHNICAL_SPEC.md` / `02_SYSTEM_DESIGN.md`）。
+输出：`03_CONTRACTS_AND_API.md`、`06_OBSERVABILITY.md`。
 
 检查点：
 
 - API 输入输出、错误码、兼容策略明确。
 - Schema 主键、索引、迁移策略明确。
+- 不可变式（Invariants）标注四要素（归属 / 方向 / 不变性 / 真值来源），见 `docs/06-contract-based-dev.md` §2.6。
 
 ### 3.4 版本路线规划
 
 输入：项目级基线文档。
-输出：`project-roadmap.md`。
+输出：`05_ROADMAP_AND_COMPLIANCE.md`。
 
 检查点：
 
@@ -121,7 +124,7 @@
 
 - `02-version-rules.md`、`03-git-flow-rules.md` 与 `04-worklog-rules.md` 以 `dev-meta` 项目中的对应文件为统一权威来源。
 - 业务项目默认不复制规范正文，通过项目级 `./CODEBUDDY.md` 记录 dev-meta 版本绑定与项目例外项。通用规范（DoD、AI 协作、编码约定、工作日志指引）由 `~/.codebuddy/CODEBUDDY.md` 全局加载。
-- 推荐通过 `dm-init` skill 自动生成；若手动创建，模板见 `docs/05-codebuddy-management.md`。
+- 推荐通过 `dm-init-docs` skill 自动生成；若手动创建，模板见 `docs/05-codebuddy-management.md` 与 `templates/CODEBUDDY.md`。
 - 项目级 `CODEBUDDY.md` 填写两项必填内容：
     - 规范来源仓库与版本（tag 或 commit）
     - 本项目例外项（如无则写"无"）
@@ -132,7 +135,7 @@
 
 ### 4.2 templates 跨项目使用策略
 
-- `templates/versions/` 与 `templates/project/` 以 `dev-meta` 为默认模板源。
+- `templates/versions/` 与 `templates/project/docs/` 以 `dev-meta` 为默认模板源。
 - 新项目默认采用"引用优先"策略：
     - 在项目内声明模板来源与版本（tag 或 commit）
     - 按版本从模板创建 `spec/design/build`
@@ -157,41 +160,38 @@
 
 ```text
 project-root/
+├── CODEBUDDY.md                      # dev-meta 版本绑定 + 项目例外（两层架构的项目层）
 ├── docs/
-│   ├── 01-project-dev-flow.md
-│   ├── 02-project-spec.md
-│   ├── 03-project-design.md
-│   ├── 04-project-api-design.md
-│   ├── 05-project-schema-design.md
-│   ├── 06-project-ui-design.md
-│   ├── 07-project-deployment.md
-│   ├── 08-project-roadmap.md
-│   ├── 09-versions/
+│   ├── 00_PRODUCT_REQUIREMENTS.md
+│   ├── 01_TECHNICAL_SPEC.md
+│   ├── 02_SYSTEM_DESIGN.md
+│   ├── 03_CONTRACTS_AND_API.md
+│   ├── 04_UI_UX_DESIGN.md            # 可选（无 UI 跳过）
+│   ├── 05_ROADMAP_AND_COMPLIANCE.md
+│   ├── 06_OBSERVABILITY.md
+│   ├── versions/
 │   │   └── vX.Y-<slug>/
-│   │       ├── 500-schedule.md
 │   │       ├── 200-spec.md
 │   │       ├── 300-design.md
-│   │       └── 400-build.md
+│   │       ├── 400-build.md
+│   │       └── 500-schedule.md
 │   ├── reports/
 │   │   └── worklog.md
 │   └── adrs/
 │       └── adr-001.md
-├── templates/
-│   ├── project/
-│   │   ├── project-spec.md
-│   │   ├── project-design.md
-│   │   ├── project-api-design.md
-│   │   ├── project-schema-design.md
-│   │   ├── project-ui-design.md
-│   │   ├── project-deployment.md
-│   │   └── project-roadmap.md
-│   ├── versions/
-│   │   └── vX.Y-<slug>/
-│   │       ├── 500-schedule.md
-│   │       ├── 200-spec.md
-│   │       ├── 300-design.md
-│   │       └── 400-build.md
-│   └── worklog.md
+└── templates/                        # 可选：项目自维护模板副本（引用优先，见 §4.2）
+    ├── CODEBUDDY.md
+    ├── project/
+    │   └── docs/
+    │       ├── 00_PRODUCT_REQUIREMENTS.md
+    │       └── ...（01~06）
+    ├── versions/
+    │   └── vX.Y-<slug>/
+    │       ├── 200-spec.md
+    │       ├── 300-design.md
+    │       ├── 400-build.md
+    │       └── 500-schedule.md
+    └── worklog.md
 ```
 
 ## 7. 使用建议（单人开发）

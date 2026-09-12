@@ -8,7 +8,7 @@
 
 | Skill | 触发场景 | 职责 | 频率 |
 |-------|----------|------|------|
-| `dm-init` | 初始化新项目 | 创建 docs 目录树、生成 CODEBUDDY.md（版本绑定+例外）、初始化基线文档与 worklog | 低频 |
+| `dm-init-docs` | 初始化新项目文档 | 引导式意图收集，生成 00~06 文档骨架（04 可选）+ `./CODEBUDDY.md`（版本绑定+例外） | 低频 |
 | `dm-plan-ver` | 新建版本 | 创建版本文档四件套（200-spec/300-design 产出前执行需求级/架构级 grill 收敛决策）、分支/PR、TF Issue | 中频 |
 | `dm-close-ver` | 关闭版本 | 就绪审计、保留历史 merge、关闭 TF Issue、清理分支、关闭报告 | 中频 |
 | `dm-schedule` | 版本排程 | 生成按优先级排序的扁平工作包列表，附带防沉迷红线 | 中频 |
@@ -23,7 +23,7 @@
 ## Skill 关系
 
 ```
-dm-init
+dm-init-docs
     │
     └── 项目初始化后，后续版本迭代用 dm-plan-ver
             │
@@ -58,6 +58,15 @@ cp -r skills/dm-* .codebuddy/skills/
 
 每个 skill 目录下需包含 `SKILL.md`（核心指令）、`references/`（规范文档）、`assets/`（模板文件），具体文件清单见各 skill 设计文档。
 
+> **资产目录（`dm-init-docs` 专用）**：项目文档脚手架 skill 采用**双目录分工**——模板与完整设计文档发布到独立资产目录 `~/.dev-meta/`（可脱离 CodeBuddy 使用），由仓库根目录 `pub_local.py` 同步：
+>
+> ```bash
+> python3 pub_local.py            # 同步模板与 skill 至 ~/.dev-meta/
+> python3 pub_local.py --dry-run  # 预演，不写入
+> ```
+>
+> 而 `~/.codebuddy/skills/dm-init-docs/SKILL.md` 仅作**薄触发入口**（指向 `~/.dev-meta/` 资产），满足加载机制。二者不重复定义内容（单一权威）。
+
 ### 触发方式
 
 在 CodeBuddy 对话中，用自然语言描述需求，AI 自动匹配对应 skill：
@@ -84,7 +93,7 @@ cp -r skills/dm-* .codebuddy/skills/
 ### 典型项目生命周期
 
 ```
-                          dm-init
+                          dm-init-docs
                              │
                     项目骨架搭建完成
                              │
@@ -105,7 +114,7 @@ cp -r skills/dm-* .codebuddy/skills/
 
 | 条件 | 适用 skill | 说明 |
 |------|------------|------|
-| Git 仓库已初始化 | dm-init / dm-plan-ver | 版本管理依赖 Git |
+| Git 仓库已初始化 | dm-init-docs / dm-plan-ver | 版本管理依赖 Git |
 | `gh` CLI（可选） | dm-plan-ver / dm-close-ver | dm-plan-ver 创建 PR/Issue；dm-close-ver 合并 PR / 关闭 Issue，未安装则手动执行 |
 | 项目中已有 `./CODEBUDDY.md` | dm-plan-ver / dm-log | 确保项目已绑定 dev-meta 规范 |
 
@@ -115,12 +124,12 @@ cp -r skills/dm-* .codebuddy/skills/
 
 | 资源类型 | 文件 | 使用方 |
 |----------|------|--------|
-| 规范 | `docs/01-project-dev-flow.md` | dm-init |
+| 规范 | `docs/01-project-dev-flow.md` | dm-init-docs |
 | 规范 | `docs/02-version-rules.md` | dm-plan-ver, dm-schedule, dm-close-ver |
 | 规范 | `docs/03-git-flow-rules.md` | dm-plan-ver, dm-commit, dm-close-ver |
 | 规范 | `docs/04-worklog-rules.md` | dm-log, dm-report |
-| 模板 | `~/.codebuddy/skills/dm-init/assets/CODEBUDDY.md` | dm-init（版本绑定+例外项，通用规范见 $HOME CODEBUDDY.md） |
-| 模板 | `templates/project/*` | dm-init |
+| 模板 | `templates/CODEBUDDY.md` | dm-init-docs（项目层：版本绑定+例外项；通用规范见 `~/.codebuddy/CODEBUDDY.md`） |
+| 模板 | `templates/project/docs/*` | dm-init-docs（00~06 项目文档骨架，发布至 `~/.dev-meta/`） |
 | 模板 | `templates/versions/vX.Y-<slug>/*` | dm-plan-ver |
 | 模板 | `templates/versions/vX.Y-<slug>/500-schedule.md` | dm-schedule |
 | 模板 | `templates/worklog.md` | dm-log |
