@@ -1,0 +1,38 @@
+# AI 协作三支柱 + 架构设计总纲 — 索引卡（非全文，纯指针）
+
+> 本卡为 `dm-arch-design` 的按需参考索引。应用架构设计时，若需精确条款，按下方路径读 `docs/` 原文；本卡只列**关键条款锚点**，避免与权威文档重复定义。
+
+## 06 契约式开发（Contract-Based Dev）— `docs/06-contract-based-dev.md`
+
+- **§2.8 契约只读纪律与断言门禁**（AI 协作核心）：写实现前先把 Interface/DTO 作为 Context 喂给 AI；新会话只带契约 SSOT。
+- **§2.5 契约质量基线**：契约须含「正常 / 边界 / 失败」三态，失败面不可省略。
+- **§2.1–2.3 契约三层级**：L1 接口/API（基线）、L2 TF（设计）、L3 关键行为（测试）；架构边界产出即落入 L1/L2。
+- **§3 测试职责分层**：核心逻辑需测试，UI/视图不写 TDD（与 08 §2.2 一致）。
+
+## 07 可观测性驱动开发（Observability-Driven Dev）— `docs/07-observability-driven-dev.md`
+
+- **§2.5 写逻辑即写观测**：关键路径须结构化日志；无静默吞错；高开销节点须含 Elapsed + 资源指标。
+- **§2.5 出口 Assert**：映射空 / 越界等异常出口须 `assertionFailure`，而非裸 return。
+- **§3 黑匣子诊断**：门禁失败时由结构化日志还原链路；跨模块事件建议带 `trace_id`。
+- **DoD 6 项**（§7）：无裸露日志 / 写逻辑即写观测 / 无静默吞错 / 高开销节点覆盖 / Log-Driven 排查 / 验证闭环。
+
+## 08 小版本迭代（Small-Batch Iteration）— `docs/08-small-batch-iteration.md`
+
+- **§2.1 AI 小批定义**：最小批次 = 单文件重构 / 单函数修复（非人类视角 Sprint）。
+- **§2.2 Commit 级 Micro-Batching 三 Batch**：Batch1 契约+数据模型+编译 → Batch2 Core 单文件+单测 → Batch3 UI/调用点+集成；每绿灯 Batch **由用户触发 commit**。
+- **§2.1 混乱回退**：陷入混乱由用户显式 `git reset --hard` 退回绿灯 Commit，AI 不自发执行破坏性操作。
+- **§3 Context Flush / New Session**：小 Task 完成清空对话；新会话只带「最新契约 SSOT + 下一个单点 Task」。
+
+## 09 AI 辅助架构设计指南 — `docs/09-ai-architecture-guide.md`
+
+- 本 skill 的**方法论文档源**，已结构化沉淀为 `dm-arch-design`。四原则（单向分层 / 高内聚低耦合 / 极简暴露 Facade / 契约优先）与核心机制（模块隐蔽 / 事件总线 / 可观测性内建）见本 skill 正文，不在此复述。
+
+## 互指闭环
+
+```
+06 §2.8 契约只读  →  07 可观测性（日志是眼睛）  →  08 Micro-Batching（小批+上下文重置）  →  回 06
+                                          ↑
+                              09/dm-arch-design：把三支柱落到架构形状（人定边界，AI 填内部）
+```
+
+> 应用 `dm-arch-design` 时，默认遵循 06/07/08 的护栏（契约只读、可观测性内建、单文件批次、用户触发 commit / reset）。

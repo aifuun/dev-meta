@@ -19,6 +19,7 @@
 | `dm-adr` | 记录技术决策 | 按 ADR 格式维护架构/技术选型决策日志 | 按需 |
 | `dm-grillme-plan` | 通用需求 Plan 前逼问决策 | 非版本类需求写代码/出方案前的「提问→回答→沉淀」决策收敛，输出 Final Plan（版本类走 dm-plan-ver/dm-dev-tf 内嵌 grill） | 按需 |
 | `dm-cleanup` | 技术债清理 + 仓库卫生 | 版本/TF 之外的跨文件清理（正确性/注释/死代码/重复结构/占位常量标注）与仓库卫生（.gitignore + 误提交文件 `git rm --cached`），验证后委托 dm-close-ver | 按需 |
+| `dm-pub-skill` | 发布 / 部署 skill 与模板 | 发布资产到 `~/.dev-meta/`、部署 skill 触发入口到 `~/.codebuddy/skills/`，含前置检查与同步后校验（编排 `pub_local.py`） | 按需 |
 
 ## Skill 关系
 
@@ -44,28 +45,26 @@ dm-adr ← 按需穿插，记录技术决策 ──→ dm-commit (统一提交�
 
 ## 使用说明
 
-### 安装
+### 安装与部署
 
-将本目录下的 skill 复制到 CodeBuddy 的 skills 目录：
+dev-meta 的 skill 采用**双目录分工**，两类产物缺一不可：
+
+| 目录 | 角色 | 内容 |
+|------|------|------|
+| `~/.dev-meta/` | **资产 SSOT**（可脱离 CodeBuddy 使用） | 模板 `0X_*.md`、`CODEBUDDY.md`、中文设计文档 `dm-*.md` |
+| `~/.codebuddy/skills/<name>/` | **触发入口**（CodeBuddy 只从这里加载） | 英文 `SKILL.md`（含 frontmatter）+ `assets/` + `references/` |
+
+用仓库根目录的 `pub_local.py` 一键发布与部署（详见 `dm-pub-skill`）：
 
 ```bash
-# 用户级（推荐，跨项目可用）
-cp -r skills/dm-* ~/.codebuddy/skills/
-
-# 项目级（团队共享）
-cp -r skills/dm-* .codebuddy/skills/
+python3 pub_local.py                    # 仅发布资产到 ~/.dev-meta/
+python3 pub_local.py --deploy           # 同时部署触发入口到 ~/.codebuddy/skills/
+python3 pub_local.py --deploy --dry-run # 预演，不写入
 ```
 
-每个 skill 目录下需包含 `SKILL.md`（核心指令）、`references/`（规范文档）、`assets/`（模板文件），具体文件清单见各 skill 设计文档。
-
-> **资产目录（`dm-init-docs` 专用）**：项目文档脚手架 skill 采用**双目录分工**——模板与完整设计文档发布到独立资产目录 `~/.dev-meta/`（可脱离 CodeBuddy 使用），由仓库根目录 `pub_local.py` 同步：
+> **仓库内的两套文件**：`skills/<name>.md` 是中文设计文档（源），`skills/<name>/SKILL.md` 是英文触发入口源（**纳入版本控制**，`--deploy` 时同步到 `~/.codebuddy/skills/<name>/`）。二者并存（`dm-adr.md` 与 `dm-adr/`）属正常，不是重复。
 >
-> ```bash
-> python3 pub_local.py            # 同步模板与 skill 至 ~/.dev-meta/
-> python3 pub_local.py --dry-run  # 预演，不写入
-> ```
->
-> 而 `~/.codebuddy/skills/dm-init-docs/SKILL.md` 仅作**薄触发入口**（指向 `~/.dev-meta/` 资产），满足加载机制。二者不重复定义内容（单一权威）。
+> ⚠️ 早期文档中的 `cp -r skills/dm-* ~/.codebuddy/skills/` 已废弃——它会把中文 `.md` 复制成文件而非目录，且缺少 frontmatter，不会被 CodeBuddy 识别为 skill。
 
 ### 触发方式
 
