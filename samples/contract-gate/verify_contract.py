@@ -14,6 +14,9 @@ Three responsibilities (mapped to docs/06 §2.8 three gates):
      proving the contract is machine-checkable (Gate 1 / Gate 2 input).
   3. Emit a structured diagnosis snapshot on failure (echoes ODD black box,
      docs/07 §3) so the AI can localize in one shot.
+  4. Gate 2 observability DoD (docs/07 §2.5): scan source for bare logging
+     calls without a structured `observe` wrapper or exit asserts; findings are
+     surfaced in the same failure diagnosis.
 
 No third-party dependencies: stdlib only (hashlib / json / argparse /
 pathlib / datetime).
@@ -139,6 +142,63 @@ def verify_schema(contract_file: Path, schema_file: Path) -> list[str]:
     return errors
 
 
+# Source files scanned by the observability DoD (Gate 2 extension, docs/07 §2.5).
+SOURCE_SUFFIXES = {".swift", ".py", ".ts", ".js", ".kt", ".java", ".go", ".rs"}
+
+# Bare logging calls that ODD §2.2 forbids scattering into business logic
+# (must go through a single `observe(...)` wrapper instead).
+BARE_LOG_PATTERNS = ("print(", "NSLog(", "console.log(", "Log.d(", "println(")
+
+# Structured assertion / wrapper signals that satisfy the observability DoD
+# (ODD §2.5: exit asserts + non-intrusive observe wrapper).
+ASSERT_PATTERNS = (
+    "assert(",
+    "assertionFailure(",
+    "preconditionFailure(",
+    "precondition(",
+    "fatalError(",
+    "observe(",
+)
+
+
+def check_observability_dod(source_dir: Path) -> list[str]:
+    """Gate 2 observability DoD (docs/07 §2.5): business logic must not scatter
+    bare print/NSLog calls; it must route through a structured `observe` wrapper
+    and carry exit asserts. Returns a list of findings (empty == green).
+
+    Heuristic: if any source file mixes bare logging with zero structured
+    assertion/wrapper signals, the DoD is considered unmet. Conservative on
+    purpose — false positives are surfaced as warnings the AI can self-review.
+    """
+    findings: list[str] = []
+    if not source_dir.is_dir():
+        return findings  # no source to scan; not a failure of this gate
+
+    scanned = 0
+    for p in sorted(source_dir.rglob("*")):
+        if not p.is_file() or p.suffix not in SOURCE_SUFFIXES:
+            continue
+        scanned += 1
+        try:
+            text = p.read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError):
+            continue
+        bare = sum(text.count(pat) for pat in BARE_LOG_PATTERNS)
+        structured = sum(text.count(pat) for pat in ASSERT_PATTERNS)
+        if bare > 0 and structured == 0:
+            findings.append(
+                f"observability DoD unmet: {p.relative_to(source_dir).as_posix()} "
+                f"has {bare} bare log call(s) but 0 assertion/wrapper signal "
+                f"(route through observe(), add exit asserts per docs/07 §2.5)"
+            )
+    if scanned == 0:
+        findings.append(
+            "observability DoD skipped: no scannable source files under "
+            f"{source_dir} (passing through)"
+        )
+    return findings
+
+
 def emit_diagnosis(contract_dir: Path, manifest: dict, bad: list[str]) -> None:
     """Structured black-box snapshot on failure (ODD docs/07 §3)."""
     print("\n[AI-DEBUG-CONTEXT] contract gate failed")
@@ -181,6 +241,10 @@ def cmd_verify(args: argparse.Namespace) -> int:
         contract_file = contract_dir / args.contract
         bad += verify_schema(contract_file, Path(args.schema))
 
+    # Gate 2: observability DoD — business logic must not scatter bare logging
+    # without a structured observe wrapper or exit asserts (docs/07 §2.5).
+    bad += check_observability_dod(Path(args.source_dir))
+
     if bad:
         emit_diagnosis(contract_dir, manifest, bad)
         print(f"\n❌ contract gate FAILED: {len(bad)} issue(s) — throw back for self-repair")
@@ -206,6 +270,7 @@ def main() -> int:
     p_verify.add_argument("--manifest", default="MANIFEST.json", help="manifest filename")
     p_verify.add_argument("--contract", default="contract.json", help="contract data file")
     p_verify.add_argument("--schema", default="contract.schema.json", help="JSON Schema to check")
+    p_verify.add_argument("--source-dir", default=".", help="source dir scanned for observability DoD (docs/07 §2.5)")
     p_verify.set_defaults(func=cmd_verify)
 
     args = parser.parse_args()

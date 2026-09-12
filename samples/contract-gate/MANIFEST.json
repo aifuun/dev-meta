@@ -1,9 +1,9 @@
 {
-  "generated_at": "2026-09-04 15:29:35",
+  "generated_at": "2026-09-08 13:40:06",
   "generator": "samples/contract-gate/verify_contract.py",
   "contract_verified": true,
   "file_count": 4,
-  "total_bytes": 12147,
+  "total_bytes": 14973,
   "files": [
     {
       "path": "README.md",
@@ -22,8 +22,8 @@
     },
     {
       "path": "verify_contract.py",
-      "bytes": 8528,
-      "sha256": "887d8e9a126cf3ff842d31c4bd84edc699f3b37f1df386443b5f87f9e091b4d7"
+      "bytes": 11354,
+      "sha256": "b7e60f0a2b0d4c65f6f54af0724a533782eff8f72c10871011d90ff6d47a77d4"
     }
   ]
 }
