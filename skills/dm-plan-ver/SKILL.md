@@ -149,7 +149,7 @@ When the user wants to close a version, delegate to **dm-close-ver**. This skill
 | Close-out: delegate dm-close-ver (merge preserves history, no squash) | dm-close-ver |
 | Execution order matrix rows carry stages; dev TF includes code+deploy+integrate | 02-version-rules §2.2 |
 | Run requirements/architecture grills before producing `200-spec.md`/`300-design.md`; persist Q&A into docs, never in chat only | skill-doc-principles §7 |
-| `400-build.md` must include "Key Behavior Contract (key test cases)" for algorithm/implicit-contract functions (idempotency, concurrency dedup, error branches, degradation); thin glue/CRUD may omit. Test-responsibility split: docs/06-contract-based-dev.md §3 | templates/400-build.md + docs/06-contract-based-dev.md §3 |
+| `400-build.md` must include "Key Behavior Contract (key test cases)" for algorithm/implicit-contract functions (idempotency, concurrency dedup, error branches, degradation); thin glue/CRUD may omit. Test-responsibility split: docs/06-contract-based-dev.md §3 | templates/versions/vX.Y-<slug>/400-build.md + docs/06-contract-based-dev.md §3 |
 | `400-build.md` must cover contract-quality-baseline dimensions (error/idempotency/compat/invariant etc., see docs/06-contract-based-dev.md §2.5); missing dimensions must be filled in grill/design phase | docs/06-contract-based-dev.md §2.5 |
 | Every contract must record four elements (owner/direction/invariant/provenance) + domain-seq id; quality dimensions land as invariant items | docs/06-contract-based-dev.md §2.6 |
 | Failure-face contract: pure-function failures return empty/original, not nil; never silently swallow dangerous failures — intercept before call and expose explicitly | docs/06-contract-based-dev.md §2.7 |

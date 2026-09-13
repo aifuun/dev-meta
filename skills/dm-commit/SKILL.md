@@ -5,7 +5,7 @@ description: This skill should be used when the user wants to commit changes or 
 
 # dm-commit — Commit Message Convention
 
-Ensure every commit follows the dev-meta commit convention. This skill is the single source of truth for commit formatting — dm-plan-ver, dm-log, dm-init, dm-report, and dm-adr all delegate their commit steps here.
+Ensure every commit follows the dev-meta commit convention. This skill is the single source of truth for commit formatting — dm-plan-ver, dm-log, dm-init-docs, dm-report, and dm-adr all delegate their commit steps here.
 
 ## When to Use
 
@@ -14,7 +14,7 @@ Ensure every commit follows the dev-meta commit convention. This skill is the si
 - User asks about commit message format
 - dm-plan-ver Phase 2 step 3 (TF delivery commit)
 - dm-log Step 6 (worklog commit)
-- dm-init Step 5 (initialization commit)
+- dm-init-docs Step 7 (initialization commit)
 - dm-report Step 6 (report commit)
 - dm-adr Step 7 (ADR commit)
 

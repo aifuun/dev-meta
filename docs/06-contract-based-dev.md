@@ -178,5 +178,5 @@
 | `skills/dm-cleanup.md` | 隐性契约债标注参考 §2.5 / §2.7（含静默危险失败）；静默吞错/裸露日志债见 07，指针 |
 | `skills/dm-grillme-plan.md` | 实现降级级 grill 含契约质量维度（§2.5 / §3）；须 probe 可观测性盲区，见 07，指针 |
 | `skills/dm-contract-gate.md` | 断言门禁执行入口：§2.8 三道卡口（改前 diff / 改后校验 / 交付校验）落地为 Skill，机器可校验契约 + 报错抛回闭环；参考脚本见 samples/contract-gate/ |
-| `skills/dm-update-contract.md`（待定） | 契约新增 / 修订 / 回写总目录的执行入口，遵循 §5 演进治理；与 dm-contract-gate 职责不同（前者改契约、后者守门禁），并行不冲突 |
+| ~~`skills/dm-update-contract.md`~~（**规划中，尚未落地**） | 契约新增 / 修订 / 回写总目录的**规划**执行入口，遵循 §5 演进治理；与 dm-contract-gate 职责不同（前者改契约、后者守门禁）。**当前无此 skill，勿作为可执行入口** |
 | `docs/07-observability-driven-dev.md` | ODD 可观测性驱动开发：诊断契约 / 黑匣子规范 / 无侵入包装器（observe）；是 §2.5（失败透明）/§2.6（provenance 反查）/§2.7（结构化诊断快照）的运行时暴露层，互补；双向引用见 07 §6 |

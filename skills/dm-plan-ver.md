@@ -149,7 +149,7 @@ TF 开发通过两个子 skill 串联，本 skill 不直接执行：
 > **契约式开发核心（详见 `docs/06-contract-based-dev.md`，即使链接失效也以本句为准）**：
 > ① 先契约后实现；② L1 接口契约含错误/幂等/兼容/限流，L2 TF 契约含失败语义/前置后置/依赖方向，L3 行为契约仅算法类必填（given-when-then）；③ 测试三层分工 design=场景 / build=行为契约 / dev-tf=落地，互不重定义；④ 契约质量基线要求错误透明、命名即契约、不可变默认、显式边界校验；⑤ 下层契约不得违背上层。
 
-| `400-build.md` 对算法/隐性契约类函数须含「关键行为契约（关键测试用例）」，薄胶水/CRUD 可省略；测试职责分层见 docs/06-contract-based-dev.md §3 | templates/400-build.md + docs/06-contract-based-dev.md §3 |
+| `400-build.md` 对算法/隐性契约类函数须含「关键行为契约（关键测试用例）」，薄胶水/CRUD 可省略；测试职责分层见 docs/06-contract-based-dev.md §3 | templates/versions/vX.Y-<slug>/400-build.md + docs/06-contract-based-dev.md §3 |
 | `400-build.md` 须覆盖契约质量基线维度（错误/幂等/兼容/不变量等，见 docs/06-contract-based-dev.md §2.5）；缺维度须在 grill/设计阶段补齐 | docs/06-contract-based-dev.md §2.5 |
 | 契约须标注四要素（归属/方向/不变性/真值来源）+ 域-序号编号；质量维度作为不变性项落地 | docs/06-contract-based-dev.md §2.6 |
 | 失败面契约：纯函数式失败返回空/原值而非 nil；严禁静默危险失败，须调用前拦截显式暴露 | docs/06-contract-based-dev.md §2.7 |

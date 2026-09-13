@@ -36,9 +36,9 @@ CodeBuddy 启动时递归加载所有 `CODEBUDDY.md`：
 
 ## 3. 项目初始化流程
 
-`dm-init` 在项目初始化时：
+`dm-init-docs` 在项目初始化时：
 
-1. 从 `assets/CODEBUDDY.md` 模板创建 `./CODEBUDDY.md`
+1. 从 `templates/CODEBUDDY.md` 模板创建 `./CODEBUDDY.md`
 2. 填写 dev-meta 仓库地址与版本号
 3. 填写项目例外项（无则留"无"）
 
@@ -74,7 +74,9 @@ dev-meta/docs/CODEBUDDY-global.md     ← 原始版本（Git 跟踪，在此修�
 
 ## 5. 迁移说明
 
-### 旧方案（dev-reference.md）
+> 本节为**历史记录**：下述 `docs/01-dev-reference.md` 已被删除、由两层 CODEBUDDY.md 取代；文中引用仅用于说明迁移来源，不是有效路径。
+
+### 旧方案（dev-reference.md，已废弃）
 
 ```
 docs/01-dev-reference.md  ← 项目级入口（含部分通用规则）

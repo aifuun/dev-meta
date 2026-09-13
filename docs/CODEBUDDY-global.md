@@ -22,6 +22,10 @@
 | 分支策略、commit 格式、PR 流程 | [03-git-flow-rules](https://github.com/aifuun/dev-meta/blob/main/docs/03-git-flow-rules.md) | Git 开发流与 commit 规范 |
 | 工作日志格式与维护规则 | [04-worklog-rules](https://github.com/aifuun/dev-meta/blob/main/docs/04-worklog-rules.md) | 每日总结、详细日志、待办、里程碑 |
 | CODEBUDDY 两层架构与部署 | [05-codebuddy-management](https://github.com/aifuun/dev-meta/blob/main/docs/05-codebuddy-management.md) | 全局层 vs 项目层、source of truth 修改流程 |
+| 契约式开发（AI 改前只读契约） | [06-contract-based-dev](https://github.com/aifuun/dev-meta/blob/main/docs/06-contract-based-dev.md) | 三层契约、失败面、契约四要素、测试职责分层（唯一权威） |
+| 可观测性驱动开发（日志是 AI 的眼睛） | [07-observability-driven-dev](https://github.com/aifuun/dev-meta/blob/main/docs/07-observability-driven-dev.md) | 诊断契约、黑匣子要素、无侵入包装、DoD |
+| 小版本迭代（AI 执行粒度） | [08-small-batch-iteration](https://github.com/aifuun/dev-meta/blob/main/docs/08-small-batch-iteration.md) | Commit 级三 Batch + Context Flush（唯一权威） |
+| AI 辅助架构设计 | [09-ai-architecture-guide](https://github.com/aifuun/dev-meta/blob/main/docs/09-ai-architecture-guide.md) | 人的设计规范 + AI 执行边界、可直接复制的防腐规则 |
 
 ## 通用 DoD (Definition of Done)
 

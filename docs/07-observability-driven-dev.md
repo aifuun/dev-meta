@@ -213,7 +213,7 @@ export async function observeStage<T>(stageName: string, metadata: Record<string
 | `skills/dm-cleanup.md` | 「静默吞错 / 空 catch / 裸露 print / 依赖返回值兜底」列为隐性契约债（06 §2.7），清理时须补 observability 包装 |
 | `skills/dm-grillme-plan.md` | 实现降级级 grill 须 probe 可观测性盲区（无诊断契约 / 静默吞错 / 裸露日志），写码前消灭盲点 |
 | `skills/dm-close-ver.md` | Phase A 就绪性审计须加 ODD DoD 检查（无裸露日志 / 无静默吞错 / 高开销节点有诊断快照），合并前闸门 |
-| `skills/dm-init.md` | 脚手架阶段植入 `observe` 包装器（§4）+ ODD 基线（无裸 print、错误须结构化诊断），预防式防盲 |
+| `skills/dm-init-docs.md` | 脚手架阶段植入 `observe` 包装器（§4）+ ODD 基线（无裸 print、错误须结构化诊断），预防式防盲 |
 | `skills/dm-adr.md` | 可观测性架构级取舍（如 computeUnits / 采样粒度 / 预编译模型 / 诊断分级）走 ADR 记录 |
 | `skills/dm-contract-gate.md` | 断言门禁的「报错原样抛回」是 ODD 闭环在契约层的延伸——门禁失败时须输出结构化诊断（含契约快照 + 不一致 diff），便于 AI 一次定位（呼应 07 §2.1/§3）；门禁须含可观测性 DoD（改后无 observe 包装 / 无出口 Assert 视为未过，呼应 07 §2.5）；门禁脚本见 samples/contract-gate/ |
 | `docs/05-codebuddy-management.md` | `observe` 包装器可沉淀为 project snippet / 模板，新模块直接复用 |

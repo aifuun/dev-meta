@@ -41,7 +41,7 @@ dm-init-docs  →  00 PRD  →  01 技术规格  →  02 系统设计  →  03 �
 ### Skill 工作流
 
 ```
-dm-init  ──→  dm-plan-ver  ──→  dm-schedule（排程）
+dm-init-docs  ──→  dm-plan-ver  ──→  dm-schedule（排程）
                    │
                    ├── dm-dev-tf（TF 开发）
                    ├── dm-commit（统一提交出口）
@@ -54,7 +54,7 @@ dm-adr  ←── 按需穿插  ←──→  dm-commit
 
 | Skill | 职责 | 频率 |
 |-------|------|------|
-| `dm-init` | 初始化项目骨架，生成 CODEBUDDY.md + docs 目录树 | 低频 |
+| `dm-init-docs` | 初始化项目文档，生成 00~06 骨架 + `./CODEBUDDY.md` 版本绑定 | 低频 |
 | `dm-plan-ver` | 开版本，创建四件套 + 分支/PR/Issue | 中频 |
 | `dm-close-ver` | 关版本，就绪审计 + 保留历史 merge + 关 Issue + 清理分支 | 中频 |
 | `dm-schedule` | 版本排程，工作包列表 + 防沉迷红线 | 中频 |

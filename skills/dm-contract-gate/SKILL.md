@@ -48,8 +48,8 @@ Gate artifact `MANIFEST.json` carries per-file `sha256` and a top-level `contrac
 | Contract type | Typical file |
 |---------------|--------------|
 | Swift contract facade | `DetectorContract.swift` / `Contract.swift` / public `Protocol` |
-| Schema contract | `*.schema.json` / inline JSON Schema in `project-schema-design.md` |
-| API contract | `OpenAPI` (`openapi.yaml`) / `project-api-design.md` |
+| Schema contract | `*.schema.json` / inline JSON Schema in `docs/03_CONTRACTS_AND_API.md` §3 |
+| API contract | `OpenAPI` (`openapi.yaml`) / `docs/03_CONTRACTS_AND_API.md` §2 |
 | Version behavior contract | `docs/versions/vX.Y-<slug>/400-build.md` §1.x / §2.3 / §3.3 |
 
 ### Step 2: Gate 1 — Pre-Implementation
