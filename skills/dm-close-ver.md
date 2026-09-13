@@ -9,6 +9,19 @@ description: 关闭版本时使用：就绪审计、保留历史的 merge（不�
 
 版本收尾 skill，独立承接"关闭版本"的完整流程：就绪性审计 → 收尾执行 → 合并与关闭 → 关闭后确认。与 dm-plan-ver 职责分离：**dm-plan-ver 开版本，dm-close-ver 关版本**。
 
+## 职责边界
+
+| 职责 | 归属 |
+|------|------|
+| 就绪性审计（Issue / 工作包 / 验收 / 工作区 / ODD DoD） | ✅ 本 skill |
+| 收尾执行（矩阵核对、worklog 补全、文档收尾） | ✅ 本 skill |
+| 保留历史的 merge（`--no-ff`，不用 squash） | ✅ 本 skill |
+| 关闭 TF Issue、清理分支、打 annotated tag 并推送 | ✅ 本 skill |
+| worklog 补全 | 委托 `dm-log` |
+| 文档提交 | 委托 `dm-commit` |
+| 版本规划与启动（四件套 / 分支 / PR / Issue） | 委托 `dm-plan-ver` |
+| 新功能开发 | ❌ 收尾阶段禁止 |
+
 ## 关系
 
 dm-close-ver 是 dm-plan-ver Phase 3（版本收尾）的独立承接者。dm-plan-ver 负责版本规划与启动（四件套、分支、PR、TF Issue）；版本进入收尾阶段后由本 skill 接管。
@@ -32,6 +45,32 @@ dm-close-ver (关版本) ← 独立 skill，接收 dm-plan-ver 交接
 - "结束这个版本"
 - "close version v1.2"
 - dm-plan-ver 收尾阶段的提示调用
+
+## 核心概念
+
+### 四阶段收尾
+
+```
+Phase A 就绪性审计 → Phase B 收尾执行 → Phase C 合并与关闭 → Phase D 关闭后确认
+```
+
+任一 Phase 不满足 → 先修复再继续，**不跳过**。
+
+### 保留历史的 merge
+
+用 **merge commit**（`--no-ff`）合并版本分支到 main，**不使用 squash**——保留每个 TF commit 的原始历史，便于追溯与回滚。
+
+### annotated tag 是版本锚点
+
+版本标记用 **annotated tag** `v<X.Y.Z>`，message 含 `version` / `scope` / `merge`（回滚点）/ `issues`，且**必须 `git push origin --tags`**——否则远端没有版本锚点。
+
+### 不静默跳过
+
+未完成的 Issue 必须显式标记 `[DEFERRED]` 并备注原因；未被 `Closes` 自动关闭的须手动关闭。禁止静默略过。
+
+### 完成定义
+
+dev 工作包完成 = **代码 + 部署 + 联调**；部署与联调归 dev，qa 只验收「已部署 + 已联调」的功能（见 `docs/02-version-rules.md`）。
 
 ## 执行流程
 

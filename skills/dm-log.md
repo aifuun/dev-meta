@@ -9,11 +9,50 @@ description: 每日记录工作：追加每日工作总结、详细日志、待�
 
 每日工作日志 skill，按 `04-worklog-rules.md` 规范追加工作记录、维护待办与里程碑。
 
+## 职责边界
+
+| 职责 | 归属 |
+|------|------|
+| 追加每日工作总结表行 | ✅ 本 skill |
+| 追加详细日志（按日期章节，含当日 commit） | ✅ 本 skill |
+| 维护待办与里程碑 | ✅ 本 skill |
+| 新建 worklog 文件（基于 `templates/worklog.md`） | ✅ 本 skill |
+| 生成周报 / 月报 / 阶段报告 | ❌ 委托 `dm-report` |
+| 提交 worklog | 委托 `dm-commit` |
+| 版本规划与版本文档 | ❌ `dm-plan-ver` |
+
 ## 触发
 
 - "记录今天的工作"
 - "update worklog"
 - "今天做了什么"（隐式触发）
+
+## 核心概念
+
+### worklog 四块结构
+
+| 块 | 内容 |
+|----|------|
+| 每日工作总结 | 顶部加行：**日期 + 一句话总结 + 更新次数** |
+| 详细日志 | 按日期章节，记录模块 / 功能级别做了什么 |
+| 待办 | 随进度标记完成、新增 |
+| 里程碑 | 关键节点与状态 |
+
+### 追加式，不改写历史
+
+每日记录**追加**（总结表在顶部加新行），不修改已有日期的记录——worklog 是不可变工作史，改写会破坏追溯。
+
+### 有 commit 记 commit，无 commit 记「其他工作」
+
+当日有 commit 则在详细日志中列出（`hash` + `subject`）；无 commit 时在「其他工作」中记录，保持每日不空。
+
+### 文件位置与模板
+
+`docs/reports/worklog.md`；不存在时基于 `templates/worklog.md` 创建。格式规范的唯一权威是 `docs/04-worklog-rules.md`。
+
+### 前置条件
+
+`./CODEBUDDY.md` 需存在——本 skill 依赖它确认项目已绑定 dev-meta 规范（见 skills/README 前置条件表）。
 
 ## 执行流程
 

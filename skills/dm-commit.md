@@ -9,6 +9,18 @@ description: 提交变更时使用：type(scope): subject 格式向导、格式�
 
 Commit 规范 skill，确保每次提交遵循 dev-meta commit 约定。是 commit 格式的单一事实来源 — dm-plan-ver、dm-log、dm-init-docs、dm-report、dm-adr 的 commit 步骤均委托至此。
 
+## 职责边界
+
+| 职责 | 归属 |
+|------|------|
+| 确定 `type(scope): subject` 格式 | ✅ 本 skill |
+| 格式校验（type 集合 / scope / subject 长度 / footer） | ✅ 本 skill |
+| 执行 `git commit`（用户确认后） | ✅ 本 skill |
+| commit 内容的组织与分批（三 Batch） | ❌ `dm-dev-tf`，见 `docs/08-small-batch-iteration.md` |
+| 契约门禁（改前 diff / 改后校验） | ❌ `dm-contract-gate`（本 skill 的前序卡口） |
+| 版本收尾、分支清理、打 tag | ❌ `dm-close-ver` |
+| 未获用户明确要求时**不主动** commit | 硬约束（见「关键规则速查」） |
+
 ## 触发
 
 - "commit"
@@ -20,6 +32,39 @@ Commit 规范 skill，确保每次提交遵循 dev-meta commit 约定。是 comm
 - dm-init-docs 步骤 7（初始化提交）
 - dm-report 步骤 6（报告提交）
 - dm-adr 步骤 7（ADR 提交）
+
+## 核心概念
+
+### commit 结构
+
+```
+type(scope): subject
+
+body（可选）
+
+Closes #42
+```
+
+| 部分 | 要求 |
+|------|------|
+| `type` | 来自允许集合（8 种） |
+| `scope` | 必填，简短小写标识符（如 `auth`、`storage`） |
+| `subject` | 祈使语气（"add" 而非 "added"，"fix" 而非 "fixed"），≤ 50 字符 |
+| `body` | 说明为什么改、影响与迁移信息；细小变更可省略 |
+| `footer` | TF 相关用 `Closes #id`（完成）或 `Refs #id`（部分） |
+
+### Closes 与 Refs
+
+- `Closes #N`：本次提交**完成**该 TF，合并时由托管平台自动关闭 Issue。
+- `Refs #N`：本次提交是该 TF 的一部分但未完成（Micro-Batching 中间批次用 `Refs` 同一 TF）。
+
+### Micro-Batching 节奏
+
+一个 TF 拆为三 Batch，每完成一个**绿灯 Batch** 即生成一个 commit（均 `Refs #同一 TF`），最后一个绿灯 Batch 用 `Closes`。详见 `docs/08-small-batch-iteration.md`。
+
+### AI 不主动提交
+
+本 skill 仅在用户显式说 commit / 调用 `dm-commit` 时触发。下个 Batch 陷入混乱时由**用户**执行 `git reset --hard` 退回上一个绿灯 commit（AI 不自发，遵守 git 安全协议）。
 
 ## 执行流程
 
