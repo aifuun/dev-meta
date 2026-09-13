@@ -80,3 +80,19 @@ chore: update worklog — <one-line summary>
 ## Assets
 
 - `assets/worklog.md` — Worklog template for new projects.
+
+## Example
+
+```
+User: "log today's work"
+
+AI:  1. Read docs/reports/worklog.md
+     2. Append a row to the daily summary table: | 2026-07-21 | add state machine layering rules... |
+     3. Append the detailed log section:
+        ### 2026-07-21
+        - **version-rules**: design adds cross-TF state machine section
+          - `42ee152` feat: design adds cross-TF state machine
+        - **templates**: sync version and project templates
+     4. Update todos: mark completed items, add new ones
+     5. Output the change summary
+```

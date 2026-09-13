@@ -46,13 +46,13 @@ dm-close-ver (关版本) ← 独立 skill，接收 dm-plan-ver 交接
 
 ### Phase B：收尾执行（Do the close）
 
-5. **执行顺序矩阵核对** — `400-build.md` 固定收尾行（补单测/回归、构建验证）已完成（测试职责分层见 `docs/06-contract-based-dev.md` §3）
-6. **worklog 补全** — 版本周期内所有工作已记录（委托 dm-log）
-7. **文档收尾** — 版本文档确认提交（委托 dm-commit）
+6. **执行顺序矩阵核对** — `400-build.md` 固定收尾行（补单测/回归、构建验证）已完成（测试职责分层见 `docs/06-contract-based-dev.md` §3）
+7. **worklog 补全** — 版本周期内所有工作已记录（委托 dm-log）
+8. **文档收尾** — 版本文档确认提交（委托 dm-commit）
 
 ### Phase C：合并与关闭（Merge & close issues）
 
-8. **Merge PR（保留历史）** — 用 **merge commit** 合并版本分支到 main，**不使用 squash**：
+9. **Merge PR（保留历史）** — 用 **merge commit** 合并版本分支到 main，**不使用 squash**：
    ```bash
    git checkout main
    git merge --no-ff feature/vX.Y-<slug>
@@ -61,18 +61,18 @@ dm-close-ver (关版本) ← 独立 skill，接收 dm-plan-ver 交接
    - 保留每个 TF commit 的原始历史
    - 若 TF commit 已含 `Closes #id`，合并时由托管平台自动关闭对应 Issue
 
-9. **关闭剩余 TF Issue** — 逐个确认并关闭本版本所有 TF Issue：
+10. **关闭剩余 TF Issue** — 逐个确认并关闭本版本所有 TF Issue：
    - 已完成：标注验收结果后关闭
    - `[DEFERRED]`：单独备注延期原因后关闭
    - 未被 commit 自动关闭的：手动关闭
    - 关闭后更新追踪矩阵（tracking-matrix）为 ✅
 
-10. **清理分支** — 删除已合并的版本分支：
+11. **清理分支** — 删除已合并的版本分支：
     ```bash
     git branch -d feature/vX.Y-<slug>
     ```
 
-11. **版本标记**（必做）— 用 **annotated tag** 打版本号，message 须含「版本 + 必要信息」：
+12. **版本标记**（必做）— 用 **annotated tag** 打版本号，message 须含「版本 + 必要信息」：
     - tag 命名：`v<X.Y.Z>`（与版本目录 `vX.Y-<slug>`、PR `[Vx.y.z]` 一致；`<X.Y>` 取自版本目录，`<Z>` 为补丁号，首个版本为 `.0`）
     - message 必要字段：`version`（含 slug）、`scope`（本次交付范围摘要）、`merge`（merge commit 哈希，作回滚点）、`issues`（关闭的 TF Issue 清单）
     ```bash
@@ -88,13 +88,13 @@ dm-close-ver (关版本) ← 独立 skill，接收 dm-plan-ver 交接
     - 若版本目录未提供 `<Z>`（补丁号），默认 `.0`；若用户要求其他补丁号，沿用其指定
     - tag 必须推送（`--tags`），否则远端无版本锚点
 
-12. **追踪矩阵归档** — 更新/归档 tracking-matrix
+13. **追踪矩阵归档** — 更新/归档 tracking-matrix
 
 ### Phase D：关闭后确认（Post-close verify）
 
-13. **依赖本版本的上游** — 确认 main 上无残留分支引用
-14. **roadmap 更新** — 标记该版本已交付，推进下一步
-15. **回滚预案确认** — 记录已知回滚点（merge commit 哈希）
+14. **依赖本版本的上游** — 确认 main 上无残留分支引用
+15. **roadmap 更新** — 标记该版本已交付，推进下一步
+16. **回滚预案确认** — 记录已知回滚点（merge commit 哈希）
 
 ## 常见失误排查（Troubleshooting）
 

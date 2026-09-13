@@ -69,7 +69,7 @@ For non-TF commits (worklog, project init, standalone fixes), omit the footer.
 
 Build the commit message and execute. Never commit unless the user explicitly asks.
 
-> Under the Micro-Batching rhythm of `docs/08-small-batch-iteration.md`, a TF splits into three batches; each **green batch** yields one commit (all `Refs #same TF`). This step still triggers only when the user says commit / calls dm-commit — AI never commits on its own. If the next batch descends into chaos, the **user** runs `git reset --hard` to the last green commit (AI never自发, per git safety protocol).
+> Under the Micro-Batching rhythm of `docs/08-small-batch-iteration.md`, a TF splits into three batches; each **green batch** yields one commit (all `Refs #same TF`). This step still triggers only when the user says commit / calls dm-commit — AI never commits on its own. If the next batch descends into chaos, the **user** runs `git reset --hard` to the last green commit (AI never does so spontaneously, per git safety protocol).
 
 ### Step 7: Validate
 
@@ -81,13 +81,15 @@ After commit, verify:
 
 ## Key Rules
 
-- Every commit must use `type(scope): subject` format
-- `subject` must be ≤ 50 characters
-- `type` must be from the allowed set
-- TF commits must include `Closes #id` or `Refs #id` in footer
-- Body and footer are optional for trivial, non-TF changes
-- Chinese `subject` is acceptable for docs/worklog, English for code
-- Never commit unless the user explicitly asks
+| Rule | Source |
+|------|--------|
+| Commit must use `type(scope): subject` format | 03-git-flow-rules §3.1 |
+| `type` comes from the allowed set of 8 | 03-git-flow-rules §3.3 |
+| `subject` ≤ 50 characters | 03-git-flow-rules §3.4 |
+| TF commits must link an Issue (`Closes #id` / `Refs #id`) | 03-git-flow-rules §2.3 |
+| Body and footer optional for trivial, non-TF changes | 03-git-flow-rules §8 |
+| Chinese `subject` acceptable for docs/worklog, English for code | 03-git-flow-rules §3.4 |
+| Never commit unless the user explicitly asks | 03-git-flow-rules §3 (this skill §6) |
 
 ## Common Patterns
 
@@ -120,3 +122,25 @@ Closes #42
 ## References
 
 - `references/git-flow-rules.md` — Full commit message specification, type set, branch naming, merge strategy.
+
+## Example
+
+```
+User: "commit"
+
+AI:  1. Inspect the staging area (git diff --staged)
+     2. Analyze the change type -> recommend type: feat
+     3. Recommend scope: auth
+     4. Suggest subject: implement credential validation
+     5. TF-related -> suggest footer: Closes #42
+     6. Build: feat(auth): implement credential validation\n\nCloses #42
+     7. Commit after confirmation
+```
+
+```
+User: "TF2 is done, commit it"
+
+AI:  1. Read 200-spec.md to confirm TF2 acceptance criteria
+     2. Build the commit message per dm-commit convention
+     3. Suggest: feat(login): implement credential validation\n\nCloses #43
+```

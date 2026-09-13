@@ -50,8 +50,10 @@ PM / 产品经理。报告语言面向功能交付、业务价值、里程碑进
 | 默认周期为本周一至周日 | — |
 | 报告必须基于 worklog.md 实际数据 | 04-worklog-rules.md |
 | 不编造 worklog 中不存在的内容 | 04-worklog-rules.md |
-| 不记录 commit hash、代码细节、具体日期 | — |
+| 不记录 commit hash、代码细节 | — |
+| 不记录具体日期 — 只列完成的任务 | — |
 | 使用功能 / 用户视角语言，面向 PM | — |
+| worklog 为空或周期内无记录，须在报告中明确说明 | — |
 | 文件名用当天日期：`docs/reports/weekly-<当天>.md` / `docs/reports/report-<当天>.md` | — |
 
 ## 反模式

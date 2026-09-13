@@ -109,6 +109,7 @@ Output the report (assets published, entries deployed, cleaned items, verificati
 | Sync is clean-then-copy with file count verification, non-zero exit on failure | `pub_local.py` |
 | Ignore `__pycache__` / `.DS_Store` | `pub_local.py` |
 | Omit `--deploy` for assets-only; `--deploy` is required to make a skill triggerable | Workflow |
+| Commit delegate to dm-commit | dm-commit |
 
 ## Assets
 

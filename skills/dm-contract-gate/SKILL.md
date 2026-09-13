@@ -85,6 +85,7 @@ On gate failure, emit a black-box snapshot per `docs/07-observability-driven-dev
 | Machine-verifiable first: key contracts must be parseable | docs/06 §2.8 |
 | Gate failure needs structured diagnosis (07 black box) | docs/07 §6 / §3 |
 | Gate 2 includes observability DoD: post-edit without observe wrapper / without exit Assert (empty map → assertionFailure) counts as gate failed | docs/07 §2.5 |
+| Observability DoD is scripted by `verify_contract.py --source-dir` (scans bare logs vs structured assert/observe signals) | samples/contract-gate |
 | Implementation delegated to dm-dev-tf; this skill only guards | Scope |
 
 ## Resources

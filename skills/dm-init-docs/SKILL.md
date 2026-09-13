@@ -9,6 +9,25 @@ Generate a project's initial documentation skeleton interactively: collect inten
 
 > **Thin entry point.** This file only carries the trigger contract and a workflow summary. The full design doc and all templates live in the **asset SSOT**: `~/.dev-meta/` (published by `pub_local.py`). Read assets from there; do not duplicate template content here.
 
+## When to Use
+
+- User says "initialize a new project"
+- User says "scaffold project docs per dev-meta"
+- User says "create the project doc skeleton"
+- User says "generate the 00~06 docs"
+
+## Responsibility Boundary
+
+| Responsibility | Owner |
+|----------------|-------|
+| Generate the 00~06 doc skeleton (04 conditional) | ✅ This skill |
+| Generate `./CODEBUDDY.md` (version binding + exceptions) | ✅ This skill (inherited from the retired dm-init; prerequisite of dm-plan-ver / dm-log) |
+| Publish template assets and deploy skill trigger entries | Delegate `dm-pub-skill` (this skill only consumes templates) |
+| Code scaffolding (dirs / deps / config) | Not this skill (language CLIs) |
+| Runtime code injection (e.g. observe wrapper) | Not this skill (lands during development via dm-dev-tf) |
+| Version four-doc set (200/300/400/500) | Delegate `dm-plan-ver` |
+| Commit | Delegate `dm-commit` |
+
 ## Asset SSOT Paths
 
 | # | Doc | Template path |
@@ -71,6 +90,9 @@ Delegate to `dm-commit`, e.g. `chore: initialize project docs following dev-meta
 | Project-level CODEBUDDY.md holds only source + version + exceptions, not the spec body | docs/05-codebuddy-management.md |
 | Assets live in `~/.dev-meta/`; this file is only the trigger entry | Design doc |
 | No code scaffolding, no runtime code injection (observe wrapper lands during development) | Responsibility boundary |
+| Target path 3-level priority: `.dev-metarc` → user-specified → `<project-root>/docs/` | Design doc |
+| Placeholders: `{{FIELD}}` for named fields, `<!-- TODO: [dm-init-docs] <description> -->` for pending content | Design doc |
+| Commit delegate to dm-commit | dm-commit |
 
 ## Assets
 

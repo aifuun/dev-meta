@@ -180,3 +180,20 @@ All work packages are in a single flat table. `#` column = recommended execution
 ## Assets
 
 - `assets/500-schedule-template.md` — Schedule template with guardrails and empty table
+
+## Example
+
+```
+User: "schedule v1.0-mvp"
+
+AI:  1. Confirm: launch deadline? Quantified goals?
+     2. Generate docs/versions/v1.0-mvp/500-schedule.md
+     3. Fill work packages by priority (with a stage column, market-validation first):
+        | # | ID | Category | Stage | Work | Difficulty | Est. | Acceptance | Status |
+        |---|-----|----------|-------|------|-----------|------|------------|--------|
+        | 1 | v1.0-marketing-01 | MKT | Research | Brand positioning & user interviews: validate demand | ** | 2h | >=3 interviews, demand confirmed | [ ] |
+        | 2 | v1.0-dev-01 | DEV | Dev | Base architecture / repo setup | **** | 4h | Runs locally | [ ] |
+        | 3 | v1.0-dev-02 | DEV | Deploy+Integrate | Deploy functions + wire frontend | *** | 3h | End-to-end reachable | [ ] |
+        | 4 | v1.0-qa-01 | QA | Test | Accept deployed features | *** | 2h | Acceptance criteria pass | [ ] |
+        | ... | ... | ... | ... | ... | ... | ... | ... | ... |
+```

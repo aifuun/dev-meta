@@ -43,13 +43,13 @@ dm-close-ver (version close) ← independent skill, takes over from dm-plan-ver
 
 ### Phase B: Wrap-up Execution (Do the close)
 
-5. **Execution order matrix check** — `400-build.md` fixed tail rows (unit tests & regression, build & regression verification) done
-6. **worklog completion** — all work in the version period recorded (delegate dm-log)
-7. **Document wrap-up** — version documents committed (delegate dm-commit)
+6. **Execution order matrix check** — `400-build.md` fixed tail rows (unit tests & regression, build & regression verification) done
+7. **worklog completion** — all work in the version period recorded (delegate dm-log)
+8. **Document wrap-up** — version documents committed (delegate dm-commit)
 
 ### Phase C: Merge & Close Issues
 
-8. **Merge PR (preserve history)** — merge with a **merge commit**, **not squash**:
+9. **Merge PR (preserve history)** — merge with a **merge commit**, **not squash**:
    ```bash
    git checkout main
    git merge --no-ff feature/vX.Y-<slug>
@@ -58,18 +58,18 @@ dm-close-ver (version close) ← independent skill, takes over from dm-plan-ver
    - Preserve the original history of every TF commit
    - If a TF commit already carries `Closes #id`, the host platform auto-closes the issue on merge
 
-9. **Close remaining TF issues** — close every TF issue for this version:
+10. **Close remaining TF issues** — close every TF issue for this version:
    - Done: annotate acceptance result, then close
    - `[DEFERRED]`: annotate reason, then close
    - Not auto-closed by commit: close manually
    - Update tracking-matrix to ✅ after closing
 
-10. **Clean up branch** — delete the merged version branch:
+11. **Clean up branch** — delete the merged version branch:
     ```bash
     git branch -d feature/vX.Y-<slug>
     ```
 
-11. **Version tag** (required) — use an **annotated tag** with version + required info:
+12. **Version tag** (required) — use an **annotated tag** with version + required info:
     - Name: `v<X.Y.Z>` (matches version dir `vX.Y-<slug>` and PR `[Vx.y.z]`; `<Z>` patch starts at `.0`)
     - Message must include: `version` (with slug), `scope` (one-line delivery summary), `merge` (merge commit hash = rollback point), `issues` (closed TF Issue list)
     ```bash
@@ -84,13 +84,13 @@ dm-close-ver (version close) ← independent skill, takes over from dm-plan-ver
     ```
     - Tag must be pushed (`--tags`); it is the version anchor, not optional.
 
-12. **Archive tracking matrix** — update/archive tracking-matrix
+13. **Archive tracking matrix** — update/archive tracking-matrix
 
 ### Phase D: Post-close Verify
 
-13. **Upstream check** — confirm no residual references to the version branch on main
-14. **roadmap update** — mark the version delivered, advance next step
-15. **Rollback plan** — record known rollback point (merge commit hash)
+14. **Upstream check** — confirm no residual references to the version branch on main
+15. **roadmap update** — mark the version delivered, advance next step
+16. **Rollback plan** — record known rollback point (merge commit hash)
 
 ## Troubleshooting: Common Close-out Mistakes
 
@@ -117,6 +117,7 @@ dm-close-ver (version close) ← independent skill, takes over from dm-plan-ver
 | No new feature commits during close-out | — |
 | Delete merged branches | 03-git-flow-rules §9 |
 | Update roadmap after closing version | 01-project-dev-flow |
+| Tag the version with an annotated tag `v<X.Y.Z>`; message contains version/scope/merge/issues; must push with `--tags` | This skill §11 |
 | Must pass ODD DoD before merge: no bare logs / no silent swallow / high-cost nodes have diagnostic snapshots (07 §7) | docs/07-observability-driven-dev.md §7 |
 
 ## Output
@@ -128,3 +129,23 @@ dm-close-ver (version close) ← independent skill, takes over from dm-plan-ver
 - `references/version-rules.md` — Four-document acceptance structure
 - `references/git-flow-rules.md` — Issue/PR/merge rules
 - `../dm-plan-ver/references/git-flow-rules.md` — Tracking matrix, branch cleanup
+
+## Example
+
+```
+User: "close version v1.5-login"
+
+AI:  1. Readiness audit:
+        - Issue #21 [TF1] login form -> closed OK
+        - Issue #22 [TF2] validation flow -> closed OK
+        - 500-schedule.md all OK
+        - git status clean
+     2. Wrap-up: 400-build closing rows done, worklog completed
+     3. Merge (preserve history):
+        git checkout main
+        git merge --no-ff feature/v1.5-login
+        git push origin main
+     4. Close TF issues: confirm #21/#22 auto-closed (Closes footer)
+     5. Delete branch: git branch -d feature/v1.5-login
+     6. Tag the version (annotated, push --tags) and update the roadmap
+```

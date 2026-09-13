@@ -133,3 +133,20 @@ docs(adr): add ADR-NNN — <decision title>
 
 - `references/adr-format.md` — 完整的 ADR 格式规范与字段说明，当需要确认字段定义或格式细节时加载。
 - `assets/adr-template.md` — 新建 ADR 的空白模板，可直接复制使用。
+
+## Example
+
+```
+User: "we decided to use Terraform for cloud resources, record this decision"
+
+AI:  1. Scan docs/adrs/ -> 4 exist, next number is ADR-005
+     2. Confirm candidate options: manual setup / Pulumi / Terraform
+     3. Generate ADR-005:
+        # ADR-005: Use Terraform for Cloud Resources
+        - Status: Accepted
+        - Context: need an IaC tool to manage multi-cloud resources uniformly
+        - Decision: use Terraform
+        - Rationale: strong multi-cloud support, mature community ecosystem
+        - Consequences: OK declarative management / WARN HCL learning curve / TODO CI integration needed
+     4. Create docs/adrs/adr-005.md
+```

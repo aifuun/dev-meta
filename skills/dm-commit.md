@@ -86,6 +86,8 @@ TF 相关提交：
 | subject ≤ 50 字符 | 03-git-flow-rules.md §3.4 |
 | TF 提交须关联 Issue | 03-git-flow-rules.md §2.3 |
 | 细小变更可省略 body/footer | 03-git-flow-rules.md §8 |
+| docs / worklog 可用中文 subject，代码建议英文 | 03-git-flow-rules.md §3.4 |
+| 除非用户明确要求，否则不主动 commit | 03-git-flow-rules.md §3（本 skill §6） |
 
 ## 常见模式
 
