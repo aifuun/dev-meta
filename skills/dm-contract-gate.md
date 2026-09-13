@@ -1,3 +1,8 @@
+---
+name: dm-contract-gate
+description: 契约断言门禁：改前 diff 契约、改后跑门禁（sha256 + contract_verified）、交付前对齐 MANIFEST。触发于改代码前后与「跑契约门禁」。
+---
+
 # dm-contract-gate
 
 ## 概述

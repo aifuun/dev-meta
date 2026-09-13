@@ -1,3 +1,8 @@
+---
+name: dm-commit
+description: 提交变更时使用：type(scope): subject 格式向导、格式校验、footer 关联 Issue（Closes/Refs）。触发于「commit」「帮我 commit」或询问 commit 格式。
+---
+
 # dm-commit
 
 ## 概述
@@ -9,6 +14,7 @@ Commit 规范 skill，确保每次提交遵循 dev-meta commit 约定。是 comm
 - "commit"
 - "提交代码"
 - "帮我 commit"
+- 询问 commit message 格式
 - dm-plan-ver 阶段 2 步骤 3（TF 交付提交）
 - dm-log 步骤 6（worklog 提交）
 - dm-init-docs 步骤 7（初始化提交）
@@ -42,7 +48,7 @@ Commit 规范 skill，确保每次提交遵循 dev-meta commit 约定。是 comm
 
 ### 3. 编写 subject
 
-- 使用**祈使语气**（"add" 而非 "added"）
+- 使用**祈使语气**（"add" 而非 "added"，"fix" 而非 "fixed"）
 - ≤ 50 字符
 - 简洁描述做了什么
 - docs/worklog 可用中文，代码建议用英文

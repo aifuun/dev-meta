@@ -1,3 +1,8 @@
+---
+name: dm-grillme-plan
+description: 非版本类需求写代码/出方案前的决策逼问与 Final Plan 沉淀。触发于「/grill-me」「规划前先拷问我」「先 pressure-test 这个方案」。
+---
+
 # dm-grillme-plan
 
 ## 概述

@@ -1,3 +1,8 @@
+---
+name: dm-adr
+description: 记录架构/技术决策时使用，按 ADR 五段式（背景/决策/原因/后果/替代方案）维护决策日志。触发于「记录一个技术决策」「创建 ADR」「补充/更新已有决策」。
+---
+
 # dm-adr
 
 ## 概述
@@ -18,6 +23,8 @@
 - "创建 ADR"
 - "我们决定用 X 做 Y"
 - "为什么选择了 X？"（查询已有 ADR）
+- "补一个决策记录"
+- "评审 / 更新已有 ADR"
 
 ## 核心概念
 
@@ -33,6 +40,32 @@
 | 后果 Consequences | ✅ 正面影响 / ⚠️ 代价 / 🔧 后续动作 |
 | 替代方案 Alternatives | 被否掉的可选方案（可选） |
 
+完整骨架（可直接套用）：
+
+```markdown
+# ADR-NNN: 标题（简短名词短语）
+
+- **状态**: 提议中 (Proposed) / 已接受 (Accepted) / 已废弃 (Deprecated) / 已替代 (Superseded by ADR-NNN)
+- **日期**: YYYY-MM-DD
+
+## 背景     — 为什么需要做这个决策
+## 决策     — 明确陈述选择了什么方案
+## 原因（可选）— 为什么选它而非其他方案
+## 后果     — ✅ 正面 / ⚠️ 代价 / 🔧 跟进
+## 替代方案（可选）— 被否掉的方案表
+## 相关     — 相关文档 / ADRs / Issues
+```
+
+### 文件结构
+
+```text
+docs/adrs/
+├── README.md        # 导航索引（表格 + 按领域分类）
+├── adr-001.md       # 独立决策文件
+├── adr-002.md
+└── ...
+```
+
 ### 状态转换
 
 ADR 有生命周期，不可修改已接受原文，只能转换状态：
@@ -42,8 +75,10 @@ Proposed → Accepted → Deprecated
                  → Superseded (by ADR-NNN)
 ```
 
-- **Accepted**：已采纳的 ADR 不可改原文；需变化时更新旧 ADR 状态并创建新 ADR
-- **Superseded**：被新 ADR 替代，需双向交叉引用
+- **Proposed（提议中）**：正在讨论，尚未实施
+- **Accepted（已接受）**：已采纳并实施；**不可改原文**，需变化时更新旧 ADR 状态并创建新 ADR
+- **Deprecated（已废弃）**：不再适用
+- **Superseded（已替代）**：被新 ADR 替代，注明替代者（Superseded by ADR-NNN），需双向交叉引用
 
 ## 执行流程
 
@@ -58,6 +93,8 @@ Proposed → Accepted → Deprecated
 ### 3. 撰写 ADR
 
 按「核心概念」的五段式格式撰写。一篇 ADR 只记录一个决策。
+
+> **篇幅纪律**：ADR 是**决策日志，不是设计文档**——保持精简，只写「为什么这么选」，不展开实现细节。
 
 ### 4. 创建文件
 
@@ -91,9 +128,9 @@ Proposed → Accepted → Deprecated
 
 | 资源 | 来源 | 用途 |
 |------|------|------|
-| SKILL.md | — | 流程指令 + 规则速查 |
-| references/adr-format.md | — | ADR 格式规范详情 |
-| assets/adr-template.md | — | 新建 ADR 空白模板 |
+| SKILL.md | — | 流程指令 + 规则速查（**由中文源自动部署，勿手改**） |
+| references/adr-format.md | — | ADR 完整格式规范与字段说明，**需确认字段定义或格式细节时加载** |
+| assets/adr-template.md | — | 新建 ADR 的空白模板，**可直接复制使用** |
 
 ## 使用示例
 

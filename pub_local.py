@@ -10,7 +10,11 @@ pub_local.py - 将 dev-meta 的模板与 skill 文档同步至本地全局资产
 
 两类产物:
 - 资产 SSOT  ~/.dev-meta/              模板 + 中文设计文档（默认发布）
-- 触发入口    ~/.codebuddy/skills/<name>/  英文 SKILL.md + assets/ + references/（--deploy）
+- 触发入口    ~/.codebuddy/skills/<name>/  SKILL.md（由中文源自动生成）+ assets/ + references/（--deploy）
+
+单一权威（Single Source of Truth）:
+  skill 只维护中文源 `skills/<name>.md`（含 YAML frontmatter name/description）；
+  部署版 `SKILL.md` 由本脚本从中文源生成，禁止手工编辑 —— 因此不存在双端漂移。
 
 修复的旧版缺陷:
 1. 过滤: skills 只同步 `dm-*.md`，排除 README.md / skill-doc-principles.md，防污染
@@ -77,11 +81,13 @@ def sync_dir(src: Path, dst: Path, pattern: str, dry_run: bool, label: str) -> i
     return copied
 
 
-def sync_tree(src: Path, dst: Path, dry_run: bool, label: str) -> int:
-    """递归同步目录树（SKILL.md + assets/ + references/）：清理 -> 拷贝 -> 校验。
+def sync_tree(src: Path, dst: Path, dry_run: bool, label: str, preserve: set | None = None) -> int:
+    """递归同步目录树（assets/ + references/）：清理 -> 拷贝 -> 校验。
 
+    `preserve` 中的相对路径不会被清理（用于保护由中文源生成的 SKILL.md）。
     返回同步文件数，-1 表示失败。
     """
+    preserve = preserve or set()
     if not src.is_dir():
         print(f"  [warn] [{label}] 源目录不存在，跳过: {src}")
         return 0
@@ -98,7 +104,7 @@ def sync_tree(src: Path, dst: Path, dry_run: bool, label: str) -> int:
     removed = 0
     for existing in sorted(p for p in dst.rglob("*") if p.is_file()):
         rel = existing.relative_to(dst)
-        if _ignored(rel):
+        if _ignored(rel) or rel.as_posix() in preserve:
             continue
         if rel.as_posix() not in rels:
             print(f"  - 删除旧文件: {rel.as_posix()}")
@@ -119,7 +125,9 @@ def sync_tree(src: Path, dst: Path, dry_run: bool, label: str) -> int:
 
     if not dry_run:
         actual = len([p for p in dst.rglob("*")
-                      if p.is_file() and not _ignored(p.relative_to(dst))])
+                      if p.is_file()
+                      and not _ignored(p.relative_to(dst))
+                      and p.relative_to(dst).as_posix() not in preserve])
         if actual != len(src_files):
             print(f"  [error] [{label}] 校验失败: 期望 {len(src_files)} 个，实际 {actual} 个")
             return -1
@@ -152,11 +160,22 @@ def main() -> int:
         return 1
 
     if args.deploy:
-        print(f"\n[deploy] -> {DEPLOY_DIR}（skill 触发入口）")
-        for skill_dir in sorted((root / "skills").glob(f"{SKILL_PREFIX}*")):
-            if skill_dir.is_dir():
-                if sync_tree(skill_dir, DEPLOY_DIR / skill_dir.name, args.dry_run, skill_dir.name) < 0:
+        print(f"\n[deploy] -> {DEPLOY_DIR}（触发入口，由中文源生成）")
+        for src in sorted((root / "skills").glob(f"{SKILL_PREFIX}*.md")):
+            name = src.stem
+            target_dir = DEPLOY_DIR / name
+            # 1) 同步该 skill 的资源目录（assets/ references/），保护待生成的 SKILL.md
+            extra = root / "skills" / name
+            if extra.is_dir():
+                if sync_tree(extra, target_dir, args.dry_run,
+                             f"{name} resources", preserve={"SKILL.md"}) < 0:
                     return 1
+            # 2) 由中文源生成 SKILL.md（唯一权威）
+            out = target_dir / "SKILL.md"
+            print(f"  生成: {name}/SKILL.md  <-  {src.name}")
+            if not args.dry_run:
+                target_dir.mkdir(parents=True, exist_ok=True)
+                out.write_text(src.read_text(encoding="utf-8"), encoding="utf-8")
         print(f"\n[done] 资产已发布至 {TARGET_DIR}，触发入口已部署至 {DEPLOY_DIR}")
     else:
         print(f"\n[done] 已发布至本地全局资产目录: {TARGET_DIR}")

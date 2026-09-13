@@ -1,3 +1,8 @@
+---
+name: dm-init-docs
+description: 初始化新项目文档：引导式意图收集，生成 00~06 文档骨架（04 可选）+ ./CODEBUDDY.md 版本绑定。触发于「初始化新项目」「创建项目文档骨架」。
+---
+
 # dm-init-docs
 
 ## 概述

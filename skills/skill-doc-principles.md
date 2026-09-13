@@ -64,11 +64,15 @@
 - 正文各处的规则表述必须与表一致，不得出现正文和表重复/冲突。
 - 规则表每条标注来源（规范文档或其它 skill）。
 
-### 5. 双端一致（设计文档 ↔ SKILL.md）
+### 5. 单一权威 + 自动部署（中文源 → SKILL.md）
 
-- 每个 skill 有两份：`skills/<skill>.md`（中文设计文档）与 `~/.codebuddy/skills/<skill>/SKILL.md`（英文部署版）。
-- 两份结构必须对齐（章节一一对应），仅语言不同。
-- 修改任一端的核心概念/规则，必须同步另一端。
+- 每个 skill **只有一份权威**：`skills/<skill>.md`（中文源，含 YAML frontmatter `name` / `description`）。
+- 部署版 `~/.codebuddy/skills/<skill>/SKILL.md` **由 `pub_local.py --deploy` 从中文源自动生成**，**禁止手工编辑**。
+- 不再维护语言双份：中文源即部署内容（AI 可直接执行中文指令），因此**从结构上消除双端漂移**。
+- 新增/调整 skill 时：只改中文源 → `python3 pub_local.py --deploy` 生效。
+- skill 的 `assets/` 与 `references/` 仍放在 `skills/<skill>/` 目录下，随部署一并同步。
+
+> **历史**：早期采用「中文设计文档 + 英文部署版」双端维护，实践暴露出「两处必漏改一处」的结构性漂移（规则条目缺失、章节缺失、引用已删资源）。已统一为中文单源 + 自动部署。
 
 ### 6. 面向 AI 可遍历
 
@@ -92,11 +96,11 @@
 | 同一概念在多文档重复定义 | 多处漂移，改一处漏一处 | 只在一处定义，其余引用 |
 | 规则分散在正文 + 规则表两处 | AI 不知以谁为准 | 规则表唯一权威，正文不重复 |
 | 委托 skill 的完整流程展开在父 skill | 重复维护，职责混乱 | 父 skill 仅一句 + 指向目标 |
-| 设计文档与 SKILL.md 结构错位 | AI 加载时逻辑不一致 | 双端结构强制对齐 |
+| 手工编辑部署版 `SKILL.md` | 与中文源漂移，两处必漏改一处 | 部署版由脚本生成，只改中文源 |
 | 决策点靠 AI 自问自答，无显式提问 | 隐性假设未收敛，信息不全即产文档 | 决策点显式「提问→回答→沉淀」三步 |
 
 ## 部署同步
 
-- 部署版 SKILL.md 位于 `~/.codebuddy/skills/<skill>/SKILL.md`。
-- 修改设计文档的核心概念/规则后，须同步部署版 SKILL.md 的对应章节。
+- 部署版 `SKILL.md` 位于 `~/.codebuddy/skills/<skill>/SKILL.md`，**由 `pub_local.py --deploy` 从中文源自动生成，禁止手工编辑**。
+- 修改中文源后执行 `python3 pub_local.py --deploy` 即生效；无需手工同步章节，也不可能漂移。
 - 共享 references（如 `version-rules.md`、`git-flow-rules.md`）在 `docs/` 源文档变更后，须重新同步到各 skill 的 references/。

@@ -1,3 +1,8 @@
+---
+name: dm-close-ver
+description: 关闭版本时使用：就绪审计、保留历史的 merge（不用 squash）、关闭 TF Issue、清理分支、打 annotated tag 并推送。触发于「关闭版本」。
+---
+
 # dm-close-ver
 
 ## 概述

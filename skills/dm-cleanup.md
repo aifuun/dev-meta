@@ -1,3 +1,8 @@
+---
+name: dm-cleanup
+description: 版本/TF 之外的跨文件技术债清理与仓库卫生（死代码、注释、.gitignore、误提交文件）。触发于「清理技术债」「做仓库卫生」。
+---
+
 # dm-cleanup
 
 ## 概述

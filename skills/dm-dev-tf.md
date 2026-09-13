@@ -1,3 +1,8 @@
+---
+name: dm-dev-tf
+description: 开始开发某个 TF 时使用：读取版本文档、确认/创建 Issue、输出开发概要（开发在版本分支上，不建分支）。触发于「开始 TF3」「/dm-dev-tf」。
+---
+
 # dm-dev-tf
 
 ## 概述
@@ -130,6 +135,7 @@ TF 开发概要从版本四件套提取，各文档提供不同视角：
 | SKILL.md | — | 上述启动流程指令 + 规则速查 |
 | dm-plan-ver references/version-rules.md | `docs/02-version-rules.md` | TF 文档结构、环节定义 |
 | dm-plan-ver references/git-flow-rules.md | `docs/03-git-flow-rules.md` | Issue 规范（分支归版本级，不在本 skill 处理） |
+| dm-commit references/git-flow-rules.md | `docs/03-git-flow-rules.md` | commit 格式规则 |
 
 ## 使用示例
 

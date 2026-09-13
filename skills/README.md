@@ -64,7 +64,7 @@ python3 pub_local.py --deploy           # 同时部署触发入口到 ~/.codebud
 python3 pub_local.py --deploy --dry-run # 预演，不写入
 ```
 
-> **仓库内的两套文件**：`skills/<name>.md` 是中文设计文档（源），`skills/<name>/SKILL.md` 是英文触发入口源（**纳入版本控制**，`--deploy` 时同步到 `~/.codebuddy/skills/<name>/`）。二者并存（`dm-adr.md` 与 `dm-adr/`）属正常，不是重复。
+> **单一权威（Single Source of Truth）**：`skills/<name>.md` 是唯一权威——中文源，含 YAML frontmatter（`name` + `description`）；`skills/<name>/` 目录只存放 `assets/` 与 `references/`。部署版 `SKILL.md` 由 `pub_local.py --deploy` **自动生成**，仓库内不保存、禁止手改，从结构上消除双端漂移（详见 `skill-doc-principles.md` §5）。
 >
 > ⚠️ 早期文档中的 `cp -r skills/dm-* ~/.codebuddy/skills/` 已废弃——它会把中文 `.md` 复制成文件而非目录，且缺少 frontmatter，不会被 CodeBuddy 识别为 skill。
 

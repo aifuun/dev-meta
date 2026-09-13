@@ -1,3 +1,8 @@
+---
+name: dm-plan-ver
+description: 新建版本：创建版本文档四件套、分支/PR、TF Issue，并在产出 200-spec/300-design 前执行需求级/架构级 grill。触发于「新建版本 vX.Y」。
+---
+
 # dm-plan-ver
 
 ## 概述

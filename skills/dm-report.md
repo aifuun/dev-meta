@@ -1,3 +1,8 @@
+---
+name: dm-report
+description: 生成阶段报告：从 worklog 提取数据，按模板输出周报/月报，面向 PM。触发于「生成周报」「本周报告」。
+---
+
 # dm-report
 
 ## 概述

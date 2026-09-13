@@ -1,8 +1,13 @@
+---
+name: dm-pub-skill
+description: 发布/部署 dev-meta 资产与 skill：模板发布到 ~/.dev-meta/，skill 触发入口部署到 ~/.codebuddy/skills/。触发于「发布 skill」「部署模板」「同步资产」。
+---
+
 # dm-pub-skill
 
 ## 概述
 
-发布与部署 skill：把 `dev-meta` 仓库的**模板资产**发布到 `~/.dev-meta/`，并把 **skill 触发入口**（英文 `SKILL.md` + `assets/` + `references/`）部署到 `~/.codebuddy/skills/`。实际文件同步由 `pub_local.py` 执行，本 skill 负责**编排、前置检查与校验**，让发布/部署可复现、可校验、新人可照做。
+发布与部署 skill：把 `dev-meta` 仓库的**模板资产**发布到 `~/.dev-meta/`，并把 **skill 触发入口**（`SKILL.md` + `assets/` + `references/`）部署到 `~/.codebuddy/skills/`——其中 `SKILL.md` **由中文源自动生成**（单一权威，禁止手改）。实际文件同步由 `pub_local.py` 执行，本 skill 负责**编排、前置检查与校验**，让发布/部署可复现、可校验、新人可照做。
 
 ## 职责边界
 
@@ -31,7 +36,7 @@
 | 目录 | 角色 | 内容 | 谁读 |
 |------|------|------|------|
 | `~/.dev-meta/` | **资产 SSOT**（独立，可脱离 CodeBuddy 使用） | `templates/project/docs/0X_*.md`、`templates/CODEBUDDY.md`、`skills/dm-*.md`（中文设计文档） | AI 按需读取模板与规范 |
-| `~/.codebuddy/skills/<name>/` | **触发入口**（CodeBuddy 只从这里加载 skill） | `SKILL.md`（英文，含 frontmatter）+ `assets/` + `references/` | CodeBuddy 加载并触发 |
+| `~/.codebuddy/skills/<name>/` | **触发入口**（CodeBuddy 只从这里加载 skill） | `SKILL.md`（**由中文源自动生成**，含 frontmatter）+ `assets/` + `references/` | CodeBuddy 加载并触发 |
 
 > **两者不可互相替代**：只发布资产 → skill 不会出现在可触发列表；只部署入口 → AI 找不到模板资产。
 
@@ -39,11 +44,10 @@
 
 | 路径 | 角色 | 去向 |
 |------|------|------|
-| `skills/<name>.md` | 中文设计文档（源，供人阅读与维护） | → `~/.dev-meta/skills/` |
-| `skills/<name>/SKILL.md` | 英文触发入口源（**纳入版本控制，防丢失**） | → `~/.codebuddy/skills/<name>/` |
+| `skills/<name>.md` | **唯一权威**：中文源（含 YAML frontmatter） | → `~/.dev-meta/skills/`，并生成 `~/.codebuddy/skills/<name>/SKILL.md` |
 | `skills/<name>/assets/`、`references/`、`scripts/` | 随触发入口一同部署 | → `~/.codebuddy/skills/<name>/` |
 
-> 仓库同时存在 `skills/dm-adr.md`（文件）与 `skills/dm-adr/`（目录）是正常的：前者是中文设计文档，后者是英文部署源。
+> 仓库内**没有** `skills/<name>/SKILL.md` 源文件——它是部署产物，由脚本从中文源生成。同时存在 `skills/dm-adr.md`（中文源）与 `skills/dm-adr/`（`assets/`+`references/`）是正常的。
 
 ### 幂等与安全
 
@@ -61,7 +65,7 @@
 - `templates/project/docs/` 是否含 7 个模板（00~06）
 - `templates/CODEBUDDY.md` 是否存在
 - 每个 `skills/<name>/SKILL.md` 是否存在且含 YAML frontmatter（`name` + `description`）
-- 中文设计文档 `skills/<name>.md` 与英文 `SKILL.md` 章节是否大致对齐（双端一致）
+- 每个 `skills/<name>.md` 是否含 YAML frontmatter（`name` + `description`）——缺失会导致部署后无法被 CodeBuddy 触发
 
 发现问题先报告并询问，不强行发布。
 
@@ -105,8 +109,8 @@ python3 ~/.vscode/extensions/tencent-cloud.coding-copilot-*/out/extension/builti
 | 规则 | 来源 |
 |------|------|
 | 资产走 `~/.dev-meta/`，触发入口走 `~/.codebuddy/skills/<name>/` | 本文核心概念 |
-| 英文 `SKILL.md` 必须在仓库 `skills/<name>/` 建源，纳入版本控制 | 本文核心概念（防丢失） |
-| 新增/修改 skill 须双端一致：中文设计文档 ↔ 英文 `SKILL.md` 章节对齐 | skill-doc-principles §5 |
+| skill 只维护中文源 `skills/<name>.md`（含 frontmatter），部署版 `SKILL.md` 由脚本生成、禁止手改 | skill-doc-principles §5 |
+| 新增/修改 skill 只改中文源，随后 `python3 pub_local.py --deploy` 生效 | skill-doc-principles §5 |
 | 发布/部署须先 `--dry-run` 预演 | 本文执行流程 |
 | 同步为「先清理后拷贝 + 文件数校验」，失败非 0 退出 | `pub_local.py` |
 | 忽略 `__pycache__` / `.DS_Store` | `pub_local.py` |
@@ -121,7 +125,7 @@ python3 ~/.vscode/extensions/tencent-cloud.coding-copilot-*/out/extension/builti
 | `templates/project/docs/0X_*.md` | `templates/project/docs/` | 项目文档模板（发布至 `~/.dev-meta/`） |
 | `templates/CODEBUDDY.md` | `templates/` | 项目层 CODEBUDDY 模板 |
 | `skills/<name>.md` | `skills/` | 中文设计文档（发布至 `~/.dev-meta/skills/`） |
-| `skills/<name>/SKILL.md` | `skills/<name>/` | 英文触发入口源（部署至 `~/.codebuddy/skills/<name>/`） |
+| `skills/<name>/assets/`、`references/` | `skills/<name>/` | 随触发入口部署（`SKILL.md` 为生成物，不在仓库保存） |
 | `package_skill.py` | skill-creator 扩展 | skill 格式校验（frontmatter / 结构） |
 
 ## 使用示例
