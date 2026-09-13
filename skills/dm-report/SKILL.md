@@ -115,3 +115,22 @@ Present the report content to the user directly in the conversation. After prese
 ## Assets
 
 - `assets/report-template.md` — Weekly report template for direct use.
+
+## Example
+
+```
+User: "generate the weekly report"
+
+AI:  1. Read docs/reports/worklog.md
+     2. Determine the period: 2026-07-20 (Mon) - 2026-07-26 (Sun)
+     3. Extract feature deliveries, key decisions, todos and milestones in that period (ignore commit details)
+     4. Generate a PM-facing report:
+        - Completed tasks: list completed items (no dates)
+        - Feature delivery: what capabilities shipped
+        - Key decisions: important design decisions and discussions
+        - Todo progress: status changes
+        - Milestones: key checkpoints
+        - Next-phase plan: ordered by priority
+     5. Save to docs/reports/weekly-2026-07-26.md (today's date)
+     6. Ask whether to commit
+```
