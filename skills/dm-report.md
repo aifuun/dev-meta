@@ -96,11 +96,11 @@ PM / 产品经理。报告语言面向功能交付、业务价值、里程碑进
 - ❌ 使用技术实现术语替代功能交付描述
 - ❌ 编造 worklog 中不存在的工作内容
 
-## Skill 资源映射
+## 资源映射
 
 | 资源 | 来源 | 用途 |
 |------|------|------|
-| SKILL.md | — | 流程指令 + 规则速查 |
+| `~/.codebuddy/skills/dm-report/SKILL.md` | — | 部署版（由中文源自动生成，勿手改） |
 | references/worklog-rules.md | `docs/04-worklog-rules.md` | 日志规范详情 |
 | assets/report-template.md | — | 周报模板 |
 

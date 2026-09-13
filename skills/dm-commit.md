@@ -168,11 +168,11 @@ Keep playback flow non-blocking when openDB fails.
 Closes #42
 ```
 
-## Skill 资源映射
+## 资源映射
 
 | 资源 | 来源 | 用途 |
 |------|------|------|
-| SKILL.md | — | 上述流程指令 + 规则速查 |
+| `~/.codebuddy/skills/dm-commit/SKILL.md` | — | 部署版（由中文源自动生成，勿手改） |
 | references/git-flow-rules.md | `docs/03-git-flow-rules.md` | commit 规范详情 |
 
 ## 使用示例

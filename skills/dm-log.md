@@ -114,11 +114,11 @@ chore: update worklog — <一句话总结>
 | 待办状态用统一标注，勿混用 | 04-worklog-rules.md |
 | 禁止：粘贴大段日志、未完成先标记✅、总结与详情矛盾 | 04-worklog-rules.md |
 
-## Skill 资源映射
+## 资源映射
 
 | 资源 | 来源 | 用途 |
 |------|------|------|
-| SKILL.md | — | 上述流程指令 + 规则速查 |
+| `~/.codebuddy/skills/dm-log/SKILL.md` | — | 部署版（由中文源自动生成，勿手改） |
 | references/worklog-rules.md | `docs/04-worklog-rules.md` | 日志规范详情 |
 | assets/worklog.md | `templates/worklog.md` | 新建项目时复制 |
 

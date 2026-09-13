@@ -175,11 +175,11 @@ dev 工作包完成 = **代码 + 部署 + 联调**；部署与联调归 dev，qa
 
 - **关闭报告**：版本 → 交付范围 → 验收摘要 → 关闭的 Issue 清单 → 遗留项（deferred）→ 回滚点（merge commit 哈希）
 
-## Skill 资源映射
+## 资源映射
 
 | 资源 | 来源 | 用途 |
 |------|------|------|
-| SKILL.md | — | 上述收尾流程指令 + 规则速查 |
+| `~/.codebuddy/skills/dm-close-ver/SKILL.md` | — | 部署版（由中文源自动生成，勿手改） |
 | references/version-rules.md | `docs/02-version-rules.md` | 四件套验收结构 |
 | references/git-flow-rules.md | `docs/03-git-flow-rules.md` | Issue/PR/merge 规则详情 |
 | dm-plan-ver references/git-flow-rules.md | `docs/03-git-flow-rules.md` | 追踪矩阵、分支清理 |
