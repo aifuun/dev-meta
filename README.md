@@ -63,6 +63,11 @@ dm-adr  ←── 按需穿插  ←──→  dm-commit
 | `dm-log` | 每日总结 + 详细日志 + 待办 + 里程碑 | 每日 |
 | `dm-report` | 从 worklog 提取生成周报/阶段报告 | 每周 |
 | `dm-adr` | 维护架构/技术决策记录 | 按需 |
+| `dm-arch-design` | 架构设计：人定边界（Facade / 事件总线）、AI 填内部（单文件/单函数） | 按需 |
+| `dm-contract-gate` | 契约断言门禁：改前 diff、改后校验、交付对齐 MANIFEST | 高频 |
+| `dm-grillme-plan` | 非版本需求写代码前的决策逼问与 Final Plan 沉淀 | 按需 |
+| `dm-cleanup` | 技术债清理 + 仓库卫生（.gitignore、误提交文件） | 按需 |
+| `dm-pub-skill` | 发布 / 部署：资产到 `~/.dev-meta/`、skill 触发入口到 `~/.codebuddy/skills/` | 按需 |
 
 ### CODEBUDDY 管理层
 
@@ -108,5 +113,5 @@ flowchart LR
 - [templates/versions/](https://github.com/aifuun/dev-meta/tree/main/templates/versions) — 版本文档模板（与规范文件一一对应）
 - [templates/project/docs/](https://github.com/aifuun/dev-meta/tree/main/templates/project/docs) — 项目级文档模板（00 PRD / 01 技术规格 / 02 系统设计 / 03 契约 / 04 UI-UX / 05 路线图 / 06 可观测性）
 - [templates/CODEBUDDY.md](https://github.com/aifuun/dev-meta/blob/main/templates/CODEBUDDY.md) — 项目层 CODEBUDDY 模板（版本绑定 + 例外项）
-- [skills/](https://github.com/aifuun/dev-meta/tree/main/skills) — Skill 设计文档（dm-init-docs / dm-plan-ver / dm-close-ver / dm-schedule / dm-dev-tf / dm-log / dm-commit / dm-report / dm-adr / dm-arch-design / dm-contract-gate / dm-grillme-plan / dm-cleanup）
+- [skills/](https://github.com/aifuun/dev-meta/tree/main/skills) — Skill 设计文档（dm-init-docs / dm-plan-ver / dm-close-ver / dm-schedule / dm-dev-tf / dm-log / dm-commit / dm-report / dm-adr / dm-arch-design / dm-contract-gate / dm-grillme-plan / dm-cleanup / dm-pub-skill）
 - [samples/](https://github.com/aifuun/dev-meta/tree/main/samples) — 版本文档样例（V1.4.1-indexeddb-prefs）

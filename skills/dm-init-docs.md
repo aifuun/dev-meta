@@ -9,8 +9,8 @@
 | 职责 | 归属 |
 |------|------|
 | 生成项目文档骨架 00~06（04 条件跳过） | ✅ 本 skill |
-| 生成 `./CODEBUDDY.md`（版本绑定 + 例外项） | ✅ 本 skill（承接自 dm-init，是 dm-plan-ver / dm-log 的前置条件） |
-| 模板资产维护与本地发布 | ✅ 本 skill（`pub_local.py`） |
+| 生成 `./CODEBUDDY.md`（版本绑定 + 例外项） | ✅ 本 skill（原 `dm-init` 职责，现由本 skill 承接；是 dm-plan-ver / dm-log 的前置条件） |
+| 模板资产的发布与 skill 触发入口部署 | 委托 `dm-pub-skill`（本 skill 只消费模板生成文档，不负责发布） |
 | 代码脚手架（目录 / 依赖 / 配置） | ❌ 各语言 CLI 负责 |
 | 运行时代码植入（如 `observe` 包装器） | ❌ 由开发阶段 `dm-dev-tf` 落地，本 skill 只生成文档 |
 | 版本四件套（200-spec / 300-design / 400-build / 500-schedule） | 委托 `dm-plan-ver` |

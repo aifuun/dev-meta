@@ -17,6 +17,8 @@
 | `dm-commit` | 提交变更 | type 向导、格式校验、footer 关联 Issue，确保 commit 一致性 | 频繁 |
 | `dm-report` | 生成阶段报告 | 从 worklog 提取数据，按模板输出周报/月报/自定义周期报告 | 每周 |
 | `dm-adr` | 记录技术决策 | 按 ADR 格式维护架构/技术选型决策日志 | 按需 |
+| `dm-arch-design` | 创建 / 调整产品架构 | 人的架构设计规范 + AI 执行边界（单向分层、Facade 极简暴露、事件总线），落地 06/07/08 三支柱 | 按需 |
+| `dm-contract-gate` | 改代码前 / 改完 / 交付前 | 契约断言门禁：改前 diff 契约、改后跑门禁（sha256 + contract_verified）、交付对齐 MANIFEST | 高频 |
 | `dm-grillme-plan` | 通用需求 Plan 前逼问决策 | 非版本类需求写代码/出方案前的「提问→回答→沉淀」决策收敛，输出 Final Plan（版本类走 dm-plan-ver/dm-dev-tf 内嵌 grill） | 按需 |
 | `dm-cleanup` | 技术债清理 + 仓库卫生 | 版本/TF 之外的跨文件清理（正确性/注释/死代码/重复结构/占位常量标注）与仓库卫生（.gitignore + 误提交文件 `git rm --cached`），验证后委托 dm-close-ver | 按需 |
 | `dm-pub-skill` | 发布 / 部署 skill 与模板 | 发布资产到 `~/.dev-meta/`、部署 skill 触发入口到 `~/.codebuddy/skills/`，含前置检查与同步后校验（编排 `pub_local.py`） | 按需 |
@@ -82,8 +84,11 @@ python3 pub_local.py --deploy --dry-run # 预演，不写入
 | 提交变更 | "commit" / "帮我 commit" |
 | 生成报告 | "生成周报" / "本周报告" |
 | 记录决策 | "记录一个技术决策" / "创建 ADR" |
+| 设计 / 调整架构 | "设计架构" / "规划模块边界" / "生成 AI 防腐规则" |
+| 跑契约门禁 | "跑契约门禁" / "校验契约" / "contract gate" |
 | 规划前逼问 | "/grill-me" / "规划前先拷问我" / "先 pressure-test 这个方案" |
 | 技术债清理 / 仓库卫生 | "/dm-cleanup" / "清理技术债" / "做一下仓库卫生" |
+| 发布 / 部署 skill 与模板 | "发布 skill" / "部署模板" / "同步资产" |
 
 > **grill（决策收敛）双轨制**（原则见 skill-doc-principles §7）：
 > - **版本类需求**：grill 内嵌于 `dm-plan-ver` / `dm-dev-tf`，无需显式触发——AI 在产出 200-spec、300-design、开发概要前自动执行（需求级/架构级/实现级），问答沉淀进文档，技术选型类触发 `dm-adr`。
@@ -124,11 +129,15 @@ python3 pub_local.py --deploy --dry-run # 预演，不写入
 | 资源类型 | 文件 | 使用方 |
 |----------|------|--------|
 | 规范 | `docs/01-project-dev-flow.md` | dm-init-docs |
-| 规范 | `docs/02-version-rules.md` | dm-plan-ver, dm-schedule, dm-close-ver |
+| 规范 | `docs/02-version-rules.md` | dm-plan-ver, dm-close-ver |
 | 规范 | `docs/03-git-flow-rules.md` | dm-plan-ver, dm-commit, dm-close-ver |
 | 规范 | `docs/04-worklog-rules.md` | dm-log, dm-report |
+| 规范 | `docs/06-contract-based-dev.md` | dm-contract-gate, dm-plan-ver, dm-dev-tf, dm-cleanup, dm-grillme-plan, dm-arch-design |
+| 规范 | `docs/07-observability-driven-dev.md` | dm-cleanup, dm-grillme-plan, dm-arch-design, dm-dev-tf, dm-plan-ver |
+| 规范 | `docs/08-small-batch-iteration.md` | dm-dev-tf, dm-commit, dm-plan-ver |
+| 规范 | `docs/09-ai-architecture-guide.md` | dm-arch-design（规范源；skill 为其执行入口） |
 | 模板 | `templates/CODEBUDDY.md` | dm-init-docs（项目层：版本绑定+例外项；通用规范见 `~/.codebuddy/CODEBUDDY.md`） |
 | 模板 | `templates/project/docs/*` | dm-init-docs（00~06 项目文档骨架，发布至 `~/.dev-meta/`） |
 | 模板 | `templates/versions/vX.Y-<slug>/*` | dm-plan-ver |
-| 模板 | `templates/versions/vX.Y-<slug>/500-schedule.md` | dm-schedule |
+| 模板 | `skills/dm-schedule/assets/500-schedule-template.md` | dm-schedule（含「环节」列与 3 条脚注，为排程权威模板） |
 | 模板 | `templates/worklog.md` | dm-log |
