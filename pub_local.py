@@ -1,16 +1,19 @@
 #!/usr/bin/env python3
 """
-pub_local.py - 将 dev-meta 的模板与 skill 文档同步至本地全局资产目录 ~/.dev-meta/
+pub_local.py - 将 dev-meta 的模板、全局规范与 skill 同步到本地生效位置
 
 用法:
-    python3 pub_local.py                    # 发布资产到 ~/.dev-meta/
-    python3 pub_local.py --deploy           # 同时部署 skill 触发入口到 ~/.codebuddy/skills/
+    python3 pub_local.py                    # 发布资产 + 部署全局规范（默认）
+    python3 pub_local.py --deploy           # 再部署 skill 触发入口（冷启动用这条）
     python3 pub_local.py --dry-run          # 预演，不写入
     python3 pub_local.py --deploy --dry-run # 预演（含部署）
 
-两类产物:
-- 资产 SSOT  ~/.dev-meta/              模板 + 中文设计文档（默认发布）
-- 触发入口    ~/.codebuddy/skills/<name>/  SKILL.md（由中文源自动生成）+ assets/ + references/（--deploy）
+三类产物:
+- 资产 SSOT  ~/.dev-meta/                   模板 + 中文设计文档（默认发布）
+- 全局规范    ~/.codebuddy/CODEBUDDY.md     由 docs/CODEBUDDY-global.md 部署（默认发布）
+- 触发入口    ~/.codebuddy/skills/<name>/   SKILL.md（由中文源自动生成）+ assets/ + references/（--deploy）
+
+冷启动：clone 后执行一次 `python3 pub_local.py --deploy` 即全部就位。
 
 单一权威（Single Source of Truth）:
   skill 只维护中文源 `skills/<name>.md`（含 YAML frontmatter name/description）；
@@ -136,8 +139,26 @@ def sync_tree(src: Path, dst: Path, dry_run: bool, label: str, preserve: set | N
     return copied
 
 
+def sync_file(src: Path, dst: Path, dry_run: bool, label: str) -> int:
+    """同步单个文件（源名与目标名可不同）。返回 1 表示已同步，-1 表示失败。"""
+    if not src.is_file():
+        print(f"  [warn] [{label}] 源文件不存在，跳过: {src}")
+        return 0
+
+    action = "更新" if dst.exists() else "新增"
+    print(f"  {action}: {dst}")
+    if not dry_run:
+        dst.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(src, dst)
+        if not dst.is_file():
+            print(f"  [error] [{label}] 写入失败: {dst}")
+            return -1
+    print(f"  [ok] [{label}] 已同步")
+    return 1
+
+
 def main() -> int:
-    parser = argparse.ArgumentParser(description="将 dev-meta 模板与 skill 发布到 ~/.dev-meta/")
+    parser = argparse.ArgumentParser(description="将 dev-meta 模板、全局规范与 skill 发布到本地生效位置")
     parser.add_argument("--dry-run", action="store_true", help="预演，不实际写入")
     parser.add_argument("--deploy", action="store_true",
                         help="同时把 skills/<name>/ 部署到 ~/.codebuddy/skills/<name>/（skill 触发入口）")
@@ -153,6 +174,11 @@ def main() -> int:
 
     print(f"\n[codebuddy] -> {TARGET_DIR / 'templates' / 'CODEBUDDY.md'}")
     if sync_dir(root / "templates", TARGET_DIR / "templates", "CODEBUDDY.md", args.dry_run, "codebuddy") < 0:
+        return 1
+
+    global_dst = Path.home() / ".codebuddy" / "CODEBUDDY.md"
+    print(f"\n[global] -> {global_dst}")
+    if sync_file(root / "docs" / "CODEBUDDY-global.md", global_dst, args.dry_run, "global") < 0:
         return 1
 
     print(f"\n[skills] -> {TARGET_DIR / 'skills'}（仅 {SKILL_PREFIX}*.md）")

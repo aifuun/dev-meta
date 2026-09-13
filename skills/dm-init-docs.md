@@ -61,7 +61,7 @@ description: 初始化新项目文档：引导式意图收集，生成 00~06 文
 | 目录 | 角色 | 内容 |
 |------|------|------|
 | `~/.dev-meta/` | **资产 SSOT**（独立，可脱离 CodeBuddy 使用） | `templates/project/docs/0X_*.md` 全套模板 + `skills/dm-init-docs.md` 完整设计文档 |
-| `~/.codebuddy/skills/dm-init-docs/SKILL.md` | **薄触发入口** | 仅 frontmatter + 流程摘要 + 指向 `~/.dev-meta/` 资产路径，不重复模板内容 |
+| `~/.codebuddy/skills/dm-init-docs/SKILL.md` | **部署版** | 由本中文源自动生成（`pub_local.py --deploy`），内容即本文全文，**禁止手改** |
 
 ### 目标路径三级优先级
 
@@ -99,9 +99,12 @@ description: 初始化新项目文档：引导式意图收集，生成 00~06 文
 
 ### 4. 读取模板并渲染
 
-1. 依次读取 `~/.dev-meta/templates/project/docs/` 下的 00~06 模板（04 按条件跳过）。
-2. 将收集到的意图填入 `{{FIELD}}` 占位符；未知或待定细节统一填入 `<!-- TODO: [dm-init-docs] 说明 -->`。
-3. 保留每篇头部的**单向依赖纪律声明**与占位符约定说明。
+1. **确认资产已发布**：检查 `~/.dev-meta/templates/project/docs/` 下是否已有 7 个模板（00~06）。
+   - 已存在 → 继续。
+   - **不存在 → 暂停并提示**：本 skill 只消费模板、不负责发布（见职责边界）。请先在 dev-meta 仓库执行 `python3 pub_local.py --deploy` 发布资产，然后再回来继续。禁止凭记忆编造模板内容。
+2. 依次读取 `~/.dev-meta/templates/project/docs/` 下的 00~06 模板（04 按条件跳过）。
+3. 将收集到的意图填入 `{{FIELD}}` 占位符；未知或待定细节统一填入 `<!-- TODO: [dm-init-docs] 说明 -->`。
+4. 保留每篇头部的**单向依赖纪律声明**与占位符约定说明。
 
 ### 5. 文件落地
 
@@ -133,6 +136,7 @@ chore: initialize project docs following dev-meta
 | 目标路径三级优先级：.dev-metarc → 交互指定 → `<project-root>/docs/` | 本文核心概念 |
 | 占位符：`{{FIELD}}` 结构化字段，`<!-- TODO: [dm-init-docs] -->` 待补 | 本文核心概念 |
 | 本 skill 不生成代码、不植入运行时代码（observe 包装器由开发阶段落地） | 职责边界 |
+| 资产未发布（`~/.dev-meta/` 缺模板）时须暂停并提示先跑 `pub_local.py --deploy`，禁止编造模板 | 执行流程·步骤 4 |
 | 提交委托 dm-commit | dm-commit |
 
 ## 资源映射

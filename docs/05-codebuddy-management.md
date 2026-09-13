@@ -63,7 +63,7 @@ dev-meta/docs/CODEBUDDY-global.md     ← 原始版本（Git 跟踪，在此修�
 
 1. 编辑 `docs/CODEBUDDY-global.md`（如新增 DoD 条目、调整编码约定）
 2. commit 变更
-3. 部署到生效位置：对 AI 说「部署全局规范」或「update global CODEBUDDY」，AI 执行 `cp docs/CODEBUDDY-global.md ~/.codebuddy/CODEBUDDY.md`
+3. 部署到生效位置：执行 `python3 pub_local.py`（自动将 `docs/CODEBUDDY-global.md` 部署为 `~/.codebuddy/CODEBUDDY.md`）。也可对 AI 说「部署全局规范」，由 `dm-pub-skill` 编排。
 4. 所有业务项目下次会话自动应用新规范
 
 ### 4.3 为什么要这样做

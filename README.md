@@ -138,30 +138,90 @@ flowchart LR
 
 ---
 
-## 使用方式
+## 使用流程与用例
 
-### 1. 项目接入（作为规范消费者）
+### 角色与流程地图
 
-1. 在项目根目录创建 `./CODEBUDDY.md`：填写 dev-meta 仓库地址与采用版本，以及本项目例外项（模板见 `templates/CODEBUDDY.md`）。
-2. 通用规范（DoD、AI 协作约定、编码约定、工作日志指引）由 `~/.codebuddy/CODEBUDDY.md` **全局自动加载**，项目内**不复制规范正文**。
-3. 需要项目文档骨架时，对 AI 说「初始化新项目」——`dm-init-docs` 会引导生成 `docs/00~06` + `./CODEBUDDY.md`。
+| 角色 | 目标 | 入口 |
+|------|------|------|
+| **规范消费者**（业务项目开发者） | 用 dev-meta 规范开发自己的项目 | 冷启动 → 项目接入 → 日常迭代 |
+| **维护者**（改 dev-meta 自身） | 修改规范 / skill / 模板并发布 | 改中文源 → `pub_local.py --deploy` |
+| **AI** | 按 skill 执行，受三支柱约束 | skill 自动触发 |
 
-> 两层 CODEBUDDY 架构详见 `docs/05-codebuddy-management.md`。
-> `./CODEBUDDY.md` 是 `dm-plan-ver` / `dm-log` 的前置条件——缺失会导致后续 skill 无法确认规范绑定。
+```text
+[冷启动] clone → pub_local.py --deploy → 全局规范 + 资产 + 14 个 skill 全部就位
+                          │
+        ┌─────────────────┼─────────────────┐
+        ▼                 ▼                 ▼
+   [项目接入]         [日常迭代]          [按需动作]
+   ./CODEBUDDY.md     dm-plan-ver → …    dm-adr / dm-arch-design
+   + docs/00~06        → dm-close-ver    dm-cleanup / dm-grillme-plan
+```
 
-### 2. 发布与部署（作为维护者）
+### 用例 1：冷启动（新机器 / 首次使用，必做）
 
 ```bash
-python3 pub_local.py                    # 发布资产到 ~/.dev-meta/
-python3 pub_local.py --deploy           # 同时部署触发入口到 ~/.codebuddy/skills/
+git clone <dev-meta 仓库地址> && cd dev-meta
+python3 pub_local.py --deploy
+```
+
+一条命令完成三件事：
+
+| 产物 | 落地位置 | 作用 |
+|------|----------|------|
+| 资产 SSOT | `~/.dev-meta/` | 项目文档模板、CODEBUDDY 模板、中文 skill 源 |
+| **全局规范** | `~/.codebuddy/CODEBUDDY.md` | DoD、AI 协作约定、编码约定、01~09 导航（**每次会话自动加载**） |
+| skill 触发入口 | `~/.codebuddy/skills/<name>/` | 14 个 skill 可被 AI 触发 |
+
+校验：新开会话问 AI「dev-meta 有哪些 skill」，能答出 14 个即成功。
+
+> ⚠️ 跳过这一步的后果是**静默失效**：全局规范与 skill 都不生效，但不会有任何报错。
+
+### 用例 2：新项目接入规范
+
+**前置**：已完成用例 1（`~/.dev-meta/` 与 `~/.codebuddy/` 均已就位）。
+
+1. 在项目根目录创建 `./CODEBUDDY.md`：填写 dev-meta 仓库地址与采用版本，以及本项目例外项（模板见 `templates/CODEBUDDY.md`）。
+2. 通用规范由 `~/.codebuddy/CODEBUDDY.md` **全局自动加载**，项目内**不复制规范正文**。
+3. 对 AI 说「初始化新项目」——`dm-init-docs` 引导生成 `docs/00~06` + `./CODEBUDDY.md`。
+
+> `./CODEBUDDY.md` 是 `dm-plan-ver` / `dm-log` 的前置条件。
+> 若 AI 提示找不到模板，说明 `~/.dev-meta/` 资产未发布——回到用例 1 执行 `pub_local.py --deploy`。
+
+### 用例 3：日常版本迭代
+
+| 阶段 | 说什么 | 触发 skill |
+|------|--------|-----------|
+| 开版本 | 「新建版本 v1.2-login」 | `dm-plan-ver`（四件套 + 分支/PR/Issue） |
+| 排程 | 「排程」 | `dm-schedule` |
+| 开发 TF | 「开始 TF3」 | `dm-dev-tf` |
+| 改代码 | （自动） | `dm-contract-gate`（改前 diff / 改后门禁 / 交付对齐） |
+| 提交 | 「commit」 | `dm-commit` |
+| 关版本 | 「关闭版本」 | `dm-close-ver` |
+| 每日 | 「记录今天的工作」 | `dm-log` |
+
+### 用例 4：按需动作
+
+| 需求 | 说什么 | skill |
+|------|--------|-------|
+| 记录技术决策 | 「记录一个技术决策」 | `dm-adr` |
+| 设计 / 调整架构 | 「设计架构」「生成 AI 防腐规则」 | `dm-arch-design` |
+| 清理技术债 | 「清理技术债」 | `dm-cleanup` |
+| 决策逼问 | 「/grill-me」 | `dm-grillme-plan` |
+| 跑契约门禁 | 「跑契约门禁」 | `dm-contract-gate` |
+| 生成周报 | 「生成周报」 | `dm-report` |
+
+### 用例 5：维护 dev-meta
+
+```bash
+python3 pub_local.py                    # 发布资产 + 部署全局规范
+python3 pub_local.py --deploy           # 再部署 skill 触发入口
 python3 pub_local.py --deploy --dry-run # 预演，不写入
 ```
 
-也可以直接对 AI 说「发布 skill」/「部署模板」/「同步资产」，由 `dm-pub-skill` 编排（含前置检查与同步后校验）。
+**新增 / 修改 skill**：
 
-### 3. 新增 / 修改 skill
-
-1. **只改 `skills/<name>.md`**（中文源）。新增时头部须带 YAML frontmatter：
+1. 只改 `skills/<name>.md`（中文源）。新增时头部带 YAML frontmatter：
    ```yaml
    ---
    name: dm-example
@@ -169,14 +229,16 @@ python3 pub_local.py --deploy --dry-run # 预演，不写入
    ---
    ```
 2. 资源文件放 `skills/<name>/assets/` 或 `references/`，并在中文源「资源映射」中声明。
-3. 执行 `python3 pub_local.py --deploy` 生效。
+3. `python3 pub_local.py --deploy` 生效。
+
+**修改全局规范**：编辑 `docs/CODEBUDDY-global.md` → `python3 pub_local.py`（自动部署到 `~/.codebuddy/CODEBUDDY.md`）。
 
 > ⚠️ 不要手工编辑 `~/.codebuddy/skills/<name>/SKILL.md`——它是生成物，下次部署会被覆盖。
-> 早期文档中的 `cp -r skills/dm-* ~/.codebuddy/skills/` 已废弃（会复制成文件而非目录、缺 frontmatter，不会被识别）。
+> 已废弃：`cp -r skills/dm-* ~/.codebuddy/skills/`（会复制成文件而非目录、缺 frontmatter，不会被识别）。
 
-### 4. 项目初始化（生成 00~06 文档）
+### 项目文档骨架（00~06）
 
-对 AI 说「初始化新项目」/「创建项目文档骨架」，`dm-init-docs` 引导式收集意图后生成：
+`dm-init-docs` 引导式收集意图后生成：
 
 | 编号 | 文档 | 职责 |
 |------|------|------|
