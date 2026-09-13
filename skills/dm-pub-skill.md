@@ -117,6 +117,23 @@ python3 ~/.vscode/extensions/tencent-cloud.coding-copilot-*/out/extension/builti
 | 只发布资产不加 `--deploy`；需 skill 可触发必须加 `--deploy` | 本文执行流程 |
 | 提交委托 `dm-commit` | dm-commit |
 
+## 产出与完成判据
+
+**产出**：
+
+- `~/.dev-meta/` 资产已更新（模板 + CODEBUDDY 模板 + 14 篇中文源）
+- `~/.codebuddy/CODEBUDDY.md` 全局规范已部署（默认执行）
+- `~/.codebuddy/skills/<name>/` 触发入口已部署（`--deploy`）
+- 发布报告：资产清单 / 部署清单 / 清理项 / 校验结果
+
+**完成判据**：
+
+- [ ] 模板 7 个齐全、`templates/CODEBUDDY.md` 存在
+- [ ] 14 个中文源均含 YAML frontmatter
+- [ ] 同步后**文件数校验通过**（无 `[error]`，退出码 0）
+- [ ] 抽查 `~/.codebuddy/skills/<name>/SKILL.md` 存在且含 frontmatter
+- [ ] 发布报告已输出
+
 ## 资源映射
 
 | 资源 | 来源 | 用途 |

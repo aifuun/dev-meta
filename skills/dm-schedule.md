@@ -185,6 +185,21 @@ dev 工作包**完成定义** = **代码 + 部署 + 联调**，三者缺一不�
 | 文件路径：`docs/versions/vX.Y-<slug>/500-schedule.md` | 02-version-rules.md |
 | 提交委托 dm-commit | dm-commit |
 
+## 产出与完成判据
+
+**产出**：
+
+- `docs/versions/vX.Y-<slug>/500-schedule.md`
+
+**完成判据**：
+
+- [ ] 扁平列表按**执行优先级**排序（不按周分组）
+- [ ] 每行工作包已标注「环节」列
+- [ ] 市场验证环节（营销 / 调研）排最前，dev / qa 排其后
+- [ ] dev 工作包以 **TF 为原子单位**（未拆成步骤级）
+- [ ] 每版本跨领域覆盖（dev + product + marketing + biz + qa）
+- [ ] 防沉迷红线已写入文档
+
 ## 资源映射
 
 | 资源 | 来源 | 用途 |

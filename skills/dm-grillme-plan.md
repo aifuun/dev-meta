@@ -100,6 +100,20 @@ AI 提问 → 用户回答 → 沉淀文档
 | grill 须暴露可观测性盲区：静默吞错 / 无结构化诊断 / 裸露日志须在 Final Plan 标注，引用 docs/07-observability-driven-dev.md | docs/07-observability-driven-dev.md |
 | Final Plan 结构唯一权威在 assets/grill-plan-template.md | — |
 
+## 产出与完成判据
+
+**产出**：
+
+- Final Plan：`docs/plans/<topic>-grill.md`
+
+**完成判据**：
+
+- [ ] 已提出 **3-5 个决定性决策点**，且均已获得用户回答
+- [ ] 回答已**沉淀进文档**，未停留在对话流
+- [ ] 技术选型类回答已触发 `dm-adr` 记录
+- [ ] 范围边界、完成标准、降级策略、明确排除项均已明确
+- [ ] 未与版本类 grill（`dm-plan-ver` / `dm-dev-tf` 内嵌）重复执行
+
 ## 资源映射
 
 | 资源 | 来源 | 用途 |

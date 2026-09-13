@@ -162,6 +162,23 @@ TF 开发通过两个子 skill 串联，本 skill 不直接执行：
 | 可观测性诊断契约：400-build 行为契约须含诊断契约（关键路径 observe 包装 + 状态留痕 + 无静默吞错），见 docs/07-observability-driven-dev.md §2.1/§3/§7 | docs/07-observability-driven-dev.md |
 | 版本计划须可拆成单文件批次（AI 执行粒度 = 单文件重构/单函数修复），供逐 Batch 推进，见 docs/08-small-batch-iteration.md | docs/08-small-batch-iteration.md |
 
+## 产出与完成判据
+
+**产出**：
+
+- 版本四件套（`200-spec` / `300-design` / `400-build` / `500-schedule`）
+- 分支 `feature/v<version>-<slug>` + 版本 PR + 每个 TF 一个 Issue
+- 追踪矩阵（TF → Issue → PR → 验收）
+
+**完成判据**：
+
+- [ ] 四件套按依赖顺序创建（spec → design → build → schedule）
+- [ ] `200-spec` / `300-design` 产出前已执行**需求级 / 架构级 grill** 并沉淀
+- [ ] 分支、PR、TF Issue 已创建且互相关联
+- [ ] `400-build` 含执行顺序矩阵，每行标注**环节**
+- [ ] 契约门禁基线（06 / 07 / 08）已满足
+- [ ] 追踪矩阵已输出
+
 ## 资源映射
 
 | 资源 | 来源 | 用途 |

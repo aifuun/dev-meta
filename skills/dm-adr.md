@@ -124,6 +124,22 @@ Proposed → Accepted → Deprecated
 | 可观测性架构级取舍（采样粒度 / computeUnits / 预编译模型 / 诊断分级）须走 ADR | docs/07-observability-driven-dev.md §6 |
 | 提交委托 dm-commit | dm-commit |
 
+## 产出与完成判据
+
+**产出**：
+
+- ADR 文件 `docs/adrs/adr-NNN.md`（五段式完整）
+- 索引更新 `docs/adrs/README.md`
+
+**完成判据**：
+
+- [ ] 五段式齐全（背景 / 决策 / 原因 / 后果 / 替代方案）
+- [ ] 状态明确（Proposed 或 Accepted），日期已填
+- [ ] 编号为最大值 + 1，无冲突
+- [ ] 一篇只记录一个决策，篇幅精简（决策日志，非设计文档）
+- [ ] 若替代旧 ADR：旧 ADR 状态已更新且**双向交叉引用**已建立
+- [ ] 索引已追加，且可观测性取舍类已按规则记录
+
 ## 资源映射
 
 | 资源 | 来源 | 用途 |

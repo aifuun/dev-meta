@@ -171,9 +171,21 @@ dev 工作包完成 = **代码 + 部署 + 联调**；部署与联调归 dev，qa
 | 版本标记用 annotated tag `v<X.Y.Z>`，message 含 version/scope/merge/issues，必推送 `--tags` | 本 skill §11 |
 | 合并前须过 ODD DoD：无裸露日志 / 无静默吞错 / 高开销节点有诊断快照（07 §7） | docs/07-observability-driven-dev.md §7 |
 
-## 输出
+## 产出与完成判据
+
+**产出**：
 
 - **关闭报告**：版本 → 交付范围 → 验收摘要 → 关闭的 Issue 清单 → 遗留项（deferred）→ 回滚点（merge commit 哈希）
+- annotated tag `v<X.Y.Z>`（已 `push --tags`）
+
+**完成判据**：
+
+- [ ] Phase A 五项审计全部通过（Issue / 工作包 / 验收 / 工作区 / ODD DoD）
+- [ ] 已用 **merge commit**（`--no-ff`）合并，**未使用 squash**
+- [ ] 所有 TF Issue 已关闭，或明确标记 `[DEFERRED]` 并备注原因
+- [ ] 已合并的版本分支已删除
+- [ ] annotated tag 已创建并**推送到远端**
+- [ ] roadmap 已标记该版本交付
 
 ## 资源映射
 

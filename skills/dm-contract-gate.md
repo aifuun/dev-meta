@@ -92,6 +92,21 @@ description: 契约断言门禁：改前 diff 契约、改后跑门禁（sha256 
 | 可观测性 DoD 已由 `verify_contract.py --source-dir` 脚本化（扫描裸打点 vs 结构化断言/包装信号） | samples/contract-gate |
 | 落地实现委托 dm-dev-tf，本 skill 只守门禁 | 职责边界 |
 
+## 产出与完成判据
+
+**产出**：
+
+- 门禁结果：通过 / 失败（含报错原文）
+- `MANIFEST.json` 的 `contract_verified` 状态与指纹对齐
+
+**完成判据**：
+
+- [ ] **Gate 1**：写业务代码前已 diff 契约，未破坏不变性
+- [ ] **Gate 2**：门禁脚本通过（编译 / 类型校验 + sha256 + `contract_verified`）
+- [ ] **Gate 3**：MANIFEST 文件清单、sha256、状态三者对齐
+- [ ] 失败时报错已**原样抛回**并自我修复至变绿；**未绿不向用户交付**
+- [ ] 可观测性 DoD 已检查（无裸打点、有出口 Assert）
+
 ## 资源映射
 
 | 资源 | 来源 | 用途 |

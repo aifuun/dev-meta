@@ -168,6 +168,20 @@ Keep playback flow non-blocking when openDB fails.
 Closes #42
 ```
 
+## 产出与完成判据
+
+**产出**：
+
+- 一条符合规范的 commit：`type(scope): subject` + 可选 body / footer
+
+**完成判据**：
+
+- [ ] `type` 在允许集合内，`scope` 存在且非空
+- [ ] `subject` ≤ 50 字符且为祈使语气
+- [ ] TF 相关含 `Closes #id` 或 `Refs #id` footer
+- [ ] 变更内容与本次 commit 范围一致，未夹带无关文件
+- [ ] **已获用户确认**后执行（AI 不主动提交）
+
 ## 资源映射
 
 | 资源 | 来源 | 用途 |
