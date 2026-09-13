@@ -139,7 +139,7 @@ chore: initialize project docs following dev-meta
 
 | 资源 | 来源 | 用途 |
 |------|------|------|
-| SKILL.md | — | 英文薄触发入口（指向 `~/.dev-meta/` 资产） |
+| `~/.codebuddy/skills/dm-init-docs/SKILL.md` | — | 部署版（由中文源自动生成） |
 | `~/.dev-meta/templates/project/docs/00_PRODUCT_REQUIREMENTS.md` | `templates/project/docs/` | PRD 模板 |
 | `~/.dev-meta/templates/project/docs/01_TECHNICAL_SPEC.md` | 同上 | 技术规格模板 |
 | `~/.dev-meta/templates/project/docs/02_SYSTEM_DESIGN.md` | 同上 | 系统设计模板 |

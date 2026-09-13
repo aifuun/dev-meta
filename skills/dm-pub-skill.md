@@ -15,7 +15,7 @@ description: 发布/部署 dev-meta 资产与 skill：模板发布到 ~/.dev-met
 |------|------|
 | 发布模板资产与中文设计文档到 `~/.dev-meta/` | ✅ 本 skill |
 | 部署 skill 触发入口到 `~/.codebuddy/skills/` | ✅ 本 skill |
-| 前置检查（模板齐全、`SKILL.md` frontmatter、双端一致） | ✅ 本 skill |
+| 前置检查（模板齐全、中文源 frontmatter、资源目录匹配） | ✅ 本 skill |
 | 实际文件同步（清理 → 拷贝 → 校验） | `pub_local.py`（本 skill 调用） |
 | 修改模板内容 / 编写 skill 设计文档 | ❌ `dm-init-docs` / 各 skill 自身 |
 | 格式校验（`package_skill.py`） | 外部工具（本 skill 调用并解读结论） |
@@ -45,7 +45,7 @@ description: 发布/部署 dev-meta 资产与 skill：模板发布到 ~/.dev-met
 | 路径 | 角色 | 去向 |
 |------|------|------|
 | `skills/<name>.md` | **唯一权威**：中文源（含 YAML frontmatter） | → `~/.dev-meta/skills/`，并生成 `~/.codebuddy/skills/<name>/SKILL.md` |
-| `skills/<name>/assets/`、`references/`、`scripts/` | 随触发入口一同部署 | → `~/.codebuddy/skills/<name>/` |
+| `skills/<name>/assets/`、`references/` | 随触发入口一同部署 | → `~/.codebuddy/skills/<name>/` |
 
 > 仓库内**没有** `skills/<name>/SKILL.md` 源文件——它是部署产物，由脚本从中文源生成。同时存在 `skills/dm-adr.md`（中文源）与 `skills/dm-adr/`（`assets/`+`references/`）是正常的。
 
@@ -64,7 +64,7 @@ description: 发布/部署 dev-meta 资产与 skill：模板发布到 ~/.dev-met
 
 - `templates/project/docs/` 是否含 7 个模板（00~06）
 - `templates/CODEBUDDY.md` 是否存在
-- 每个 `skills/<name>/SKILL.md` 是否存在且含 YAML frontmatter（`name` + `description`）
+- 每个中文源 `skills/<name>.md` 是否含 YAML frontmatter（`name` + `description`）
 - 每个 `skills/<name>.md` 是否含 YAML frontmatter（`name` + `description`）——缺失会导致部署后无法被 CodeBuddy 触发
 
 发现问题先报告并询问，不强行发布。
@@ -133,9 +133,9 @@ python3 ~/.vscode/extensions/tencent-cloud.coding-copilot-*/out/extension/builti
 ```
 用户: "发布 skill"
 
-AI:  1. 前置检查：模板 7 个齐全 ✅ / CODEBUDDY.md ✅ / 13 个 SKILL.md 含 frontmatter ✅
+AI:  1. 前置检查：模板 7 个齐全 ✅ / CODEBUDDY.md ✅ / 14 个中文源含 frontmatter ✅
      2. 预演：python3 pub_local.py --deploy --dry-run
-        [templates] 7 个文件 · [codebuddy] 1 · [skills] 13 · [deploy] 13 个 skill
+        [templates] 7 个文件 · [codebuddy] 1 · [skills] 14 · [deploy] 14 个 skill
      3. 执行：python3 pub_local.py --deploy
      4. 校验：文件数一致，抽查 dm-plan-ver（7 文件）与 dm-arch-design（2 文件）
      5. 报告：资产已发布至 ~/.dev-meta/，触发入口已部署至 ~/.codebuddy/skills/

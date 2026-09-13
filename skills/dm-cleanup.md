@@ -53,10 +53,10 @@ description: 版本/TF 之外的跨文件技术债清理与仓库卫生（死代
 
 清理时优先复用代码中已存在、且已有测试的纯函数（如 `flipYToUIKit`、`clampedNormalized`），不另写重复逻辑。判断标准：**被测且应被用**——若某纯函数已被测试覆盖却未在主干路径调用，应让其真正生效，而非再抄一份公式。
 
-### 双端一致
+### 单一权威 + 自动部署
 
-- 中文设计文档 `skills/dm-cleanup.md` ↔ 英文部署版 `~/.codebuddy/skills/dm-cleanup/SKILL.md`，章节一一对应，仅语言不同。
-- 任一端的核心概念 / 规则变更，须同步另一端。
+- 本中文源 `skills/dm-cleanup.md` 是**唯一权威**（含 YAML frontmatter）。
+- 部署版 `~/.codebuddy/skills/dm-cleanup/SKILL.md` **由本源自动生成**，禁止手工编辑；修改后执行 `python3 pub_local.py --deploy` 生效（见 `skill-doc-principles.md` §5）。
 
 ## 执行流程
 
@@ -107,7 +107,7 @@ description: 版本/TF 之外的跨文件技术债清理与仓库卫生（死代
 | 占位常量启用状态须显式标注，不自动记 ADR | skill-doc-principles §7 |
 | 优先复用已有纯函数，不另写重复逻辑 | 核心概念·复用纯函数 |
 | 验证门槛：lint 0 + 相关测试通过 才路由收尾 | 执行流程·验证 |
-| 中文稿与英文 SKILL.md 双端结构一致 | 核心概念·双端一致 |
+| 部署版 SKILL.md 由中文源自动生成，禁止手改 | 核心概念·单一权威 + 自动部署 |
 | 契约须标注四要素（归属/方向/不变性/真值来源）+ 域-序号编号；质量维度作为不变性项落地 | docs/06-contract-based-dev.md §2.6 |
 | 失败面契约：纯函数式失败返回空/原值而非 nil；严禁静默危险失败，须调用前拦截显式暴露 | docs/06-contract-based-dev.md §2.7 |
 | 契约演进治理：破坏性变更走 dm-adr；纯增量 PR 标注；新接口回写总目录（无主防护） | docs/06-contract-based-dev.md §5 |
@@ -117,8 +117,8 @@ description: 版本/TF 之外的跨文件技术债清理与仓库卫生（死代
 
 | 资源 | 来源 | 用途 |
 |------|------|------|
-| `skills/dm-cleanup.md` | — | 中文设计文档（8 章骨架） |
-| `~/.codebuddy/skills/dm-cleanup/SKILL.md` | — | 英文部署版（双端对齐） |
+| `skills/dm-cleanup.md` | — | 中文源（唯一权威，含 frontmatter） |
+| `~/.codebuddy/skills/dm-cleanup/SKILL.md` | — | 部署版（由中文源自动生成，勿手改） |
 
 > 本 skill 无需额外 assets 模板，保持轻量（与 `dm-grillme-plan` 形态一致）。
 

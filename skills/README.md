@@ -2,7 +2,7 @@
 
 本目录为 `dev-meta` 规范体系对应的 CodeBuddy Skills 设计文档。每个 skill 封装一套标准化开发流程，让 AI 在任何项目中自动遵循 dev-meta 规范。
 
-> **所有 skill 设计文档须遵循 [skill-doc-principles.md](skill-doc-principles.md) 的核心原则**（概念驱动结构、单一权威、职责边界、双端一致、面向 AI 可遍历）。新增或重构 skill 文档时先阅读该文档。
+> **所有 skill 设计文档须遵循 [skill-doc-principles.md](skill-doc-principles.md) 的核心原则**（概念驱动结构、单一权威、职责边界、自动部署、面向 AI 可遍历）。新增或重构 skill 文档时先阅读该文档。
 
 ## Skill 总览
 
@@ -54,7 +54,7 @@ dev-meta 的 skill 采用**双目录分工**，两类产物缺一不可：
 | 目录 | 角色 | 内容 |
 |------|------|------|
 | `~/.dev-meta/` | **资产 SSOT**（可脱离 CodeBuddy 使用） | 模板 `0X_*.md`、`CODEBUDDY.md`、中文设计文档 `dm-*.md` |
-| `~/.codebuddy/skills/<name>/` | **触发入口**（CodeBuddy 只从这里加载） | 英文 `SKILL.md`（含 frontmatter）+ `assets/` + `references/` |
+| `~/.codebuddy/skills/<name>/` | **触发入口**（CodeBuddy 只从这里加载） | `SKILL.md`（**由中文源自动生成**，含 frontmatter）+ `assets/` + `references/` |
 
 用仓库根目录的 `pub_local.py` 一键发布与部署（详见 `dm-pub-skill`）：
 
