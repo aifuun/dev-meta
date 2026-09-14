@@ -9,7 +9,6 @@
 | 项 | 值 |
 |---|---|
 | 来源仓库 | `dev-meta` |
-| 仓库地址 | https://github.com/aifuun/dev-meta |
 | 采用版本 | `v0.1.0` |
 
 ## 本项目例外

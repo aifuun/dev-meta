@@ -19,7 +19,7 @@ CodeBuddy 每次会话自动加载 `CODEBUDDY.md` 文件作为 AI 上下文。de
 
 每个业务项目独有的配置，随 Git 仓库版本管理：
 
-- **dev-meta 版本绑定**：引用的 dev-meta 仓库地址与 tag/commit
+- **dev-meta 版本绑定**：采用的 dev-meta 版本（tag / commit）
 - **本项目例外项**：与通用规范的差异及理由
 
 ### 2.3 加载机制
@@ -39,7 +39,7 @@ CodeBuddy 启动时递归加载所有 `CODEBUDDY.md`：
 `dm-init-docs` 在项目初始化时：
 
 1. 从 `templates/CODEBUDDY.md` 模板创建 `./CODEBUDDY.md`
-2. 填写 dev-meta 仓库地址与版本号
+2. 填写采用的 dev-meta 版本号（tag / commit）
 3. 填写项目例外项（无则留"无"）
 
 通用规范不在项目内重复，由 `~/.codebuddy/CODEBUDDY.md` 统一提供。

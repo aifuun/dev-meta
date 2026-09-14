@@ -225,7 +225,7 @@ python3 pub_local.py --deploy
 
 **前置**：已完成用例 1（`~/.dev-meta/` 与 `~/.codebuddy/` 均已就位）。
 
-1. 在项目根目录创建 `./CODEBUDDY.md`：填写 dev-meta 仓库地址与采用版本，以及本项目例外项（模板见 `templates/CODEBUDDY.md`）。
+1. 在项目根目录创建 `./CODEBUDDY.md`：填写来源仓库（`dev-meta`）与采用版本，以及本项目例外项（模板见 `templates/CODEBUDDY.md`）。**仓库地址无需填写**——它由全局层 `~/.codebuddy/CODEBUDDY.md` 提供。
 2. 通用规范由 `~/.codebuddy/CODEBUDDY.md` **全局自动加载**，项目内**不复制规范正文**。
 3. 对 AI 说「初始化新项目」——`dm-init-docs` 引导生成 `docs/00~06` + `./CODEBUDDY.md`。
 
