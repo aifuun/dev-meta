@@ -75,15 +75,20 @@ templates/        模板层    项目文档 / 版本文档 / CODEBUDDY 模板
 pub_local.py      发布引擎  一键发布资产 + 部署 skill（零第三方依赖）
 ```
 
-### 双目录分工
+### 资产布局
 
-skill 的产物分布在两个目录，**缺一不可**：
+发布后，产物分布在两个根目录，**缺一不可**：
 
-| 目录 | 角色 | 内容 |
+| 位置 | 角色 | 内容 |
 |------|------|------|
-| `~/.dev-meta/` | **资产 SSOT**（可脱离 CodeBuddy 使用） | 项目文档模板 `0X_*.md`、`CODEBUDDY.md`、中文 skill 源 `dm-*.md` |
+| `~/.dev-meta/docs/` | **规范文档**（权威副本） | `01`~`09` + `CODEBUDDY-global`——**跨项目可读**，业务项目里没有 `docs/06`，靠这里引用 |
+| `~/.dev-meta/templates/` | **模板**（空骨架） | `CODEBUDDY.md` + `project/docs/00`~`06`——新项目文档的骨架 |
+| `~/.dev-meta/skills/` | **skill 中文源** | `dm-*.md`（唯一权威） |
+| `~/.dev-meta/README.md` | **资产总索引**（自动生成） | 上述全部文件及一句话用途——**AI 的单一入口** |
+| `~/.codebuddy/CODEBUDDY.md` | **全局规范** | DoD、编码约定、01~09 导航（每次会话自动加载） |
 | `~/.codebuddy/skills/<name>/` | **触发入口**（CodeBuddy 只从这里加载） | `SKILL.md` + `assets/` + `references/` |
 
+> **规范文档与模板都以 0 开头，但性质不同**：`docs/` 是「规范说什么」（完整内容、唯一权威），`templates/` 是「你该写成什么样」（空骨架 + `<!-- TODO -->` 占位）。
 > 只发布资产 → skill 不会出现在可触发列表；只部署入口 → AI 找不到模板资产。
 
 ### 单一权威 + 自动部署
@@ -201,15 +206,18 @@ git clone <dev-meta 仓库地址> && cd dev-meta
 python3 pub_local.py --deploy
 ```
 
-一条命令完成三件事：
+一条命令完成五件事：
 
 | 产物 | 落地位置 | 作用 |
 |------|----------|------|
-| 资产 SSOT | `~/.dev-meta/` | 项目文档模板、CODEBUDDY 模板、中文 skill 源 |
+| 规范文档 | `~/.dev-meta/docs/` | 01~09 + CODEBUDDY-global，**跨项目可读**（业务项目里靠它引用 06/07/08） |
+| 模板 | `~/.dev-meta/templates/` | 项目文档骨架 00~06、CODEBUDDY 模板 |
+| skill 中文源 | `~/.dev-meta/skills/` | 14 个中文源（唯一权威） |
+| **资产总索引** | `~/.dev-meta/README.md` | 全部资产及用途——**AI 的单一入口** |
 | **全局规范** | `~/.codebuddy/CODEBUDDY.md` | DoD、AI 协作约定、编码约定、01~09 导航（**每次会话自动加载**） |
 | skill 触发入口 | `~/.codebuddy/skills/<name>/` | 14 个 skill 可被 AI 触发 |
 
-校验：新开会话问 AI「dev-meta 有哪些 skill」，能答出 14 个即成功。
+校验：新开会话问 AI「dev-meta 有哪些 skill」，能答出 14 个即成功；或直接看 `~/.dev-meta/README.md`。
 
 > ⚠️ 跳过这一步的后果是**静默失效**：全局规范与 skill 都不生效，但不会有任何报错。
 

@@ -8,10 +8,14 @@ pub_local.py - 将 dev-meta 的模板、全局规范与 skill 同步到本地生
     python3 pub_local.py --dry-run          # 预演，不写入
     python3 pub_local.py --deploy --dry-run # 预演（含部署）
 
-三类产物:
-- 资产 SSOT  ~/.dev-meta/                   模板 + 中文设计文档（默认发布）
-- 全局规范    ~/.codebuddy/CODEBUDDY.md     由 docs/CODEBUDDY-global.md 部署（默认发布）
+四类产物（默认全部执行）:
+- 项目模板    ~/.dev-meta/templates/        CODEBUDDY 模板 + 项目文档骨架 00~06
+- 规范文档    ~/.dev-meta/docs/             docs/01~09 + CODEBUDDY-global（跨项目可读的权威副本）
+- 全局规范    ~/.codebuddy/CODEBUDDY.md     由 docs/CODEBUDDY-global.md 部署（每次会话自动加载）
 - 触发入口    ~/.codebuddy/skills/<name>/   SKILL.md（由中文源自动生成）+ assets/ + references/（--deploy）
+
+索引：每次发布自动生成 `~/.dev-meta/README.md`，列出全部资产及用途 —— AI 的单一入口。
+skill 源 `~/.dev-meta/skills/dm-*.md` 为中文源，是唯一权威。
 
 冷启动：clone 后执行一次 `python3 pub_local.py --deploy` 即全部就位。
 
@@ -29,13 +33,40 @@ pub_local.py - 将 dev-meta 的模板、全局规范与 skill 同步到本地生
 import argparse
 import shutil
 import sys
+from datetime import datetime
 from pathlib import Path
 
 TARGET_DIR = Path.home() / ".dev-meta"
 DEPLOY_DIR = Path.home() / ".codebuddy" / "skills"
 SKILL_PREFIX = "dm-"
 TEMPLATE_REL = Path("templates") / "project" / "docs"
+DOCS_REL = Path("docs")
 IGNORE_NAMES = {"__pycache__", ".DS_Store"}
+
+# 规范文档与模板的一句话用途（这两类极少变动，集中维护；skill 用途自动取自其 frontmatter）
+DOCS_DESC = {
+    "01-project-dev-flow.md": "项目级开发流程、文档分层与模板使用",
+    "02-version-rules.md": "版本四件套结构、TF 设计原则",
+    "03-git-flow-rules.md": "分支策略、commit 格式、PR 流程",
+    "04-worklog-rules.md": "工作日志格式与维护规则",
+    "05-codebuddy-management.md": "CODEBUDDY 两层架构与部署",
+    "06-contract-based-dev.md": "契约式开发（**AI 改前只读契约**，唯一权威）",
+    "07-observability-driven-dev.md": "可观测性驱动开发（**日志是 AI 的眼睛**）",
+    "08-small-batch-iteration.md": "小版本迭代（**AI 执行粒度** = 单文件/单函数，唯一权威）",
+    "09-ai-architecture-guide.md": "AI 辅助架构设计（人定边界 / AI 填内部）",
+    "CODEBUDDY-global.md": "全局规范原始版本（部署为 `~/.codebuddy/CODEBUDDY.md`）",
+}
+
+TEMPLATE_DESC = {
+    "CODEBUDDY.md": "项目层 CODEBUDDY 模板（版本绑定 + 例外项）",
+    "project/docs/00_PRODUCT_REQUIREMENTS.md": "新项目 PRD 骨架（业务根，只被下游引用）",
+    "project/docs/01_TECHNICAL_SPEC.md": "技术选型 / 测试策略 / 部署基线",
+    "project/docs/02_SYSTEM_DESIGN.md": "架构、分层、数据流、并发状态机",
+    "project/docs/03_CONTRACTS_AND_API.md": "契约 SSOT：不变式 / API / Schema / 错误码",
+    "project/docs/04_UI_UX_DESIGN.md": "交互与视图状态（无 UI 时跳过）",
+    "project/docs/05_ROADMAP_AND_COMPLIANCE.md": "Milestone、版本切分、合规",
+    "project/docs/06_OBSERVABILITY.md": "可观测性实例化（docs/07 的项目落点）",
+}
 
 
 def _ignored(rel: Path) -> bool:
@@ -157,6 +188,75 @@ def sync_file(src: Path, dst: Path, dry_run: bool, label: str) -> int:
     return 1
 
 
+def _skill_description(path: Path) -> str:
+    """从中文源 frontmatter 提取 description —— 用途的单一权威，不在别处重复维护。"""
+    text = path.read_text(encoding="utf-8")
+    if text.startswith("---\n"):
+        end = text.find("\n---\n", 3)
+        if end != -1:
+            for line in text[3:end].splitlines():
+                if line.startswith("description:"):
+                    return line[len("description:"):].strip()
+    return "—"
+
+
+def build_index(root: Path, dry_run: bool) -> int:
+    """生成 `~/.dev-meta/README.md` 总索引 —— AI 的单一入口。返回 1 成功，-1 失败。"""
+    out = TARGET_DIR / "README.md"
+    lines = [
+        "# dev-meta 本地资产目录",
+        "",
+        "> 本文件由 `pub_local.py` **自动生成**，禁止手工编辑。",
+        f"> 生成时间：{datetime.now():%Y-%m-%d %H:%M}",
+        "",
+        "## 目录结构",
+        "",
+        "```text",
+        "~/.dev-meta/",
+        "├── README.md       本索引（自动生成）",
+        "├── docs/           规范文档（唯一权威副本）",
+        "├── templates/      模板（项目层 CODEBUDDY + 项目文档骨架）",
+        "└── skills/         skill 中文源（唯一权威）",
+        "```",
+        "",
+        "## 规范文档 docs/",
+        "",
+        "| 文件 | 用途 |",
+        "|------|------|",
+    ]
+    for f in sorted((root / DOCS_REL).glob("*.md")):
+        lines.append(f"| `{f.name}` | {DOCS_DESC.get(f.name, '—')} |")
+
+    lines += ["", "## 模板 templates/", "", "| 文件 | 用途 |", "|------|------|"]
+    for rel in sorted(TEMPLATE_DESC):
+        lines.append(f"| `templates/{rel}` | {TEMPLATE_DESC[rel]} |")
+
+    lines += ["", "## skill 源 skills/", "", "| 文件 | 用途 |", "|------|------|"]
+    for f in sorted((root / "skills").glob(f"{SKILL_PREFIX}*.md")):
+        lines.append(f"| `{f.name}` | {_skill_description(f)} |")
+
+    lines += [
+        "",
+        "## 相关位置",
+        "",
+        "| 位置 | 内容 |",
+        "|------|------|",
+        "| `~/.codebuddy/CODEBUDDY.md` | 全局规范（每次会话自动加载） |",
+        "| `~/.codebuddy/skills/<name>/SKILL.md` | skill 触发入口（由中文源自动生成） |",
+        "",
+    ]
+
+    print(f"  生成: {out}")
+    if not dry_run:
+        TARGET_DIR.mkdir(parents=True, exist_ok=True)
+        out.write_text("\n".join(lines), encoding="utf-8")
+        if not out.is_file():
+            print("  [error] [index] 写入失败")
+            return -1
+    print("  [ok] [index] 已生成")
+    return 1
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="将 dev-meta 模板、全局规范与 skill 发布到本地生效位置")
     parser.add_argument("--dry-run", action="store_true", help="预演，不实际写入")
@@ -174,6 +274,10 @@ def main() -> int:
 
     print(f"\n[codebuddy] -> {TARGET_DIR / 'templates' / 'CODEBUDDY.md'}")
     if sync_dir(root / "templates", TARGET_DIR / "templates", "CODEBUDDY.md", args.dry_run, "codebuddy") < 0:
+        return 1
+
+    print(f"\n[docs] -> {TARGET_DIR / DOCS_REL}（规范文档，供跨项目引用；不含 reports/）")
+    if sync_dir(root / DOCS_REL, TARGET_DIR / DOCS_REL, "*.md", args.dry_run, "docs") < 0:
         return 1
 
     global_dst = Path.home() / ".codebuddy" / "CODEBUDDY.md"
@@ -206,6 +310,10 @@ def main() -> int:
     else:
         print(f"\n[done] 已发布至本地全局资产目录: {TARGET_DIR}")
         print("       [hint] 加 --deploy 可同时部署 skill 触发入口至 ~/.codebuddy/skills/")
+
+    print(f"\n[index] -> {TARGET_DIR / 'README.md'}（资产总索引，AI 单一入口）")
+    if build_index(root, args.dry_run) < 0:
+        return 1
     return 0
 
 

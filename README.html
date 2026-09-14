@@ -388,22 +388,44 @@ id="元逻辑这套规范如何防止自身腐化">元逻辑：这套规范如�
 skills/           skill 层  14 个 skill，AI 可触发的标准化执行流程
 templates/        模板层    项目文档 / 版本文档 / CODEBUDDY 模板
 pub_local.py      发布引擎  一键发布资产 + 部署 skill（零第三方依赖）</code></pre>
-<h3 id="双目录分工">双目录分工</h3>
-<p>skill 的产物分布在两个目录，<strong>缺一不可</strong>：</p>
+<h3 id="资产布局">资产布局</h3>
+<p>发布后，产物分布在两个根目录，<strong>缺一不可</strong>：</p>
 <table>
 <thead>
 <tr>
-<th>目录</th>
+<th>位置</th>
 <th>角色</th>
 <th>内容</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>~/.dev-meta/</code></td>
-<td><strong>资产 SSOT</strong>（可脱离 CodeBuddy 使用）</td>
-<td>项目文档模板 <code>0X_*.md</code>、<code>CODEBUDDY.md</code>、中文
-skill 源 <code>dm-*.md</code></td>
+<td><code>~/.dev-meta/docs/</code></td>
+<td><strong>规范文档</strong>（权威副本）</td>
+<td><code>01</code>~<code>09</code> +
+<code>CODEBUDDY-global</code>——<strong>跨项目可读</strong>，业务项目里没有
+<code>docs/06</code>，靠这里引用</td>
+</tr>
+<tr>
+<td><code>~/.dev-meta/templates/</code></td>
+<td><strong>模板</strong>（空骨架）</td>
+<td><code>CODEBUDDY.md</code> +
+<code>project/docs/00</code>~<code>06</code>——新项目文档的骨架</td>
+</tr>
+<tr>
+<td><code>~/.dev-meta/skills/</code></td>
+<td><strong>skill 中文源</strong></td>
+<td><code>dm-*.md</code>（唯一权威）</td>
+</tr>
+<tr>
+<td><code>~/.dev-meta/README.md</code></td>
+<td><strong>资产总索引</strong>（自动生成）</td>
+<td>上述全部文件及一句话用途——<strong>AI 的单一入口</strong></td>
+</tr>
+<tr>
+<td><code>~/.codebuddy/CODEBUDDY.md</code></td>
+<td><strong>全局规范</strong></td>
+<td>DoD、编码约定、01~09 导航（每次会话自动加载）</td>
 </tr>
 <tr>
 <td><code>~/.codebuddy/skills/&lt;name&gt;/</code></td>
@@ -414,7 +436,11 @@ skill 源 <code>dm-*.md</code></td>
 </tbody>
 </table>
 <blockquote>
-<p>只发布资产 → skill 不会出现在可触发列表；只部署入口 → AI
+<p><strong>规范文档与模板都以 0
+开头，但性质不同</strong>：<code>docs/</code>
+是「规范说什么」（完整内容、唯一权威），<code>templates/</code>
+是「你该写成什么样」（空骨架 + <code>&lt;!-- TODO --&gt;</code> 占位）。
+只发布资产 → skill 不会出现在可触发列表；只部署入口 → AI
 找不到模板资产。</p>
 </blockquote>
 <h3 id="单一权威--自动部署">单一权威 + 自动部署</h3>
@@ -581,7 +607,7 @@ dm-pub-skill  ←── 发布 / 部署 skill 与模板</code></pre>
 <div class="sourceCode" id="cb12"><pre
 class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone <span class="op">&lt;</span>dev-meta 仓库地址<span class="op">&gt;</span> <span class="kw">&amp;&amp;</span> <span class="bu">cd</span> dev-meta</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> pub_local.py <span class="at">--deploy</span></span></code></pre></div>
-<p>一条命令完成三件事：</p>
+<p>一条命令完成五件事：</p>
 <table>
 <thead>
 <tr>
@@ -592,9 +618,26 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href=
 </thead>
 <tbody>
 <tr>
-<td>资产 SSOT</td>
-<td><code>~/.dev-meta/</code></td>
-<td>项目文档模板、CODEBUDDY 模板、中文 skill 源</td>
+<td>规范文档</td>
+<td><code>~/.dev-meta/docs/</code></td>
+<td>01~09 +
+CODEBUDDY-global，<strong>跨项目可读</strong>（业务项目里靠它引用
+06/07/08）</td>
+</tr>
+<tr>
+<td>模板</td>
+<td><code>~/.dev-meta/templates/</code></td>
+<td>项目文档骨架 00~06、CODEBUDDY 模板</td>
+</tr>
+<tr>
+<td>skill 中文源</td>
+<td><code>~/.dev-meta/skills/</code></td>
+<td>14 个中文源（唯一权威）</td>
+</tr>
+<tr>
+<td><strong>资产总索引</strong></td>
+<td><code>~/.dev-meta/README.md</code></td>
+<td>全部资产及用途——<strong>AI 的单一入口</strong></td>
 </tr>
 <tr>
 <td><strong>全局规范</strong></td>
@@ -610,7 +653,7 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href=
 </tbody>
 </table>
 <p>校验：新开会话问 AI「dev-meta 有哪些 skill」，能答出 14
-个即成功。</p>
+个即成功；或直接看 <code>~/.dev-meta/README.md</code>。</p>
 <blockquote>
 <p>⚠️ 跳过这一步的后果是<strong>静默失效</strong>：全局规范与 skill
 都不生效，但不会有任何报错。</p>

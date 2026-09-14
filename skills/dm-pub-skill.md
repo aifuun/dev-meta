@@ -31,21 +31,28 @@ description: 发布/部署 dev-meta 资产与 skill：模板发布到 ~/.dev-met
 
 ## 核心概念
 
-### 双目录分工
+### 资产布局
 
-| 目录 | 角色 | 内容 | 谁读 |
+| 位置 | 角色 | 内容 | 谁读 |
 |------|------|------|------|
-| `~/.dev-meta/` | **资产 SSOT**（独立，可脱离 CodeBuddy 使用） | `templates/project/docs/0X_*.md`、`templates/CODEBUDDY.md`、`skills/dm-*.md`（中文设计文档） | AI 按需读取模板与规范 |
+| `~/.dev-meta/templates/` | **模板**（骨架） | `CODEBUDDY.md` + `project/docs/00~06_*.md` | `dm-init-docs` 渲染新项目文档 |
+| `~/.dev-meta/docs/` | **规范文档**（权威副本） | `01~09_*.md` + `CODEBUDDY-global.md` | AI **跨项目**引用（如「见 06 契约只读」） |
+| `~/.dev-meta/skills/` | **skill 中文源**（唯一权威） | `dm-*.md` | 生成部署版 + 存档 |
+| `~/.dev-meta/README.md` | **资产总索引**（自动生成） | 上述全部文件及一句话用途 | AI 的**单一入口** |
+| `~/.codebuddy/CODEBUDDY.md` | **全局规范** | DoD、编码约定、01~09 导航 | 每次会话自动加载 |
 | `~/.codebuddy/skills/<name>/` | **触发入口**（CodeBuddy 只从这里加载 skill） | `SKILL.md`（**由中文源自动生成**，含 frontmatter）+ `assets/` + `references/` | CodeBuddy 加载并触发 |
 
-> **两者不可互相替代**：只发布资产 → skill 不会出现在可触发列表；只部署入口 → AI 找不到模板资产。
+> **不可互相替代**：只发布资产 → skill 不会出现在可触发列表；只部署入口 → AI 找不到模板资产。
+> **规范文档为什么也要发布**：业务项目里没有 `docs/06`，若 `~/.dev-meta/docs/` 也缺失，skill 中「见 `docs/06`」的引用就成了**盲引用**。发布后跨项目可读。
 
-### 仓库内的两套文件
+### 仓库内的源文件
 
 | 路径 | 角色 | 去向 |
 |------|------|------|
 | `skills/<name>.md` | **唯一权威**：中文源（含 YAML frontmatter） | → `~/.dev-meta/skills/`，并生成 `~/.codebuddy/skills/<name>/SKILL.md` |
 | `skills/<name>/assets/`、`references/` | 随触发入口一同部署 | → `~/.codebuddy/skills/<name>/` |
+| `docs/*.md`（顶层，不含 `reports/`） | 规范文档原始版本 | → `~/.dev-meta/docs/` |
+| `templates/` | 模板原始版本 | → `~/.dev-meta/templates/` |
 
 > 仓库内**没有** `skills/<name>/SKILL.md` 源文件——它是部署产物，由脚本从中文源生成。同时存在 `skills/dm-adr.md`（中文源）与 `skills/dm-adr/`（`assets/`+`references/`）是正常的。
 
@@ -64,8 +71,8 @@ description: 发布/部署 dev-meta 资产与 skill：模板发布到 ~/.dev-met
 
 - `templates/project/docs/` 是否含 7 个模板（00~06）
 - `templates/CODEBUDDY.md` 是否存在
-- 每个中文源 `skills/<name>.md` 是否含 YAML frontmatter（`name` + `description`）
-- 每个 `skills/<name>.md` 是否含 YAML frontmatter（`name` + `description`）——缺失会导致部署后无法被 CodeBuddy 触发
+- `docs/` 是否含 01~09 与 `CODEBUDDY-global.md`（共 10 个；`reports/` 不发布）
+- 每个中文源 `skills/<name>.md` 是否含 YAML frontmatter（`name` + `description`）——缺失会导致部署后无法被 CodeBuddy 触发
 
 发现问题先报告并询问，不强行发布。
 
@@ -121,7 +128,10 @@ python3 ~/.vscode/extensions/tencent-cloud.coding-copilot-*/out/extension/builti
 
 **产出**：
 
-- `~/.dev-meta/` 资产已更新（模板 + CODEBUDDY 模板 + 14 篇中文源）
+- `~/.dev-meta/docs/` 规范文档已发布（01~09 + CODEBUDDY-global，跨项目可读）
+- `~/.dev-meta/templates/` 模板已发布（CODEBUDDY 模板 + 00~06 骨架）
+- `~/.dev-meta/skills/` 14 篇中文源已发布
+- `~/.dev-meta/README.md` **资产总索引**已生成（AI 单一入口）
 - `~/.codebuddy/CODEBUDDY.md` 全局规范已部署（默认执行）
 - `~/.codebuddy/skills/<name>/` 触发入口已部署（`--deploy`）
 - 发布报告：资产清单 / 部署清单 / 清理项 / 校验结果
@@ -129,9 +139,11 @@ python3 ~/.vscode/extensions/tencent-cloud.coding-copilot-*/out/extension/builti
 **完成判据**：
 
 - [ ] 模板 7 个齐全、`templates/CODEBUDDY.md` 存在
+- [ ] `docs/` 10 个规范文档已同步（不含 `reports/`）
 - [ ] 14 个中文源均含 YAML frontmatter
 - [ ] 同步后**文件数校验通过**（无 `[error]`，退出码 0）
 - [ ] 抽查 `~/.codebuddy/skills/<name>/SKILL.md` 存在且含 frontmatter
+- [ ] `~/.dev-meta/README.md` 已生成，且 skill 用途与其 frontmatter 描述一致
 - [ ] 发布报告已输出
 
 ## 资源映射
@@ -143,6 +155,8 @@ python3 ~/.vscode/extensions/tencent-cloud.coding-copilot-*/out/extension/builti
 | `templates/CODEBUDDY.md` | `templates/` | 项目层 CODEBUDDY 模板 |
 | `skills/<name>.md` | `skills/` | 中文设计文档（发布至 `~/.dev-meta/skills/`） |
 | `skills/<name>/assets/`、`references/` | `skills/<name>/` | 随触发入口部署（`SKILL.md` 为生成物，不在仓库保存） |
+| `docs/*.md`（顶层） | `docs/` | 规范文档（发布至 `~/.dev-meta/docs/`，**不含 `reports/`**） |
+| `~/.dev-meta/README.md` | 脚本生成 | 资产总索引（AI 单一入口；skill 用途取自其 frontmatter） |
 | `package_skill.py` | skill-creator 扩展 | skill 格式校验（frontmatter / 结构） |
 
 ## 使用示例
