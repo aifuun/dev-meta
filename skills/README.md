@@ -49,11 +49,14 @@ dm-adr ← 按需穿插，记录技术决策 ──→ dm-commit (统一提交�
 
 ### 安装与部署
 
-dev-meta 的 skill 采用**双目录分工**，两类产物缺一不可：
+dev-meta 的产物分布在两个根目录，**缺一不可**：
 
 | 目录 | 角色 | 内容 |
 |------|------|------|
-| `~/.dev-meta/` | **资产 SSOT**（可脱离 CodeBuddy 使用） | 模板 `0X_*.md`、`CODEBUDDY.md`、中文设计文档 `dm-*.md` |
+| `~/.dev-meta/docs/` | **规范文档**（权威副本） | 01~09 + CODEBUDDY-global，**跨项目可读** |
+| `~/.dev-meta/templates/` | **模板**（骨架） | `CODEBUDDY.md` + `project/docs/00~06_*.md` |
+| `~/.dev-meta/skills/` | **skill 中文源** | `dm-*.md`（唯一权威） |
+| `~/.dev-meta/README.md` | **资产总索引**（自动生成） | 全部资产及用途（AI 单一入口） |
 | `~/.codebuddy/skills/<name>/` | **触发入口**（CodeBuddy 只从这里加载） | `SKILL.md`（**由中文源自动生成**，含 frontmatter）+ `assets/` + `references/` |
 
 用仓库根目录的 `pub_local.py` 一键发布与部署（详见 `dm-pub-skill`）：

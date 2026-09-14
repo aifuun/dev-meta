@@ -56,11 +56,13 @@ description: 初始化新项目文档：引导式意图收集，生成 00~06 文
 - 项目层只回答两个问题：「用哪套 dev-meta、哪个版本」「哪些地方不按通用规范走」。
 - **生成 `./CODEBUDDY.md` 是本 skill 的必选步骤**：`skills/README.md` 前置条件表将「项目中已有 `./CODEBUDDY.md`」列为 `dm-plan-ver` / `dm-log` 的前置条件，缺失会导致后续 skill 前置断裂。
 
-### 资产 SSOT 与双目录分工
+### 资产布局
 
 | 目录 | 角色 | 内容 |
 |------|------|------|
-| `~/.dev-meta/` | **资产 SSOT**（独立，可脱离 CodeBuddy 使用） | `templates/project/docs/0X_*.md` 全套模板 + `skills/dm-init-docs.md` 完整设计文档 |
+| `~/.dev-meta/templates/` | **模板**（骨架） | `project/docs/0X_*.md` 全套模板 + `CODEBUDDY.md` |
+| `~/.dev-meta/docs/` | **规范文档**（权威副本） | 01~09，供跨项目引用 |
+| `~/.dev-meta/skills/` | **skill 中文源** | `dm-*.md`（唯一权威） |
 | `~/.codebuddy/skills/dm-init-docs/SKILL.md` | **部署版** | 由本中文源自动生成（`pub_local.py --deploy`），内容即本文全文，**禁止手改** |
 
 ### 目标路径三级优先级
@@ -132,7 +134,7 @@ chore: initialize project docs following dev-meta
 | 模板只引用 `dev-meta/docs/06`、`07`、`08`，不重定义 | skill-doc-principles §2 |
 | 必须生成 `./CODEBUDDY.md`（版本绑定 + 例外项），是 dm-plan-ver / dm-log 前置条件 | skills/README.md 前置条件表 |
 | 项目层 CODEBUDDY.md 不复制规范正文，只写来源与例外 | docs/05-codebuddy-management.md |
-| 资产 SSOT 在 `~/.dev-meta/`；触发入口为 `~/.codebuddy/skills/dm-init-docs/SKILL.md` | 本文核心概念 |
+| 资产在 `~/.dev-meta/`（模板 / 规范 / skill 源分开存放）；触发入口为 `~/.codebuddy/skills/dm-init-docs/SKILL.md` | 本文核心概念 |
 | 目标路径三级优先级：.dev-metarc → 交互指定 → `<project-root>/docs/` | 本文核心概念 |
 | 占位符：`{{FIELD}}` 结构化字段，`<!-- TODO: [dm-init-docs] -->` 待补 | 本文核心概念 |
 | 本 skill 不生成代码、不植入运行时代码（observe 包装器由开发阶段落地） | 职责边界 |

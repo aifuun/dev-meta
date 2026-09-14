@@ -20,7 +20,6 @@ pub_readme.py - 从 README.md（唯一权威）生成衍生版本：README.mdx �
 """
 
 import argparse
-import re
 import shutil
 import subprocess
 import sys
