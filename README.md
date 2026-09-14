@@ -320,7 +320,7 @@ python3 pub_local.py --deploy --dry-run # 预演，不写入
 - [templates/project/docs/](https://github.com/aifuun/dev-meta/tree/main/templates/project/docs) — 项目级文档模板（00 PRD / 01 技术规格 / 02 系统设计 / 03 契约 / 04 UI-UX / 05 路线图 / 06 可观测性）
 - [templates/CODEBUDDY.md](https://github.com/aifuun/dev-meta/blob/main/templates/CODEBUDDY.md) — 项目层 CODEBUDDY 模板（版本绑定 + 例外项）
 - [pub_local.py](https://github.com/aifuun/dev-meta/blob/main/pub_local.py) — 发布与部署引擎：资产 → `~/.dev-meta/`，全局规范 → `~/.codebuddy/CODEBUDDY.md`，skill 触发入口 → `~/.codebuddy/skills/`（零第三方依赖）
-- [pub_readme.py](https://github.com/aifuun/dev-meta/blob/main/pub_readme.py) — README 衍生版本生成：从 `README.md` 生成 `.mdx`（文档站）与 `.html`（浏览器直开）
+- [pub_readme.py](https://github.com/aifuun/dev-meta/blob/main/pub_readme.py) — 可选工具：需要时从 `README.md` 本地生成 `.mdx` / `.html`（产物不入库，避免同一内容多份副本）
 
 ### Skill 与样例
 
@@ -328,19 +328,4 @@ python3 pub_local.py --deploy --dry-run # 预演，不写入
 - [skills/skill-doc-principles.md](https://github.com/aifuun/dev-meta/blob/main/skills/skill-doc-principles.md) — Skill 文档编写规范（章节骨架、单一权威、自动部署）
 - [samples/](https://github.com/aifuun/dev-meta/tree/main/samples) — 版本文档样例（V1.4.1-indexeddb-prefs）与契约门禁样例（contract-gate）
 
-### 衍生版本（自动生成）
 
-| 文件 | 用途 | 怎么用 |
-|------|------|--------|
-| [README.mdx](https://github.com/aifuun/dev-meta/blob/main/README.mdx) | 供现代文档站引用 | 放入 Docusaurus / Next.js MDX / VitePress 的文档目录即可；含 frontmatter（title / description）。三支柱流程图需在站点启用 mermaid 插件 |
-| [README.html](https://github.com/aifuun/dev-meta/blob/main/README.html) | 自包含单文件 | 双击用浏览器打开；或推到 GitHub Pages / 任意静态托管直接访问，无需外部 CSS |
-
-重新生成：
-
-```bash
-python3 pub_readme.py            # 生成 README.mdx + README.html
-python3 pub_readme.py --dry-run  # 预演
-```
-
-> **`README.md` 是唯一权威**；`.mdx` / `.html` 是生成产物，**禁止手工编辑**——下次运行会被覆盖。
-> HTML 生成依赖系统工具 `pandoc`（`brew install pandoc`）；未安装时只跳过 HTML，MDX 仍正常生成。
