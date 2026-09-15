@@ -140,7 +140,8 @@ TF 开发通过两个子 skill 串联，本 skill 不直接执行：
    Closes #42
    ```
 3. **关闭 TF Issue**（标记验收结果）
-4. **更新 500-schedule.md** 工作包状态 + tracking-matrix
+4. **更新 500-schedule.md**：工作包状态 + tracking-matrix + **追加执行记录一条**
+   （五段：概要 / 偏差 / 发现 / 失误 / 遗留；每条 ≤8 行，append-only；日常流水进 worklog）
 
 ### 阶段 3：版本收尾（委托 dm-close-ver）
 
@@ -159,6 +160,8 @@ TF 开发通过两个子 skill 串联，本 skill 不直接执行：
 | 跨 TF 状态机放 300-design，单 TF 状态机放 400-build | 02-version-rules.md §3.4 |
 | `200-spec` 含 §3 架构锚点（分层 / 模块 / 门面 / 契约 / API），只做范围声明不做设计论证 | 02-version-rules.md §3.4 / §4 |
 | `200-spec` DoD 为**确认类** checklist，不得写成实现任务清单 | 02-version-rules.md §4 / §8 |
+| 防腐编号 `GUARD-0x` 落 `400-build` §1.4 + 执行顺序矩阵 `guard` 列；**与契约层级 L1/L2/L3 无关** | 02-version-rules.md §3.4.1 / §6 |
+| TF 完成即向 `500-schedule` 执行记录追加一条；状态只改工作包列表一处 | 02-version-rules.md §6.1 |
 | 每版本 1 PR，每 TF 1 Issue | 03-git-flow-rules.md §2 |
 | commit: `type(scope): subject` + `Closes #id`，详见 dm-commit | 03-git-flow-rules.md §3 |
 | 分支: `feature/v<version>-<slug>`（版本级；TF 不建分支，开发在版本分支上进行） | 03-git-flow-rules.md §4 |

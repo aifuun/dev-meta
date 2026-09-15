@@ -26,43 +26,20 @@
 
 > 只登记「本版本动到架构哪几处」，不写为什么这样设计（论证属 `300-design.md`）。
 
-### 3.1 分层（Layering）
-
-| 层 | 本版本动作 | 硬约束 |
+| 维度 | 本版本触及 | 硬约束 / 红线 |
 |---|---|---|
-| 宿主层（播放器 UI / 播放控制） | 调用偏好读写并在 IndexedDB 不可用时静默降级 | 不直接操作 IndexedDB API，一律经存储层 |
-| 存储层（`prefs-store` / `audio-store`） | 新增 per-trackId 偏好读写能力 | 不依赖 DOM、不依赖 Engine 实例，可独立单测 |
+| 分层 | 宿主层：调用偏好读写，IndexedDB 不可用时静默降级；存储层：新增 per-trackId 偏好读写 | 宿主不直接操作 IndexedDB API；存储层不依赖 DOM / Engine 实例 |
+| 模块 | `audio-store.js`、`prefs-store.js`（新建）；`switchTrack()` / `startTimingLoop()` / `deleteTrack()` / `clearPlaylist()`（修改） | — |
+| 门面 | `prefs-store.js`（新增） | 仅暴露 save / load / delete / deleteAll，不暴露底层 IndexedDB 句柄 |
+| 契约 | STORE-001（本样例未建契约 SSOT，仅示范）·新增·阻塞 | — |
+| API | `openDB()` / `closeDB()` / `getStorageEstimate()`；`save(trackId,prefs)` / `load(trackId)` / `delete(trackId)` / `deleteAll()` | 新增 |
 
-### 3.2 模块（Modules）
+### 3.1 禁止与不做
 
-| 文件 / 模块 | 层 | 动作 | 说明 |
-|---|---|---|---|
-| `src/storage/audio-store.js` | 存储层 | 新建 | IndexedDB 基础封装（openDB / closeDB / getStorageEstimate） |
-| `src/storage/prefs-store.js` | 存储层 | 新建 | per-trackId 偏好读写（save / load / delete / deleteAll） |
-| `switchTrack()` | 宿主层 | 修改 | 切歌时先存后读偏好 |
-| `startTimingLoop()` | 宿主层 | 修改 | 每秒写入一次 `currentTime`（节流，非每帧写入） |
-| `deleteTrack()` / `clearPlaylist()` | 宿主层 | 修改 | 同步清理偏好 |
-
-### 3.3 门面（Facade）
-
-| 门面 | 状态 | 暴露面规范 |
+| 项 | 类型 | 理由 / 归属 |
 |---|---|---|
-| `prefs-store.js` | 新增 | 仅暴露 save / load / delete / deleteAll，不对外暴露底层 IndexedDB 句柄 |
-
-### 3.4 契约（Contracts）
-
-<!-- 契约 ID 采用「域-序号」编号（如 STORE-001），须含四要素，落盘于本项目契约 SSOT -->
-
-| 契约 ID | 所在章节 | 变更性质 | 是否阻塞编码 |
-|---|---|---|---|
-| STORE-001 | （本样例未建立契约 SSOT，仅示范登记格式） | 新增 | 是 |
-
-### 3.5 API（对外签名）
-
-| 层 / 模块 | 签名 | 变更性质 |
-|---|---|---|
-| 存储层 `audio-store.js` | `openDB()` / `closeDB()` / `getStorageEstimate()` | 新增 |
-| 存储层 `prefs-store.js` | `save(trackId, prefs)` / `load(trackId)` / `delete(trackId)` / `deleteAll()` | 新增 |
+| 云同步 / 跨设备偏好漫游 / 服务端存储 | 范围 | 见 §1 业务范围 |
+| 每帧写入 `currentTime` | 技术 | 阻塞播放时钟，须节流至每秒一次 |
 
 ## 4. 功能验收标准
 
