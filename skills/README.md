@@ -142,5 +142,5 @@ python3 pub_local.py --deploy --dry-run # 预演，不写入
 | 模板 | `templates/CODEBUDDY.md` | dm-init-docs（项目层：版本绑定+例外项；通用规范见 `~/.codebuddy/CODEBUDDY.md`） |
 | 模板 | `templates/project/docs/*` | dm-init-docs（00~06 项目文档骨架，发布至 `~/.dev-meta/`） |
 | 模板 | `templates/versions/vX.Y-<slug>/*` | dm-plan-ver |
-| 模板 | `skills/dm-schedule/assets/500-schedule-template.md` | dm-schedule（含「环节」列与 3 条脚注，为排程权威模板） |
+| 模板 | `templates/versions/vX.Y-<slug>/500-schedule.md` | dm-schedule（排程**单一权威**；`assets/500-schedule-template.md` 为其副本，由 `check_copies` 校验） |
 | 模板 | `templates/worklog.md` | dm-log |

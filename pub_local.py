@@ -9,7 +9,7 @@ pub_local.py - 将 dev-meta 的模板、全局规范与 skill 同步到本地生
     python3 pub_local.py --deploy --dry-run # 预演（含部署）
 
 四类产物（默认全部执行）:
-- 项目模板    ~/.dev-meta/templates/        CODEBUDDY 模板 + 项目文档骨架 00~06 + 版本四件套模板
+- 项目模板    ~/.dev-meta/templates/        CODEBUDDY 模板 + 项目文档骨架 00~06 + 版本四件套模板 + worklog 模板
 - 规范文档    ~/.dev-meta/docs/             docs/01~09 + CODEBUDDY-global（跨项目可读的权威副本）
 - 全局规范    ~/.codebuddy/CODEBUDDY.md     由 docs/CODEBUDDY-global.md 部署（每次会话自动加载）
 - 触发入口    ~/.codebuddy/skills/<name>/   SKILL.md（由中文源自动生成）+ assets/ + references/（--deploy）
@@ -24,7 +24,9 @@ skill 源 `~/.dev-meta/skills/dm-*.md` 为中文源，是唯一权威。
   部署版 `SKILL.md` 由本脚本从中文源生成，禁止手工编辑 —— 因此不存在双端漂移。
 
 修复的旧版缺陷:
-1. 过滤: skills 只同步 `dm-*.md`，排除 README.md / skill-doc-principles.md，防污染
+1. 过滤: **触发入口**只由 `dm-*.md` 生成（排除 README.md / skill-doc-principles.md，防污染）；
+   `skill-doc-principles.md` 作为**被引用文档**单独同步到 `~/.dev-meta/skills/`——
+   否则 7 个 skill 正文里「原则见 skill-doc-principles §7」会变成无本地副本的盲引用
 2. 清理: 同步前删除目标目录中源已不存在的文件，防改名后残留（如旧的 project-*.md 平铺模板）
 3. 校验: 同步后核对文件数，不一致则非 0 退出
 4. dry-run: 支持预演，不实际写入
@@ -71,6 +73,7 @@ TEMPLATE_DESC = {
     "versions/vX.Y-<slug>/300-design.md": "版本设计模板（流程串联、模块分工、架构决策）",
     "versions/vX.Y-<slug>/400-build.md": "实现蓝图 + 执行顺序矩阵模板",
     "versions/vX.Y-<slug>/500-schedule.md": "工作包排程模板",
+    "worklog.md": "工作日志模板（项目初始化时复制到 `docs/reports/worklog.md`）",
 }
 
 
@@ -283,6 +286,12 @@ def check_copies(root: Path) -> int:
         if asset.name in version_src:
             pairs.append((asset, version_src[asset.name]))
 
+    # 文件名不同但同源：dm-schedule 的排程模板 ← templates/versions/500-schedule.md
+    sched_src = next((root / VERSIONS_REL).glob("*/500-schedule.md"), None)
+    sched_copy = root / "skills" / "dm-schedule" / "assets" / "500-schedule-template.md"
+    if sched_src and sched_copy.is_file():
+        pairs.append((sched_copy, sched_src))
+
     stale = [(c, s) for c, s in pairs
              if c.read_text(encoding="utf-8") != s.read_text(encoding="utf-8")]
 
@@ -315,6 +324,11 @@ def main() -> int:
     if sync_dir(root / "templates", TARGET_DIR / "templates", "CODEBUDDY.md", args.dry_run, "codebuddy") < 0:
         return 1
 
+    worklog_dst = TARGET_DIR / "templates" / "worklog.md"
+    print(f"\n[worklog] -> {worklog_dst}")
+    if sync_file(root / "templates" / "worklog.md", worklog_dst, args.dry_run, "worklog") < 0:
+        return 1
+
     print(f"\n[versions] -> {TARGET_DIR / VERSIONS_REL}（版本四件套模板，dm-plan-ver 运行时读取）")
     if sync_tree(root / VERSIONS_REL, TARGET_DIR / VERSIONS_REL, args.dry_run, "versions") < 0:
         return 1
@@ -332,6 +346,13 @@ def main() -> int:
 
     print(f"\n[skills] -> {TARGET_DIR / 'skills'}（仅 {SKILL_PREFIX}*.md）")
     if sync_dir(root / "skills", TARGET_DIR / "skills", f"{SKILL_PREFIX}*.md", args.dry_run, "skills") < 0:
+        return 1
+
+    # 非触发入口，但被 7 个 skill 正文引用（「原则见 skill-doc-principles §7」），必须可加载
+    principles_dst = TARGET_DIR / "skills" / "skill-doc-principles.md"
+    print(f"\n[principles] -> {principles_dst}")
+    if sync_file(root / "skills" / "skill-doc-principles.md", principles_dst,
+                 args.dry_run, "principles") < 0:
         return 1
 
     if args.deploy:
