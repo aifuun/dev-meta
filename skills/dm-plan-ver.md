@@ -67,13 +67,25 @@ description: 新建版本：创建版本文档四件套、分支/PR、TF Issue�
 
 | 触发点 | Grill 级别 | 提问范围 |
 |--------|-----------|----------|
-| 创建 `200-spec.md` 前 | 需求级 | 范围边界、完成标准、降级策略、明确排除项 |
+| 创建 `200-spec.md` 前 | 需求级 | 范围边界、完成标准、降级策略、明确排除项、**架构锚点五维**（触及哪些分层 / 模块 / 门面、**受影响契约及是否阻塞编码** / 对外 API 变更形态） |
 | 创建 `300-design.md` 前 | 架构级（最关键） | 数据流、模块边界、异常处理、兼容性、技术选型 |
+
+> 📌 **需求级 grill 问架构锚点的边界**：只问「本版本动到架构哪几处」「受影响契约是否阻塞编码」，
+> **不问「为什么这样设计」** —— 论证属 `300-design.md`，留到架构级 grill。避免 `200-spec` 膨胀成第二份设计文档。
 
 - 每次提出 **3-5 个决定性决策点**，不重复文档已有内容。
 - 沉淀规则：决策性回答写入对应文档章节；技术选型类回答触发 `dm-adr` 记录；问答不得留在对话流中丢失。
 
 ## 执行流程
+
+> ⚠️ **前置检查（必做）**：四件套模板来自发布后的资产目录 `~/.dev-meta/templates/versions/`。
+> 若该目录不存在（首次安装、或尚未执行过发布），**先提示用户执行**再继续：
+>
+> ```bash
+> cd <dev-meta 仓库> && python3 pub_local.py
+> ```
+>
+> 不要凭印象手写模板 —— 否则结构会与 `docs/02 §4` 漂移。
 
 ### 阶段 1：版本启动（核心）
 
@@ -145,6 +157,8 @@ TF 开发通过两个子 skill 串联，本 skill 不直接执行：
 | TF 编号需稳定，废弃 TF 保留编号标 `[DEPRECATED]` | 02-version-rules.md §3.1 |
 | design 管 TF 级，build 管步骤级 | 02-version-rules.md §3.3 |
 | 跨 TF 状态机放 300-design，单 TF 状态机放 400-build | 02-version-rules.md §3.4 |
+| `200-spec` 含 §3 架构锚点（分层 / 模块 / 门面 / 契约 / API），只做范围声明不做设计论证 | 02-version-rules.md §3.4 / §4 |
+| `200-spec` DoD 为**确认类** checklist，不得写成实现任务清单 | 02-version-rules.md §4 / §8 |
 | 每版本 1 PR，每 TF 1 Issue | 03-git-flow-rules.md §2 |
 | commit: `type(scope): subject` + `Closes #id`，详见 dm-commit | 03-git-flow-rules.md §3 |
 | 分支: `feature/v<version>-<slug>`（版本级；TF 不建分支，开发在版本分支上进行） | 03-git-flow-rules.md §4 |
@@ -174,6 +188,8 @@ TF 开发通过两个子 skill 串联，本 skill 不直接执行：
 
 - [ ] 四件套按依赖顺序创建（spec → design → build → schedule）
 - [ ] `200-spec` / `300-design` 产出前已执行**需求级 / 架构级 grill** 并沉淀
+- [ ] `200-spec` §3 **架构锚点已填写**（分层 / 模块 / 门面 / 契约 / API 五维齐全，只做范围声明）
+- [ ] `200-spec` §3.4 **受影响契约已登记**，且标记「阻塞编码」者已定案 / 回写至契约 SSOT
 - [ ] 分支、PR、TF Issue 已创建且互相关联
 - [ ] `400-build` 含执行顺序矩阵，每行标注**环节**
 - [ ] 契约门禁基线（06 / 07 / 08）已满足
@@ -186,9 +202,9 @@ TF 开发通过两个子 skill 串联，本 skill 不直接执行：
 | SKILL.md | — | 上述全流程指令 + 关键规则速查 |
 | references/version-rules.md | `docs/02-version-rules.md` | 四件套规则详情 |
 | references/git-flow-rules.md | `docs/03-git-flow-rules.md` | PR/Issue/commit 规则详情 |
-| assets/200-spec.md | `templates/versions/vX.Y-<slug>/200-spec.md` | 规格模板 |
-| assets/300-design.md | `templates/versions/vX.Y-<slug>/300-design.md` | 设计模板 |
-| assets/400-build.md | `templates/versions/vX.Y-<slug>/400-build.md` | 实现蓝图 + 执行顺序矩阵模板 |
+| `~/.dev-meta/templates/versions/vX.Y-<slug>/200-spec.md` | `templates/versions/vX.Y-<slug>/200-spec.md`（发布后） | 规格模板（业务流 + 架构锚点 + 验收 + DoD） |
+| `~/.dev-meta/templates/versions/vX.Y-<slug>/300-design.md` | 同上（发布后） | 设计模板 |
+| `~/.dev-meta/templates/versions/vX.Y-<slug>/400-build.md` | 同上（发布后） | 实现蓝图 + 执行顺序矩阵模板 |
 | assets/tracking-matrix.md | 新增 | TF→Issue→PR 追踪模板 |
 
 ## 使用示例

@@ -22,7 +22,49 @@
 | TF3 | 删除/清空时清理偏好 | 避免残留数据污染后续导入 | 删除或清空后，偏好数据不残留 |
 | TF4 | IndexedDB 降级 | 在隐私模式或不可用场景中保持可用 | 不可用场景下播放不中断并静默降级 |
 
-## 3. 功能验收标准
+## 3. 架构锚点（本版本触及的架构面）
+
+> 只登记「本版本动到架构哪几处」，不写为什么这样设计（论证属 `300-design.md`）。
+
+### 3.1 分层（Layering）
+
+| 层 | 本版本动作 | 硬约束 |
+|---|---|---|
+| 宿主层（播放器 UI / 播放控制） | 调用偏好读写并在 IndexedDB 不可用时静默降级 | 不直接操作 IndexedDB API，一律经存储层 |
+| 存储层（`prefs-store` / `audio-store`） | 新增 per-trackId 偏好读写能力 | 不依赖 DOM、不依赖 Engine 实例，可独立单测 |
+
+### 3.2 模块（Modules）
+
+| 文件 / 模块 | 层 | 动作 | 说明 |
+|---|---|---|---|
+| `src/storage/audio-store.js` | 存储层 | 新建 | IndexedDB 基础封装（openDB / closeDB / getStorageEstimate） |
+| `src/storage/prefs-store.js` | 存储层 | 新建 | per-trackId 偏好读写（save / load / delete / deleteAll） |
+| `switchTrack()` | 宿主层 | 修改 | 切歌时先存后读偏好 |
+| `startTimingLoop()` | 宿主层 | 修改 | 每秒写入一次 `currentTime`（节流，非每帧写入） |
+| `deleteTrack()` / `clearPlaylist()` | 宿主层 | 修改 | 同步清理偏好 |
+
+### 3.3 门面（Facade）
+
+| 门面 | 状态 | 暴露面规范 |
+|---|---|---|
+| `prefs-store.js` | 新增 | 仅暴露 save / load / delete / deleteAll，不对外暴露底层 IndexedDB 句柄 |
+
+### 3.4 契约（Contracts）
+
+<!-- 契约 ID 采用「域-序号」编号（如 STORE-001），须含四要素，落盘于本项目契约 SSOT -->
+
+| 契约 ID | 所在章节 | 变更性质 | 是否阻塞编码 |
+|---|---|---|---|
+| STORE-001 | （本样例未建立契约 SSOT，仅示范登记格式） | 新增 | 是 |
+
+### 3.5 API（对外签名）
+
+| 层 / 模块 | 签名 | 变更性质 |
+|---|---|---|
+| 存储层 `audio-store.js` | `openDB()` / `closeDB()` / `getStorageEstimate()` | 新增 |
+| 存储层 `prefs-store.js` | `save(trackId, prefs)` / `load(trackId)` / `delete(trackId)` / `deleteAll()` | 新增 |
+
+## 4. 功能验收标准
 
 | 验收项 | 对应流 | 验证方法 | 通过标准 |
 |---|---|---|---|
@@ -35,7 +77,7 @@
 | IndexedDB 不可用降级 | TF4 | 隐私模式下使用播放器 | 所有功能正常，偏好丢失时静默降级 |
 | Web 版回归 | TF1 / TF2 / TF3 / TF4 | 执行 V1.3 delivery 中 24 项 Web 验收 | 全部通过，无回归 |
 
-## 4. 架构验收标准
+## 5. 架构验收标准
 
 | 验收项 | 对应流 | 通过标准 |
 |---|---|---|
@@ -44,13 +86,17 @@
 | 向后兼容 | TF4 | 旧版无 per-trackId 数据的用户升级后，所有曲目按默认值起播，不报错 |
 | 构建通过 | 全部 | `npm run build` 无错误 |
 
-## 5. DoD (Definition of Done)
+## 6. DoD (Definition of Done)
 
-- [ ] `src/storage/audio-store.js` — IndexedDB 基础封装（openDB / closeDB / getStorageEstimate）
-- [ ] `src/storage/prefs-store.js` — per-trackId 偏好读写（save / load / delete / deleteAll）
-- [ ] `switchTrack()` 切歌时先存后读偏好
-- [ ] `startTimingLoop()` 中每秒写入一次 `currentTime`（节流，非每帧写入）
-- [ ] `deleteTrack()` 和 `clearPlaylist()` 同步清理偏好
-- [ ] IndexedDB 不可用时静默降级
+> **确认类** checklist —— 只写「是否已确认 / 已通过」，实现任务见 §3.2 模块清单与 `400-build.md`。
+
+- [ ] 业务范围已确认
+- [ ] 架构锚点已确认（§3 分层 / 模块 / 门面 / 契约 / API 均已登记）
+- [ ] 受影响契约已回写至契约 SSOT
+- [ ] 验收标准已确认
+- [ ] 相关设计文档已评审通过
+- [ ] 任务已拆分完成
+- [ ] 测试策略已定义（见 design.md 测试策略章节）
+- [ ] 关键测试场景已通过
 - [ ] Web 版 24 项回归全部通过
 - [ ] `npm run build` 通过
