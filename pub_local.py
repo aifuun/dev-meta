@@ -9,7 +9,7 @@ pub_local.py - 将 dev-meta 的模板、全局规范与 skill 同步到本地生
     python3 pub_local.py --deploy --dry-run # 预演（含部署）
 
 四类产物（默认全部执行）:
-- 项目模板    ~/.dev-meta/templates/        CODEBUDDY 模板 + 项目文档骨架 00~06
+- 项目模板    ~/.dev-meta/templates/        CODEBUDDY 模板 + 项目文档骨架 00~06 + 版本四件套模板
 - 规范文档    ~/.dev-meta/docs/             docs/01~09 + CODEBUDDY-global（跨项目可读的权威副本）
 - 全局规范    ~/.codebuddy/CODEBUDDY.md     由 docs/CODEBUDDY-global.md 部署（每次会话自动加载）
 - 触发入口    ~/.codebuddy/skills/<name>/   SKILL.md（由中文源自动生成）+ assets/ + references/（--deploy）
@@ -40,6 +40,7 @@ TARGET_DIR = Path.home() / ".dev-meta"
 DEPLOY_DIR = Path.home() / ".codebuddy" / "skills"
 SKILL_PREFIX = "dm-"
 TEMPLATE_REL = Path("templates") / "project" / "docs"
+VERSIONS_REL = Path("templates") / "versions"
 DOCS_REL = Path("docs")
 IGNORE_NAMES = {"__pycache__", ".DS_Store"}
 
@@ -66,6 +67,10 @@ TEMPLATE_DESC = {
     "project/docs/04_UI_UX_DESIGN.md": "交互与视图状态（无 UI 时跳过）",
     "project/docs/05_ROADMAP_AND_COMPLIANCE.md": "Milestone、版本切分、合规",
     "project/docs/06_OBSERVABILITY.md": "可观测性实例化（docs/07 的项目落点）",
+    "versions/vX.Y-<slug>/200-spec.md": "版本规格模板（业务流 + 架构锚点 + 验收标准 + DoD）",
+    "versions/vX.Y-<slug>/300-design.md": "版本设计模板（流程串联、模块分工、架构决策）",
+    "versions/vX.Y-<slug>/400-build.md": "实现蓝图 + 执行顺序矩阵模板",
+    "versions/vX.Y-<slug>/500-schedule.md": "工作包排程模板",
 }
 
 
@@ -257,6 +262,40 @@ def build_index(root: Path, dry_run: bool) -> int:
     return 1
 
 
+def check_copies(root: Path) -> int:
+    """告警：仓库内的手工副本若落后于源，提示同步。
+
+    覆盖两类极易漏改的副本（只告警不阻断，副本内容仍需人工确认后同步）：
+    - `skills/dm-*/references/*.md`      ← `docs/NN-*.md`（规范副本）
+    - `skills/dm-plan-ver/assets/*.md`   ← `templates/versions/vX.Y-<slug>/*.md`（模板副本）
+    """
+    pairs = []
+
+    docs_src = {}
+    for p in (root / DOCS_REL).glob("*.md"):
+        docs_src[p.name.split("-", 1)[1] if "-" in p.name else p.name] = p
+    for ref in sorted((root / "skills").glob("dm-*/references/*.md")):
+        if ref.name in docs_src:
+            pairs.append((ref, docs_src[ref.name]))
+
+    version_src = {p.name: p for p in (root / VERSIONS_REL).glob("*/*.md")}
+    for asset in sorted((root / "skills" / "dm-plan-ver" / "assets").glob("*.md")):
+        if asset.name in version_src:
+            pairs.append((asset, version_src[asset.name]))
+
+    stale = [(c, s) for c, s in pairs
+             if c.read_text(encoding="utf-8") != s.read_text(encoding="utf-8")]
+
+    if not stale:
+        print("  [ok] [copies] 副本与源一致")
+        return 0
+
+    print("  [warn] [copies] 以下副本落后于源，请同步（不阻断发布）：")
+    for copy, src in stale:
+        print(f"        - {copy.relative_to(root)}  <-  {src.relative_to(root)}")
+    return 0
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="将 dev-meta 模板、全局规范与 skill 发布到本地生效位置")
     parser.add_argument("--dry-run", action="store_true", help="预演，不实际写入")
@@ -276,9 +315,15 @@ def main() -> int:
     if sync_dir(root / "templates", TARGET_DIR / "templates", "CODEBUDDY.md", args.dry_run, "codebuddy") < 0:
         return 1
 
+    print(f"\n[versions] -> {TARGET_DIR / VERSIONS_REL}（版本四件套模板，dm-plan-ver 运行时读取）")
+    if sync_tree(root / VERSIONS_REL, TARGET_DIR / VERSIONS_REL, args.dry_run, "versions") < 0:
+        return 1
+
     print(f"\n[docs] -> {TARGET_DIR / DOCS_REL}（规范文档，供跨项目引用；不含 reports/）")
     if sync_dir(root / DOCS_REL, TARGET_DIR / DOCS_REL, "*.md", args.dry_run, "docs") < 0:
         return 1
+
+    check_copies(root)
 
     global_dst = Path.home() / ".codebuddy" / "CODEBUDDY.md"
     print(f"\n[global] -> {global_dst}")
