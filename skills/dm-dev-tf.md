@@ -1,13 +1,13 @@
 ---
 name: dm-dev-tf
-description: 开始开发某个 TF 时使用：读取版本文档、确认/创建 Issue、输出开发概要（开发在版本分支上，不建分支）。触发于「开始 TF3」「/dm-dev-tf」。
+description: TF 全生命周期：启动（读版本文档、确认/创建 Issue、输出开发概要）→ 提交（委托 dm-commit）→ 收尾（验收、关 Issue、回写 500-schedule 执行记录）。开发在版本分支上，不建分支。触发于「开始 TF3」「TF3 完成了」「/dm-dev-tf」。
 ---
 
 # dm-dev-tf
 
 ## 概述
 
-TF 开发引导 skill，读取版本文档上下文、确认/创建 TF Issue、输出开发概要。开发直接在现有版本分支上进行，TF 不处理分支创建/删除。是 dm-plan-ver Phase 2 中 TF 开发的"启动端"。
+TF 开发 skill，**拥有 TF 的整个生命周期**：启动（读文档 / 确认·创建 Issue / 出开发概要）→ 提交（委托 dm-commit）→ 收尾（验收 / 关 Issue / 回写 `500-schedule.md`）。开发直接在现有版本分支上进行，TF 不处理分支创建/删除。是 `dm-plan-ver` 阶段 2 的唯一承接方。
 
 ## 职责边界
 
@@ -16,6 +16,7 @@ TF 开发引导 skill，读取版本文档上下文、确认/创建 TF Issue、�
 | 读版本文档、提取 TF 上下文 | ✅ 本 skill |
 | 确认/创建 TF Issue | ✅ 本 skill |
 | 输出开发概要 | ✅ 本 skill |
+| **TF 收尾**：验收 + 关闭 Issue + 回写 `500-schedule.md`（工作包状态 / tracking-matrix / 执行记录） | ✅ 本 skill |
 | 分支创建/删除 | 版本级职责（dm-plan-ver），不在本 skill |
 | TF 提交 | 委托 dm-commit |
 
@@ -25,9 +26,11 @@ dm-dev-tf 嵌入 dm-plan-ver 的 Phase 2（TF 开发）：
 
 ```
 dm-plan-ver (版本规划)
-  └── Phase 2: TF 开发
-        ├── dm-dev-tf — TF 启动（本 skill）
-        └── dm-commit — TF 提交
+  └── 阶段 2: TF 开发 —— 委托后由本 skill 全程承接
+        dm-dev-tf（本 skill）
+          ├── 启动：读文档 / 确认·创建 Issue / 出开发概要
+          ├── 提交：委托 dm-commit
+          └── 收尾：验收 → 关 Issue → 回写 500-schedule
 ```
 
 ## 触发
@@ -37,6 +40,7 @@ dm-plan-ver (版本规划)
 - "/dm-dev-tf 3"
 - "/dm-dev-tf 3 auth-session"（带 topic 提示）
 - "start TF1"
+- "TF1 完成了"（进入收尾：验收 → commit → 关 Issue → 回写 500-schedule）
 
 ## 核心概念
 
@@ -50,6 +54,9 @@ TF 开发概要从版本四件套提取，各文档提供不同视角：
 | `200-spec.md` | TF 业务目标、验收标准、验收锚点 |
 | `300-design.md` | TF 数据流、对其它 TF 的依赖、跨 TF 状态机、测试策略 |
 | `400-build.md` | TF 步骤、函数签名、Schema、单 TF 状态机/时序图 + 执行顺序矩阵 |
+
+> 启动阶段从 `500-schedule.md` 只取**该 TF 工作包的状态**；「执行记录」是收尾时的**写入端**，
+> 启动时不必读取（避免历史记录占用上下文）。
 
 ### 开发分支
 
@@ -112,6 +119,15 @@ TF 开发概要从版本四件套提取，各文档提供不同视角：
 ...
 ```
 
+### 5. TF 收尾（用户说「TFn 完成了」时执行）
+
+1. **确认验收**：对照 `200-spec.md` 中该 TF 的验收标准
+2. **执行 commit** — 委托 dm-commit：`type(scope): subject` + `Closes #id`
+3. **关闭 TF Issue**（标记验收结果）
+4. **回写 `500-schedule.md`**：工作包状态 + tracking-matrix + **追加执行记录一条**
+   （五段：概要 / 偏差 / 发现 / 失误 / 遗留；每条 ≤8 行，append-only；
+   被推翻的判断用 ~~删除线~~ 保留；日常流水进 worklog，不重复记；状态只改工作包列表一处）
+
 ## 关键规则速查
 
 | 规则 | 来源 |
@@ -121,7 +137,8 @@ TF 开发概要从版本四件套提取，各文档提供不同视角：
 | TF 开发步骤含部署/联调环节（归属 dev，不归 qa） | 02-version-rules.md §2.2 |
 | `400-build.md` 不完整时需在概要中标注 | 02-version-rules.md |
 | `300-design.md` 对当前 TF 不完整时，出概要前须执行实现级 grill，问答沉淀进文档 | skill-doc-principles.md §7 |
-| 提交委托 dm-commit，本 skill 仅负责启动阶段 | dm-commit.md |
+| TF 全生命周期归本 skill（启动 → 提交 → 收尾回写）；提交环节委托 dm-commit | 本 skill 职责边界 |
+| TF 收尾回写 `500-schedule.md`：工作包状态 + tracking-matrix + 执行记录一条（≤8 行，append-only） | 02-version-rules.md §6.1 |
 | 契约须标注四要素（归属/方向/不变性/真值来源）+ 域-序号编号；质量维度作为不变性项落地 | docs/06-contract-based-dev.md §2.6 |
 | 失败面契约：纯函数式失败返回空/原值而非 nil；严禁静默危险失败，须调用前拦截显式暴露（隐性契约债核查见 §2.7） | docs/06-contract-based-dev.md §2.7 |
 | Micro-Batching：TF 内按三 Batch 推进（契约/数据模型→Core 单文件→UI/调用点），AI 执行粒度=单文件重构/单函数修复；每绿灯 Batch 由用户触发 commit，混乱时用户 `git reset --hard` 退回（AI 不自发），随后 New Session | docs/08-small-batch-iteration.md |
@@ -142,6 +159,7 @@ TF 开发概要从版本四件套提取，各文档提供不同视角：
 - [ ] 开发概要含**目标 / 关键文件 / 依赖 / 测试策略**四要素
 - [ ] 执行粒度收敛到**单文件重构 / 单函数修复**（见 `docs/08`）
 - [ ] 在**现有版本分支**上开发（本 skill 不建分支）
+- [ ] TF 收尾已回写 `500-schedule.md`（工作包状态 + tracking-matrix + 执行记录一条）
 
 ## 资源映射
 
@@ -151,6 +169,7 @@ TF 开发概要从版本四件套提取，各文档提供不同视角：
 | dm-plan-ver references/version-rules.md | `docs/02-version-rules.md` | TF 文档结构、环节定义 |
 | dm-plan-ver references/git-flow-rules.md | `docs/03-git-flow-rules.md` | Issue 规范（分支归版本级，不在本 skill 处理） |
 | dm-commit references/git-flow-rules.md | `docs/03-git-flow-rules.md` | commit 格式规则 |
+| dm-plan-ver assets/tracking-matrix.md | — | 收尾时更新 TF→Issue→PR→验收 追踪矩阵 |
 
 ## 使用示例
 
@@ -178,4 +197,19 @@ AI:  1. 检测版本: docs/versions/v0.2-auth/ → v0.2（当前分支 feature/v
         1. 实现 token 签发
         2. 实现 token 校验中间件
         3. 实现 refresh 并发去重
+```
+
+用户: "TF3 完成了"
+
+AI:  1. 对照 200-spec 验收标准确认
+     2. commit: feat(auth): implement session issue/verify/refresh
+        Closes #15
+     3. 关闭 Issue #15
+     4. 回写 500-schedule：工作包状态 ✅ + tracking-matrix + 执行记录一条
+        #### TF3 — 会话管理（a1b2c3d）
+        - 概要：基于 v0.1 会话基线，实现签发 / 校验 / 刷新
+        - 偏差：无
+        - 发现：并发刷新须去重，否则双 token 同时失效
+        - 失误：无
+        - 遗留：→ 无
 ```
