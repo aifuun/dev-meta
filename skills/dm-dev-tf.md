@@ -22,7 +22,7 @@ TF 开发 skill，**拥有 TF 的整个生命周期**：启动（读文档 / 确
 
 ## 关系
 
-dm-dev-tf 嵌入 dm-plan-ver 的 Phase 2（TF 开发）：
+dm-dev-tf 承接 dm-plan-ver 的**阶段 2**（TF 开发），全程负责启动 → 提交 → 收尾：
 
 ```
 dm-plan-ver (版本规划)
@@ -75,7 +75,7 @@ TF 开发概要从版本四件套提取，各文档提供不同视角：
 
 ### 3. 确认/创建 TF Issue
 
-- 若 Phase 1 已创建该 TF Issue，确认编号与状态
+- 若阶段 1（版本启动）已创建该 TF Issue，确认编号与状态
 - 若未创建，输出 Issue 内容：标题 `[TFx] <flow-name>`，包含目标、完成标准、依赖、验收方法
 
 ### 3.5 实现级 grill（仅当文档不完整时）
@@ -123,7 +123,7 @@ TF 开发概要从版本四件套提取，各文档提供不同视角：
 
 1. **确认验收**：对照 `200-spec.md` 中该 TF 的验收标准
 2. **执行 commit** — 委托 dm-commit：`type(scope): subject` + `Closes #id`
-3. **关闭 TF Issue**（标记验收结果）
+3. **关闭本 TF 的 Issue**（`Closes` footer 自动关闭；未自动关闭的手动关闭，标记验收结果）
 4. **回写 `500-schedule.md`**：工作包状态 + tracking-matrix + **追加执行记录一条**
    （五段：概要 / 偏差 / 发现 / 失误 / 遗留；每条 ≤8 行，append-only；
    被推翻的判断用 ~~删除线~~ 保留；日常流水进 worklog，不重复记；状态只改工作包列表一处）

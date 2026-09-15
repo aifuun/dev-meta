@@ -168,7 +168,7 @@ AI:  1. 前置检查：模板 7 个齐全 ✅ / CODEBUDDY.md ✅ / 14 个中文�
      2. 预演：python3 pub_local.py --deploy --dry-run
         [templates] 7 个文件 · [codebuddy] 1 · [skills] 14 · [deploy] 14 个 skill
      3. 执行：python3 pub_local.py --deploy
-     4. 校验：文件数一致，抽查 dm-plan-ver（7 文件）与 dm-arch-design（2 文件）
+     4. 校验：文件数一致，抽查 dm-plan-ver（6 文件）与 dm-arch-design（1 文件）
      5. 报告：资产已发布至 ~/.dev-meta/，触发入口已部署至 ~/.codebuddy/skills/
 ```
 

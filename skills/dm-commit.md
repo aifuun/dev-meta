@@ -27,7 +27,7 @@ Commit 规范 skill，确保每次提交遵循 dev-meta commit 约定。是 comm
 - "提交代码"
 - "帮我 commit"
 - 询问 commit message 格式
-- dm-plan-ver 阶段 2 步骤 3（TF 交付提交）
+- dm-dev-tf 步骤 5（TF 收尾提交）
 - dm-log 步骤 6（worklog 提交）
 - dm-init-docs 步骤 7（初始化提交）
 - dm-report 步骤 6（报告提交）

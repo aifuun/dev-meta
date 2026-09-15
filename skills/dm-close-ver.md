@@ -16,7 +16,7 @@ description: 关闭版本时使用：就绪审计、保留历史的 merge（不�
 | 就绪性审计（Issue / 工作包 / 验收 / 工作区 / ODD DoD） | ✅ 本 skill |
 | 收尾执行（矩阵核对、worklog 补全、文档收尾） | ✅ 本 skill |
 | 保留历史的 merge（`--no-ff`，不用 squash） | ✅ 本 skill |
-| 关闭 TF Issue、清理分支、打 annotated tag 并推送 | ✅ 本 skill |
+| **兜底核对** TF Issue 已关闭 + 清理分支、打 annotated tag 并推送 | ✅ 本 skill |
 | worklog 补全 | 委托 `dm-log` |
 | 文档提交 | 委托 `dm-commit` |
 | 版本规划与启动（四件套 / 分支 / PR / Issue） | 委托 `dm-plan-ver` |
@@ -24,13 +24,15 @@ description: 关闭版本时使用：就绪审计、保留历史的 merge（不�
 
 ## 关系
 
-dm-close-ver 是 dm-plan-ver Phase 3（版本收尾）的独立承接者。dm-plan-ver 负责版本规划与启动（四件套、分支、PR、TF Issue）；版本进入收尾阶段后由本 skill 接管。
+dm-close-ver 是 dm-plan-ver **阶段 3**（版本收尾）的独立承接者。dm-plan-ver 负责版本规划与启动（四件套、分支、PR、TF Issue）；版本进入收尾阶段后由本 skill 接管。
 
 ```
 dm-plan-ver (开版本)
-  └── Phase 2: TF 开发
-        ├── dm-dev-tf (TF 启动)
-        └── dm-commit (TF 提交)
+  └── 阶段 2: TF 开发 —— 委托 dm-dev-tf 全程承接
+        dm-dev-tf
+          ├── 启动：读文档 / 确认·创建 Issue / 出开发概要
+          ├── 提交：委托 dm-commit
+          └── 收尾：验收 → 关 Issue → 回写 500-schedule
 
 dm-close-ver (关版本) ← 独立 skill，接收 dm-plan-ver 交接
 ```
@@ -108,7 +110,7 @@ dev 工作包完成 = **代码 + 部署 + 联调**；部署与联调归 dev，qa
 10. **关闭剩余 TF Issue** — 逐个确认并关闭本版本所有 TF Issue：
    - 已完成：标注验收结果后关闭
    - `[DEFERRED]`：单独备注延期原因后关闭
-   - 未被 commit 自动关闭的：手动关闭
+   - **兜底**：各 TF Issue 由 `dm-dev-tf` 在收尾时关闭；此处仅**核对**，未关闭的手动补关
    - 关闭后更新追踪矩阵（tracking-matrix）为 ✅
 
 11. **清理分支** — 删除已合并的版本分支：

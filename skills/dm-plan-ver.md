@@ -220,10 +220,9 @@ AI:  1. 创建 docs/versions/v1.5-login/ 四件套
 
 用户: "TF2 完成了"
 
-AI:  1. 确认验收标准
-     2. 建议 commit: feat(login): implement credential validation
-     3. 更新追踪矩阵 TF2→✅
-     4. 建议关闭 Issue #xx
+AI:  委托 dm-dev-tf（本 skill 不执行）：
+     验收 → commit(Closes #xx) → 关 Issue → 回写 500-schedule
+     （工作包状态 + 追踪矩阵 + 执行记录一条）
 
 用户: "关闭版本 v1.5-login"
 
