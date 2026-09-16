@@ -1,0 +1,24 @@
+---
+import type { TreeNode } from '../lib/tree'
+import DirTree from './DirTree.astro'
+
+const { nodes } = Astro.props as { nodes: TreeNode[] }
+---
+
+<ul class="tree">
+  {
+    nodes.map((n) => (
+      <li>
+        {n.children.length > 0 ? (
+          <details open>
+            {/* 目录自身可能就是一页（index.md）；此时 summary 也要可点，否则该页从索引不可达 */}
+            <summary>{n.href ? <a href={n.href}>{n.title ?? n.name}</a> : `${n.name}/`}</summary>
+            <DirTree nodes={n.children} />
+          </details>
+        ) : (
+          <a href={n.href}>{n.title ?? n.name}</a>
+        )}
+      </li>
+    ))
+  }
+</ul>

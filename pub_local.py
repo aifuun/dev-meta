@@ -9,7 +9,7 @@ pub_local.py - 将 dev-meta 的模板、全局规范与 skill 同步到本地生
     python3 pub_local.py --deploy --dry-run # 预演（含部署）
 
 四类产物（默认全部执行）:
-- 项目模板    ~/.dev-meta/templates/        CODEBUDDY 模板 + 项目文档骨架 00~06 + 版本四件套模板 + worklog 模板
+- 项目模板    ~/.dev-meta/templates/        CODEBUDDY 模板 + 项目文档骨架 00~06 + 版本四件套模板 + worklog 模板 + 站点脚手架
 - 规范文档    ~/.dev-meta/docs/             docs/01~09 + CODEBUDDY-global（跨项目可读的权威副本）
 - 全局规范    ~/.codebuddy/CODEBUDDY.md     由 docs/CODEBUDDY-global.md 部署（每次会话自动加载）
 - 触发入口    ~/.codebuddy/skills/<name>/   SKILL.md（由中文源自动生成）+ assets/ + references/（--deploy）
@@ -43,6 +43,7 @@ DEPLOY_DIR = Path.home() / ".codebuddy" / "skills"
 SKILL_PREFIX = "dm-"
 TEMPLATE_REL = Path("templates") / "project" / "docs"
 VERSIONS_REL = Path("templates") / "versions"
+SITE_REL = Path("templates") / "site"
 DOCS_REL = Path("docs")
 IGNORE_NAMES = {"__pycache__", ".DS_Store"}
 
@@ -74,6 +75,7 @@ TEMPLATE_DESC = {
     "versions/vX.Y-<slug>/400-build.md": "实现蓝图 + 执行顺序矩阵模板",
     "versions/vX.Y-<slug>/500-schedule.md": "工作包排程模板",
     "worklog.md": "工作日志模板（项目初始化时复制到 `docs/reports/worklog.md`）",
+    "site/": "站点脚手架模板（Astro；`content/` 为内容源，由 `dm-pub-site` 实例化）",
 }
 
 
@@ -331,6 +333,10 @@ def main() -> int:
 
     print(f"\n[versions] -> {TARGET_DIR / VERSIONS_REL}（版本四件套模板，dm-plan-ver 运行时读取）")
     if sync_tree(root / VERSIONS_REL, TARGET_DIR / VERSIONS_REL, args.dry_run, "versions") < 0:
+        return 1
+
+    print(f"\n[site] -> {TARGET_DIR / SITE_REL}（站点脚手架模板，dm-pub-site 实例化用）")
+    if sync_tree(root / SITE_REL, TARGET_DIR / SITE_REL, args.dry_run, "site") < 0:
         return 1
 
     print(f"\n[docs] -> {TARGET_DIR / DOCS_REL}（规范文档，供跨项目引用；不含 reports/）")
