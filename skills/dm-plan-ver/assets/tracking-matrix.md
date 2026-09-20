@@ -1,19 +1,26 @@
-# 📋 版本 TF 追踪矩阵
+# 📋 版本追踪矩阵
 
-> 用于追踪版本内各 TF 从 Issue 创建到合并、验收的完整状态。
+> 用于追踪版本内各 **Step** 从创建到合并、验收的完整状态。
+> **版本 Issue 唯一**（命名 `[vX.Y] <feature-name>`，正文含 Step 0–7 checklist）；
+> 矩阵的行以 Step 为单位，Issue / PR 列填该版本唯一的那一个。
 
 ## 追踪矩阵
 
-| TF | Issue | PR | 验收 |
-|----|-------|-----|------|
-| TF1 | #xx | #xx | ⬜ |
-| TF2 | #xx | #xx | ⬜ |
-| TF3 | #xx | #xx | ⬜ |
+| Step | Issue | PR | 验收 |
+|------|-------|-----|------|
+| S0 Scaffold & Clean | #xx | #xx | ⬜ |
+| S1 Contract & ADR | #xx | #xx | ⬜ |
+| S2 Core & Prototype | #xx | #xx | ⬜ |
+| S3 Standard Finalization | #xx | #xx | ⬜ |
+| S4 Ingress Migration | #xx | #xx | ⬜ |
+| S5 Egress Migration | #xx | #xx | ⬜ |
+| S6 Guards & Tests | #xx | #xx | ⬜ |
+| S7 Verification & Close | #xx | #xx | ⬜ |
 
-> 状态：⬜ 未开始 / 🔄 开发中 / ✅ 已完成 / ❌ 已取消
+> 状态：⬜ 待开始 / 🔄 进行中 / ✅ 已完成 / ⏭️ 已跳过（对应 `400-build` §2 的 `⏭️ SKIPPED`）
 
-## 使用规则
+## 维护时机
 
-1. **版本创建时**：为每个 TF 生成 Issue（标题 `[TFx] <flow-name>`），关联到版本 PR，填入矩阵首行。
-2. **TF 完成时**：确认验收标准 → 建议 commit → 更新矩阵 TF 状态为 ✅ → 建议关闭对应 Issue。
-3. **版本关闭时**：检查全部 TF 已关闭、矩阵全 ✅，再输出 merge 建议。
+1. **版本创建时**：生成**唯一**版本 Issue（标题 `[vX.X] <feature-name>`，正文含 Step 0–7 checklist），关联到版本 PR，填入矩阵。
+2. **Step 完成时**：确认验收标准 → 建议 commit（subject 末尾 `(S<n>)`）→ 更新矩阵该 Step 状态为 ✅ → 回写 `500-schedule.md` 执行记录。
+3. **版本关闭时**：检查全部 Step 已完成或已标记跳过、矩阵全 ✅，再输出 merge 建议。
