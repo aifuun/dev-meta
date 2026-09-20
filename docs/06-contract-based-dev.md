@@ -31,7 +31,7 @@
 ### 2.3 L3 关键行为契约（测试级）
 
 - **定义**：对算法类 / 有隐性契约（幂等、并发去重、异常分支、降级取舍）的函数，规定「给定场景下的预期行为」（given-when-then）。这是**行为规定**，不是测试实现。
-- **载体**：`templates/versions/vX.Y-<slug>/400-build.md` §2.3 / §3.3「关键行为契约」。
+- **载体**：`templates/versions/vX.Y-<slug>/400-build.md` §3 各 Step 明细内的「关键行为契约」小节。
 - **适用范围**：仅算法类 / 隐性契约函数必填；薄胶水 / CRUD 函数可省略。
 - **字段**：函数 / 场景 / 预期（given-when-then）。
 - **落地**：由 `dm-dev-step` 据此生成真实单测。
@@ -133,7 +133,7 @@
 | 期望什么（行为契约） | 关键行为契约表 | 构建阶段 | `400-build.md` §2.3 / §3.3 |
 | 落地实现 | 真实单测代码 | 开发阶段 | `dm-dev-step` 据此生成 |
 
-> 三层分工的唯一权威即本文档 §3。`docs/02-version-rules.md` §3.5 仅作指针。
+> 三层分工的唯一权威即本文档 §3。`docs/02-version-rules.md` §3.6 仅作指针。
 
 ## 4. 关键规则速查（唯一权威表）
 
@@ -143,7 +143,7 @@
 | 单一权威 | 本文档定义契约规范；模板 / skill 只引用不重定义 |
 | L3 适用范围 | 仅算法 / 隐性契约函数必填；薄胶水 / CRUD 可省 |
 | 行为契约是规定非实现 | `dm-dev-step` 据此生成真实单测，不重新定义预期 |
-| 三层不冲突 | 测什么 / 期望什么 / 落地分属 design / build / dev-tf，互不复述 |
+| 三层不冲突 | 测什么 / 期望什么 / 落地分属 design / build / dm-dev-step，互不复述 |
 | 下层不违背上层 | L3 行为不得违背 L2 Feature 边界与 L1 API 约定 |
 | 契约质量基线 | L1/L2/L3 须覆盖 §2.5 维度；缺失须在规划 / grill 阶段补齐 |
 | 跨层编码约定 | 命名即契约、失败透明、不可变默认、单一职责、显式校验（§2.5） |
@@ -170,7 +170,7 @@
 |--------|------|
 | `docs/01-project-dev-flow.md` §3.3 | 契约基线概念见本文档 |
 | `docs/02-version-rules.md` §2 / §5 / §3.6 | API 契约 / Feature 契约 / 测试分层指针 |
-| `templates/versions/vX.Y-<slug>/400-build.md` §1.2 / §2.3 / §3.3 | L1 / L3 载体，行为契约指针 |
+| `templates/versions/vX.Y-<slug>/400-build.md` §1.2 / §3 | L1 载体；L3 载体为 §3 各 Step 明细内的「关键行为契约」小节 |
 | `templates/versions/vX.Y-<slug>/300-design.md` §7 | 测试策略指针 |
 | `templates/project/docs/03_CONTRACTS_AND_API.md` §2 | L1 接口契约模板指针 |
 | `skills/dm-plan-ver.md` | 400-build 须含行为契约 + 契约质量基线（§2.5）；契约记录（§2.6）/ 失败面（§2.7）/ 演进治理（§5）指针；诊断契约嵌入见 07 |

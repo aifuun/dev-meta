@@ -27,7 +27,7 @@ AI 在多个文件间来回拉扯、陷入「长尾混乱」的根因，是 Task
 | **Batch 2** | Core 逻辑实现（**单文件**） | 单元测试通过（Agentic TDD 轻量范式，见 §2.2） |
 | **Batch 3** | 接入 UI / 调用点（多文件适配） | 集成校验通过 |
 
-- 顺序不可逆：先契约、再 Core、后接入（与 `docs/02-version-rules.md` 的 `400-build.md` 执行顺序矩阵一致）。
+- 顺序不可逆：先契约、再 Core、后接入（与 `docs/02-version-rules.md` §6.2 的 `400-build.md` Step 0–7 施工清单一致）。
 - 多个绿灯 Batch 的 commit 均 `Refs #同一 Issue`（见 `docs/03-git-flow-rules.md` §2.3）。
 
 ### 2.1 混乱回退纪律
