@@ -100,7 +100,7 @@ description: 新建版本：创建版本文档四件套、分支/PR、版本 Iss
    - **需求级 grill**（创建 `200-spec.md` 前）：围绕范围边界、完成标准、降级策略、排除项提问，回答沉淀进 `200-spec.md`
    - 创建 `200-spec.md`
    - **架构级 grill**（创建 `300-design.md` 前）：围绕数据流、模块边界、异常处理、兼容性、技术选型提问，回答沉淀进 `300-design.md`（技术选型类触发 `dm-adr`）
-   - 创建 `300-design.md`、`400-build.md`（`400-build.md` 执行顺序矩阵按 `300-design.md` §3 的 Step 执行顺序排列，每行标注环节）
+   - 创建 `300-design.md`、`400-build.md`（`400-build.md` §2 Step 清单按固定 `S0`–`S7` 顺序填写、不得增删；逐行标注环节与 guard，定义见 `docs/02` §6.2）
 
 2. **创建分支**
    ```bash
@@ -209,7 +209,7 @@ Step 的**全生命周期**归 `dm-dev-step`，本 skill 只做**一次委托**�
 | references/git-flow-rules.md | `docs/03-git-flow-rules.md` | PR/Issue/commit 规则详情 |
 | `~/.dev-meta/templates/versions/vX.Y-<slug>/200-spec.md` | `templates/versions/vX.Y-<slug>/200-spec.md`（发布后） | 规格模板（核心业务场景 + 架构锚点 + 验收 + DoD） |
 | `~/.dev-meta/templates/versions/vX.Y-<slug>/300-design.md` | 同上（发布后） | 设计模板 |
-| `~/.dev-meta/templates/versions/vX.Y-<slug>/400-build.md` | 同上（发布后） | 实现蓝图 + 执行顺序矩阵模板 |
+| `~/.dev-meta/templates/versions/vX.Y-<slug>/400-build.md` | 同上（发布后） | 实现蓝图 + Step 0–7 施工清单模板 |
 | assets/tracking-matrix.md | 新增 | Step→Issue→PR 追踪模板 |
 
 ## 使用示例

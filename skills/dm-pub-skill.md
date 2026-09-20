@@ -140,7 +140,7 @@ python3 ~/.vscode/extensions/tencent-cloud.coding-copilot-*/out/extension/builti
 
 - [ ] 模板 7 个齐全、`templates/CODEBUDDY.md` 存在
 - [ ] `docs/` 10 个规范文档已同步（不含 `reports/`）
-- [ ] 14 个中文源均含 YAML frontmatter
+- [ ] 16 个中文源均含 YAML frontmatter
 - [ ] 同步后**文件数校验通过**（无 `[error]`，退出码 0）
 - [ ] 抽查 `~/.codebuddy/skills/<name>/SKILL.md` 存在且含 frontmatter
 - [ ] `~/.dev-meta/README.md` 已生成，且 skill 用途与其 frontmatter 描述一致
@@ -164,9 +164,9 @@ python3 ~/.vscode/extensions/tencent-cloud.coding-copilot-*/out/extension/builti
 ```
 用户: "发布 skill"
 
-AI:  1. 前置检查：模板 7 个齐全 ✅ / CODEBUDDY.md ✅ / 14 个中文源含 frontmatter ✅
+AI:  1. 前置检查：模板 7 个齐全 ✅ / CODEBUDDY.md ✅ / 16 个中文源含 frontmatter ✅
      2. 预演：python3 pub_local.py --deploy --dry-run
-        [templates] 7 个文件 · [codebuddy] 1 · [skills] 14 · [deploy] 14 个 skill
+        [templates] 7 个文件 · [codebuddy] 1 · [skills] 16 · [deploy] 16 个 skill
      3. 执行：python3 pub_local.py --deploy
      4. 校验：文件数一致，抽查 dm-plan-ver（6 文件）与 dm-arch-design（1 文件）
      5. 报告：资产已发布至 ~/.dev-meta/，触发入口已部署至 ~/.codebuddy/skills/

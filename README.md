@@ -1,6 +1,6 @@
 # dev-meta
 
-开发元规范与工程标准，跨项目共享。以 Transaction Flow 作为版本文档主轴，并以「契约只读 / 可观测性 / 小批迭代」三支柱约束 AI 协作。
+开发元规范与工程标准，跨项目共享。以 Step 施工流作为版本文档主轴，并以「契约只读 / 可观测性 / 小批迭代」三支柱约束 AI 协作。
 
 ## 元数据
 
@@ -70,7 +70,7 @@ dev-meta 分三层：**规范层**定义「是什么」，**skill 层**定义「
 
 ```text
 docs/01~09        规范层    唯一权威，只被引用，不重复定义
-skills/           skill 层  14 个 skill，AI 可触发的标准化执行流程
+skills/           skill 层  16 个 skill，AI 可触发的标准化执行流程
 templates/        模板层    项目文档 / 版本文档 / CODEBUDDY 模板
 pub_local.py      发布引擎  一键发布资产 + 部署 skill（零第三方依赖）
 ```
@@ -191,7 +191,7 @@ dm-pub-skill  ←── 发布 / 部署 skill 与模板
 | **AI** | 按 skill 执行，受三支柱约束 | skill 自动触发 |
 
 ```text
-[冷启动] clone → pub_local.py --deploy → 全局规范 + 资产 + 14 个 skill 全部就位
+[冷启动] clone → pub_local.py --deploy → 全局规范 + 资产 + 16 个 skill 全部就位
                           │
         ┌─────────────────┼─────────────────┐
         ▼                 ▼                 ▼
@@ -213,12 +213,12 @@ python3 pub_local.py --deploy
 |------|----------|------|
 | 规范文档 | `~/.dev-meta/docs/` | 01~09 + CODEBUDDY-global，**跨项目可读**（业务项目里靠它引用 06/07/08） |
 | 模板 | `~/.dev-meta/templates/` | 项目文档骨架 00~06、CODEBUDDY 模板 |
-| skill 中文源 | `~/.dev-meta/skills/` | 14 个中文源（唯一权威） |
+| skill 中文源 | `~/.dev-meta/skills/` | 16 个中文源（唯一权威） |
 | **资产总索引** | `~/.dev-meta/README.md` | 全部资产及用途——**AI 的单一入口** |
 | **全局规范** | `~/.codebuddy/CODEBUDDY.md` | DoD、AI 协作约定、编码约定、01~09 导航（**每次会话自动加载**） |
-| skill 触发入口 | `~/.codebuddy/skills/<name>/` | 14 个 skill 可被 AI 触发 |
+| skill 触发入口 | `~/.codebuddy/skills/<name>/` | 16 个 skill 可被 AI 触发 |
 
-校验：新开会话问 AI「dev-meta 有哪些 skill」，能答出 14 个即成功；或直接看 `~/.dev-meta/README.md`。
+校验：新开会话问 AI「dev-meta 有哪些 skill」，能答出 16 个即成功；或直接看 `~/.dev-meta/README.md`。
 
 > ⚠️ 跳过这一步的后果是**静默失效**：全局规范与 skill 都不生效，但不会有任何报错。
 
@@ -326,7 +326,7 @@ python3 pub_local.py --deploy --dry-run # 预演，不写入
 
 ### Skill 与样例
 
-- [skills/](https://github.com/aifuun/dev-meta/tree/main/skills) — Skill 中文源（14 个：dm-init-docs / dm-plan-ver / dm-close-ver / dm-schedule / dm-dev-tf / dm-log / dm-commit / dm-report / dm-adr / dm-arch-design / dm-contract-gate / dm-grillme-plan / dm-cleanup / dm-pub-skill）
+- [skills/](https://github.com/aifuun/dev-meta/tree/main/skills) — Skill 中文源（16 个：dm-init-docs / dm-plan-roadmap / dm-plan-ver / dm-close-ver / dm-schedule / dm-dev-step / dm-log / dm-commit / dm-report / dm-adr / dm-arch-design / dm-contract-gate / dm-grillme-plan / dm-cleanup / dm-pub-skill / dm-pub-site）
 - [skills/skill-doc-principles.md](https://github.com/aifuun/dev-meta/blob/main/skills/skill-doc-principles.md) — Skill 文档编写规范（章节骨架、单一权威、自动部署）
 - [samples/](https://github.com/aifuun/dev-meta/tree/main/samples) — 版本文档样例（V1.4.1-indexeddb-prefs）与契约门禁样例（contract-gate）
 

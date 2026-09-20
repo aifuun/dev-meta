@@ -33,7 +33,7 @@ HTML = ROOT / "README.html"
 # MDX frontmatter：文档站用它生成页面标题与摘要
 MDX_FRONTMATTER = """---
 title: dev-meta
-description: 开发元规范与工程标准，跨项目共享。以 Transaction Flow 为主轴，用「契约只读 / 可观测性 / 小批迭代」三支柱约束 AI 协作。
+description: 开发元规范与工程标准，跨项目共享。以 Step 施工流为主轴，用「契约只读 / 可观测性 / 小批迭代」三支柱约束 AI 协作。
 ---
 
 """

@@ -23,6 +23,7 @@
 | `dm-grillme-plan` | 通用需求 Plan 前逼问决策 | 非版本类需求写代码/出方案前的「提问→回答→沉淀」决策收敛，输出 Final Plan（版本类走 dm-plan-ver/dm-dev-step 内嵌 grill） | 按需 |
 | `dm-cleanup` | 技术债清理 + 仓库卫生 | 版本/Step 之外的跨文件清理（正确性/注释/死代码/重复结构/占位常量标注）与仓库卫生（.gitignore + 误提交文件 `git rm --cached`），验证后委托 dm-close-ver | 按需 |
 | `dm-pub-skill` | 发布 / 部署 skill 与模板 | 发布资产到 `~/.dev-meta/`、部署 skill 触发入口到 `~/.codebuddy/skills/`，含前置检查与同步后校验（编排 `pub_local.py`） | 按需 |
+| `dm-pub-site` | 发布站点 | 从 `~/.dev-meta/templates/site` 实例化 Astro 脚手架、按目录生成索引树、本地构建后推 `dist` 到 `gh-pages` 并用 `gh` CLI 启用 Pages | 按需 |
 
 ## Skill 关系
 
@@ -93,6 +94,7 @@ python3 pub_local.py --deploy --dry-run # 预演，不写入
 | 规划前逼问 | "/grill-me" / "规划前先拷问我" / "先 pressure-test 这个方案" |
 | 技术债清理 / 仓库卫生 | "/dm-cleanup" / "清理技术债" / "做一下仓库卫生" |
 | 发布 / 部署 skill 与模板 | "发布 skill" / "部署模板" / "同步资产" |
+| 发布站点（GitHub Pages） | "发布站点" / "发布 gh page" / "建站" |
 
 > **grill（决策收敛）双轨制**（原则见 skill-doc-principles §7）：
 > - **版本类需求**：grill 内嵌于 `dm-plan-ver` / `dm-dev-step`，无需显式触发——AI 在产出 200-spec、300-design、开发概要前自动执行（需求级/架构级/实现级），问答沉淀进文档，技术选型类触发 `dm-adr`。
@@ -145,3 +147,4 @@ python3 pub_local.py --deploy --dry-run # 预演，不写入
 | 模板 | `templates/versions/vX.Y-<slug>/*` | dm-plan-ver |
 | 模板 | `templates/versions/vX.Y-<slug>/500-schedule.md` | dm-schedule（排程**单一权威**；`assets/500-schedule-template.md` 为其副本，由 `check_copies` 校验） |
 | 模板 | `templates/worklog.md` | dm-log |
+| 模板 | `templates/site/` | dm-pub-site（Astro 站点脚手架；`content/` 为内容源） |

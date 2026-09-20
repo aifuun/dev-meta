@@ -72,7 +72,7 @@ TEMPLATE_DESC = {
     "project/docs/06_OBSERVABILITY.md": "可观测性实例化（docs/07 的项目落点）",
     "versions/vX.Y-<slug>/200-spec.md": "版本规格模板（业务流 + 架构锚点 + 验收标准 + DoD）",
     "versions/vX.Y-<slug>/300-design.md": "版本设计模板（流程串联、模块分工、架构决策）",
-    "versions/vX.Y-<slug>/400-build.md": "实现蓝图 + 执行顺序矩阵模板",
+    "versions/vX.Y-<slug>/400-build.md": "实现蓝图 + Step 0–7 施工清单模板",
     "versions/vX.Y-<slug>/500-schedule.md": "工作包排程模板",
     "worklog.md": "工作日志模板（项目初始化时复制到 `docs/reports/worklog.md`）",
     "site/": "站点脚手架模板（Astro；`content/` 为内容源，由 `dm-pub-site` 实例化）",
