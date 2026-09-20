@@ -30,180 +30,59 @@
 
 > ID 用 `GUARD-01` 递增（沿用 `docs/06` §2.6 域-序号），**与契约层级 L1 / L2 / L3 无关**。
 
-| ID | 红线 | 校验方式 |
-|---|---|---|
-| GUARD-01 | `prefs-store.js` 不依赖 DOM、不依赖 Engine 实例 | 单测中可独立实例化 |
-| GUARD-02 | 所有 prefs-store 写操作不阻塞 UI 线程与播放时钟 | 单测 + 真机计时 |
+| ID | 拦截目标 | 校验命令 | 作用 |
+|---|---|---|---|
+| GUARD-01 | `prefs-store.js` 依赖 DOM / Engine 实例 | `grep -nE "document\.\|window\.\|engine\." src/storage/prefs-store.js` 为 0 | 保证存储层可独立单测 |
+| GUARD-02 | prefs-store 写操作阻塞 UI 线程与播放时钟 | 单测 + 真机计时（写入耗时 < 5ms） | 保证播放时钟不被持久化拖慢 |
 
-## 2. TF1 实现
+## 2. Step 0–7 施工清单
 
-### 2.1 目标
+> 固定 8 行，不得增删。必做步（S0 / S1 / S6 / S7）不得标记 `⏭️ SKIPPED`。
 
-- 在切歌时先保存当前曲目的偏好，再恢复目标曲目的偏好。
-- 成功条件：切回同一曲目时，进度、倍速、AB 循环状态按最近一次保存值恢复。
+| Step | 名称 | 状态 | 环节 | guard | 交付物 / 跳过理由 |
+|---|---|---|---|---|---|
+| S0 | Scaffold & Clean | 执行 | 开发 | — | 分支与工程配置就绪（本样例工程已存在，无遗留需清理） |
+| S1 | Contract & ADR | 执行 | 设计 | — | STORE-001 契约冻结；主键与降级策略决策记录 |
+| S2 | Core & Prototype | 执行 | 开发 | GUARD-01 | `audio-store.js` + `prefs-store.js` 建造（只造引擎，不碰播放器） |
+| S3 | Standard Finalization | ⏭️ SKIPPED | — | — | 跳过：本版本无量化门禁（偏好读写非性能敏感路径，不设阈值） |
+| S4 | Ingress Migration | 执行 | 开发 | GUARD-02 | `switchTrack()` 先存后恢复；`startTimingLoop()` 节流写入 |
+| S5 | Egress Migration | 执行 | 开发 | GUARD-02 | `deleteTrack()` / `clearPlaylist()` 清理偏好 |
+| S6 | Guards & Tests | 执行 | 测试 | GUARD-01,02 | 静态守卫全绿 + Web 版 24 项回归通过 |
+| S7 | Verification & Close | 执行 | 发布 | — | 浏览器真机验收（含隐私模式）、Tag、收口 |
 
-### 2.2 步骤拆解
+> **粒度自检**：S4 / S5 **各只出现一次** ✅（切歌与清理各归一处，未出现第三处切线点）。
 
-1. 读取当前曲目的 trackId 与播放器状态。
-2. 调用 `prefsStore.save(currentTrackId, snapshot)` 保存当前状态。
-3. 读取目标曲目的偏好记录。
-4. 若读取成功，应用进度、倍速、AB 循环到播放器。
-5. 若读取失败或无记录，应用默认值。
-6. 完成轨道切换。
+## 3. Step 明细
 
-### 2.3 函数签名与伪代码
+### 3.1 S0 Scaffold & Clean
 
-- 关键函数签名（函数名、入参类型、返回值类型、调用时机）：
-```text
-func switchTrack(nextTrackId: string) -> void
-  // 前置条件：当前与目标 trackId 已可解析
-  // 调用时机：切歌编排流程中
-```
+- 目标：确认工作分支与工程配置就绪，无历史遗留（无未清理分支、无废弃远端）。
+- 步骤拆解：
+  1. 从 `main` 切出 `feature/v1.4.1-indexeddb-prefs`
+  2. 确认构建与本地预览可跑通
+- 输入输出与前置条件：无代码改动，仅工程操作。
+- 异常与边界：不涉及。
 
-```text
-function switchTrack(nextTrackId):
-  currentSnapshot = captureCurrentPlaybackState()
-  try:
-    prefsStore.save(currentTrackId, currentSnapshot)
-  catch error:
-    swallow error and continue
+### 3.2 S1 Contract & ADR
 
-  nextPrefs = prefsStore.load(nextTrackId)
-  if nextPrefs exists:
-    applyPlaybackState(nextPrefs)
-  else:
-    applyDefaultPlaybackState()
+- 目标：冻结存储层接口签名与降级策略，先于任何实现。
+- 步骤拆解：
+  1. 定义 `prefs-store` / `audio-store` 接口签名（见 §1.2）
+  2. 落 `STORE-001` 契约（归属 / 方向 / 不变性 / 真值来源）
+  3. 记录关键决策：以 `trackId` 为主键、异步节流写入、静默降级
+- 异常与边界：契约变更须先改契约再改实现（`dm-contract-gate` Gate 1）。
 
-  continue switching
-```
+### 3.3 S2 Core & Prototype
 
-### 2.4 输入输出与前置条件
+> 只造引擎，不装车 —— 本步**禁止改动播放器主流程**。
 
-- 输入：当前 trackId、目标 trackId、当前播放器状态。
-- 输出：目标曲目的恢复态。
-- 前置条件：播放器处于可切换状态，`trackId` 可识别。
-- 后置条件：当前曲目状态已尽力持久化，目标曲目状态已恢复或回退到默认值。
+- 目标：建成可独立单测的存储引擎，含能力探测与降级包装。
+- 步骤拆解：
+  1. `audio-store.js`：`openDB()` / `closeDB()` / `getStorageEstimate()`，并在 `initStorage()` 中探测可用性
+  2. `prefs-store.js`：`save` / `load` / `delete` / `deleteAll`，内部只经 `audio-store`
+  3. `safePrefsCall(operation)`：能力不可用时返回默认结果，**不抛**
+- 函数签名与伪代码：
 
-### 2.5 异常与边界
-
-- 异常场景：保存失败、读取失败、目标曲目无历史记录、IndexedDB 不可用。
-- 回退策略：保存失败静默吞掉，读取失败使用默认值。
-- 重试策略：非阻塞场景下允许下次定时刷写自然覆盖。
-
-## 3. TF2 实现
-
-### 3.1 目标
-
-- 在播放过程中按节流周期保存 currentTime、倍速与 AB 循环状态。
-- 成功条件：用户切歌或重启后，曲目能从最近保存点恢复。
-
-### 3.2 步骤拆解
-
-1. 在 `startTimingLoop()` 中定期采样当前播放状态。
-2. 只在满足节流条件时执行写入。
-3. 调用 `prefsStore.save(trackId, snapshot)` 写入偏好。
-4. 记录最近一次成功写入时间。
-
-### 3.3 函数签名与伪代码
-
-- 关键函数签名（函数名、入参类型、返回值类型、调用时机）：
-```text
-func timingLoopTick(now: number) -> void
-  // 前置条件：当前存在可播放曲目
-  // 调用时机：startTimingLoop 定时 tick
-```
-
-```text
-function timingLoopTick():
-  if shouldThrottleWrite(now):
-    snapshot = captureCurrentPlaybackState()
-    try:
-      prefsStore.save(trackId, snapshot)
-    catch error:
-      swallow error
-    updateLastWriteTime(now)
-```
-
-### 3.4 输入输出与前置条件
-
-- 输入：当前 trackId、currentTime、playbackRate、AB 状态。
-- 输出：最新偏好记录。
-- 前置条件：当前存在可播放曲目。
-- 后置条件：本次快照已写入或被静默降级。
-
-### 3.5 异常与边界
-
-- 异常场景：写入频率过高、页面失焦、标签页挂起、IDB 不可用。
-- 回退策略：保持最后一次成功写入结果，不阻塞播放。
-- 重试策略：由后续 tick 自然重试，不做同步阻塞重试。
-
-## 4. TF3 实现
-
-### 4.1 目标
-
-- 删除轨道或清空列表时清理偏好数据，避免残留污染后续导入。
-
-### 4.2 步骤拆解
-
-1. `deleteTrack(trackId)` 时调用 `prefsStore.delete(trackId)`。
-2. `clearPlaylist()` 时调用 `prefsStore.deleteAll()`。
-3. 清理动作失败时不影响主删除/清空流程。
-
-### 4.3 函数签名与伪代码
-
-- 关键函数签名（函数名、入参类型、返回值类型、调用时机）：
-```text
-func deleteTrack(trackId: string) -> void
-func clearPlaylist() -> void
-  // 前置条件：删除或清空动作已确认
-  // 调用时机：列表管理与引擎删除路径
-```
-
-```text
-function deleteTrack(trackId):
-  removeTrackFromPlaylist(trackId)
-  try:
-    prefsStore.delete(trackId)
-  catch error:
-    swallow error
-
-function clearPlaylist():
-  clearPlaylistData()
-  try:
-    prefsStore.deleteAll()
-  catch error:
-    swallow error
-```
-
-### 4.4 输入输出与前置条件
-
-- 输入：trackId 或清空事件。
-- 输出：对应偏好记录被删除。
-- 前置条件：轨道已确定要删除或列表已确定要清空。
-- 后置条件：偏好残留被尽力清理。
-
-### 4.5 异常与边界
-
-- 异常场景：部分删除失败、批量清理失败、IDB 不可用。
-- 回退策略：主业务先完成，偏好清理尽力而为。
-- 重试策略：不做前台阻塞重试。
-
-## 5. TF4 实现
-
-### 5.1 目标
-
-- 当 IndexedDB 在隐私模式或能力受限场景不可用时，播放器仍可正常工作。
-
-### 5.2 步骤拆解
-
-1. 启动时调用 `audioStore.openDB()` 做可用性探测。
-2. 若打开失败，标记 prefs 能力不可用。
-3. 后续 `load/save/delete/deleteAll` 统一走静默降级分支。
-4. 播放主流程继续依赖默认值。
-
-### 5.3 函数签名与伪代码
-
-- 关键函数签名（函数名、入参类型、返回值类型、调用时机）：
 ```text
 func initStorage() -> void
 func safePrefsCall(operation: function) -> any
@@ -228,29 +107,133 @@ function safePrefsCall(operation):
     return defaultResult
 ```
 
-### 5.4 输入输出与前置条件
+- 输入输出与前置条件：
+  - 输入：IndexedDB 可用性检测结果
+  - 输出：偏好读写结果 / 默认结果
+  - 前置条件：播放器初始化完成
+  - 后置条件：即使偏好层失败，播放仍可持续
+- 异常与边界：
+  - 异常场景：隐私模式、配额满、版本升级失败、页面反复重载
+  - 回退策略：默认值起播，记录可忽略
+  - 重试策略：仅在下次初始化时重新探测
 
-- 输入：IndexedDB 可用性检测结果。
-- 输出：内存态/静默失败策略。
-- 前置条件：播放器初始化完成。
-- 后置条件：即使偏好层失败，播放仍可持续。
+#### 关键行为契约
 
-### 5.5 异常与边界
+| 函数 | 场景 | 预期（given-when-then） |
+|------|------|------------------------|
+| `save` | IndexedDB 不可用 | given 存储不可用 → when 调用 save → then 不抛异常、返回失败标记，播放不受影响 |
+| `load` | 无该 trackId 记录 | given 无历史记录 → when 调用 load → then 返回空结果，由调用方回退默认值 |
 
-- 异常场景：隐私模式、配额满、版本升级失败、页面反复重载。
-- 回退策略：默认值起播，记录可忽略。
-- 重试策略：仅在下次初始化时重新探测。
+### 3.4 S4 Ingress Migration
 
-## 6. 风险与缓解
+- 目标：把播放链路（切歌、定时刷写）接入 S2 的存储引擎。
+- 步骤拆解：
+  1. `switchTrack(nextTrackId)`：先 `save(当前曲)`，再 `load(目标曲)`，成功则应用、无记录则默认值
+  2. `startTimingLoop()`：在 tick 中按节流条件写入 `currentTime` / 倍速 / AB
+  3. 两条链路均经 `safePrefsCall` 包装，失败静默
+- 函数签名与伪代码：
+
+```text
+func switchTrack(nextTrackId: string) -> void
+func timingLoopTick(now: number) -> void
+  // 前置条件：当前与目标 trackId 可解析；存在可播放曲目
+  // 调用时机：切歌编排流程中；startTimingLoop 定时 tick
+```
+
+```text
+function switchTrack(nextTrackId):
+  currentSnapshot = captureCurrentPlaybackState()
+  safePrefsCall(() => prefsStore.save(currentTrackId, currentSnapshot))
+
+  nextPrefs = prefsStore.load(nextTrackId)
+  if nextPrefs exists:
+    applyPlaybackState(nextPrefs)
+  else:
+    applyDefaultPlaybackState()
+
+  continue switching
+
+function timingLoopTick(now):
+  if shouldThrottleWrite(now):
+    snapshot = captureCurrentPlaybackState()
+    safePrefsCall(() => prefsStore.save(trackId, snapshot))
+    updateLastWriteTime(now)
+```
+
+- 输入输出与前置条件：
+  - 输入：当前 / 目标 trackId、currentTime、playbackRate、AB 状态
+  - 输出：目标曲恢复态 / 最新偏好记录
+  - 前置条件：播放器处于可切换状态；当前存在可播放曲目
+  - 后置条件：当前曲目状态已尽力持久化；目标曲状态已恢复或回退默认值
+- 异常与边界：
+  - 异常场景：保存失败、读取失败、无历史记录、写入频率过高、标签页挂起
+  - 回退策略：保存失败静默吞掉；读取失败使用默认值；保持最后一次成功写入结果
+  - 重试策略：由后续 tick 自然重试，不做同步阻塞重试
+
+### 3.5 S5 Egress Migration
+
+- 目标：删除轨道或清空列表时同步清理偏好，避免残留污染后续导入。
+- 步骤拆解：
+  1. `deleteTrack(trackId)` → `prefsStore.delete(trackId)`
+  2. `clearPlaylist()` → `prefsStore.deleteAll()`
+  3. 清理失败不影响主删除 / 清空流程
+- 函数签名与伪代码：
+
+```text
+func deleteTrack(trackId: string) -> void
+func clearPlaylist() -> void
+  // 前置条件：删除或清空动作已确认
+  // 调用时机：列表管理与引擎删除路径
+```
+
+```text
+function deleteTrack(trackId):
+  removeTrackFromPlaylist(trackId)
+  safePrefsCall(() => prefsStore.delete(trackId))
+
+function clearPlaylist():
+  clearPlaylistData()
+  safePrefsCall(() => prefsStore.deleteAll())
+```
+
+- 输入输出与前置条件：
+  - 输入：trackId 或清空事件
+  - 输出：对应偏好记录被删除
+  - 前置条件：轨道已确定要删除或列表已确定要清空
+  - 后置条件：偏好残留被尽力清理
+- 异常与边界：
+  - 异常场景：部分删除失败、批量清理失败、IDB 不可用
+  - 回退策略：主业务先完成，偏好清理尽力而为
+  - 重试策略：不做前台阻塞重试
+
+### 3.6 S6 Guards & Tests
+
+- 目标：静态守卫锁住架构红线，全量回归证明无行为回退。
+- 步骤拆解：
+  1. 跑 GUARD-01 / GUARD-02 静态扫描与耗时断言
+  2. 跑全量单测（存储层可独立实例化）
+  3. 跑 Web 版 24 项回归
+- 异常与边界：守卫或回归未全绿**不得**进入 S7。
+
+### 3.7 S7 Verification & Close
+
+- 目标：真机（浏览器）验收并收口。
+- 步骤拆解：
+  1. 正常模式验收切歌恢复、删除清理
+  2. **隐私模式验收静默降级**（IndexedDB 不可用）
+  3. 合并（保留历史）、打 Tag、关闭版本 Issue
+- 异常与边界：隐私模式验收不通过则退回 S2 / S4 修复。
+
+## 4. 风险与缓解
 
 | 风险 | 影响 | 缓解措施 |
 |---|---|---|
 | IndexedDB 不可用 | 偏好无法持久化 | 静默降级，继续使用默认值 |
 | 写入太频繁 | 影响性能 | 节流写入 currentTime |
-| 删除后残留 | 重新导入同名文件时恢复旧偏好 | deleteTrack / deleteAll 强制清理 |
+| 删除后残留 | 重新导入同名文件时恢复旧偏好 | `deleteTrack` / `deleteAll` 强制清理 |
 | 版本升级 | 旧数据结构兼容性风险 | 仅按缺省值读取，不依赖旧字段存在 |
 
-## 7. 状态机 / 时序图
+## 5. 状态机 / 时序图
 
 ```mermaid
 sequenceDiagram
@@ -266,24 +249,13 @@ sequenceDiagram
   PC->>PC: apply prefs or defaults
 ```
 
-## 8. 执行顺序矩阵
+## 6. 自检与验收
 
-> 只承载顺序、环节、依赖约束与验收约束（guard）；任务简述、预估工时、状态统一由 `500-schedule.md` 维护。
+> 每 Step 提 PR 前跑：grep / 单测 / diff 行数。规范指针 `dm-contract-gate`。
 
-| 序号 | 环节 | TF | guard | 备注 |
-|------|------|-----|-------|------|
-| 1 | 调研 | — | — | 市场验证「切歌丢进度」痛点（排最前，见 500-schedule market-01） |
-| 2 | 开发 | TF4 | — | 基础设施，必须最先做，兜底所有后续 TF |
-| 3 | 开发 | TF1 | GUARD-01 | 与 TF2 可并行 |
-| 4 | 开发 | TF2 | GUARD-02 | 与 TF1 可并行 |
-| 5 | 开发 | TF3 | — | |
-| 6 | 部署+联调 | TF1-TF4 | — | 归属 dev，不归 qa；验证前端 ↔ 存储链路 |
-| 7 | 测试 | — | — | qa 验收已部署功能（对照 200-spec 验收标准） |
-| 8 | 测试 | — | — | 补单测与回归用例（需全部 TF 完成） |
-| 9 | 构建 | — | — | 本地构建与回归验证（需全部 TF 完成） |
-
-### 执行顺序
-
-- 推荐先做：市场调研（确认痛点）→ TF4，作为所有后续 TF 的兜底
-- 可并行：TF1 与 TF2（需共享 prefs-store 接口定义）
-- 必须串行：市场调研 → TF4 → TF1/TF2/TF3 → 部署联调 → qa 验收 → 回归验证
+- S1：契约检查全绿（`dm-contract-gate` Gate 1–3）
+- S2：`grep -nE "document\.|window\.|engine\." src/storage/prefs-store.js` 为 0（GUARD-01）
+- S4 / S5：写入耗时断言 < 5ms（GUARD-02）
+- S6：全量单测 + Web 版 24 项回归全通过，0 warning / 0 error
+- S7：浏览器真机验收通过（含隐私模式）、Tag 已推送
+- S4 / S5 顺序：S2 完成后 S4 与 S5 可并行（共享受同一 `prefs-store` 门面）
