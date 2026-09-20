@@ -50,7 +50,9 @@ import tempfile
 from dataclasses import dataclass, field
 from pathlib import Path
 
-ANCHOR_RE = re.compile(r'^<a id="([^"]+)"></a>\s*$', re.M)
+# 锚点：heading 行末内联（推荐）或独立成行（兼容）—— 两种形态都认
+#   ### 4.2 状态生命周期 <a id="contract-state-lifecycle"></a>
+ANCHOR_RE = re.compile(r'<a id="([^"]+)"></a>')
 # Canonical record form (docs/06 §2.9): a line reading `- 状态：`[CURRENT]``.
 # Only this form counts as *the* state of a contract — prose mentions of
 # `[PLANNED]` / `[HISTORY]` (guides, examples, index tables) are ignored.
@@ -260,12 +262,19 @@ def run_self_test() -> int:
     """Build throw-away fixture trees and assert the linter behaves."""
     good_contract = (
         "# Contracts\n\n"
-        "- **A-001｜alpha**\n"
-        '<a id="alpha-rule"></a>\n'
+        "- **A-001｜alpha** <a id=\"alpha-rule\"></a>\n"   # 行末内联（推荐形态）
         "  - 状态：`[CURRENT]`\n"
         "  - 不变性：must hold\n"
+        "\n"
+        "- **A-002｜beta**\n"                              # 独立成行（兼容形态）
+        '<a id="beta-rule"></a>\n'
+        "  - 状态：`[PLANNED]`\n"
     )
-    good_index = "# Index\n\n| id | 状态 | 正文 |\n|---|---|---|\n| A-001 | `[CURRENT]` | [01](docs/contracts/01-a.md#alpha-rule) |\n"
+    good_index = (
+        "# Index\n\n| id | 状态 | 正文 |\n|---|---|---|\n"
+        "| A-001 | `[CURRENT]` | [01](docs/contracts/01-a.md#alpha-rule) |\n"
+        "| A-002 | `[PLANNED]` | [01](docs/contracts/01-a.md#beta-rule) |\n"
+    )
 
     bad_contract = (
         "# Contracts\n\n"
