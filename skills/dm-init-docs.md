@@ -173,7 +173,7 @@ chore: initialize project docs following dev-meta
 | `~/.dev-meta/templates/CODEBUDDY.md` | `templates/CODEBUDDY.md` | 项目层 CODEBUDDY 模板（版本绑定 + 例外项） |
 | `pub_local.py` | `dev-meta/pub_local.py` | 发布模板与 skill 至 `~/.dev-meta/` |
 | `docs/06-contract-based-dev.md` | docs/ | 契约规范（只引用） |
-| `docs/07-observability-driven-dev.md` | docs/ | ODD 规范（只引用） |
+| `docs/07-observability-driven-dev.md` | docs/ | ODD 规范（只引用；含 §2.6 观测层编号 `O1`–`O3`、§3.2 工作流轨迹、§7 DoD 9 项） |
 | `docs/05-codebuddy-management.md` | docs/ | 两层 CODEBUDDY 架构（只引用） |
 
 ## 使用示例

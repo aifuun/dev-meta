@@ -139,7 +139,7 @@ python3 pub_local.py --deploy --dry-run # 预演，不写入
 | 规范 | `docs/03-git-flow-rules.md` | dm-plan-ver, dm-commit, dm-close-ver |
 | 规范 | `docs/04-worklog-rules.md` | dm-log, dm-report |
 | 规范 | `docs/06-contract-based-dev.md` | dm-contract-gate, dm-plan-ver, dm-dev-step, dm-cleanup, dm-grillme-plan, dm-arch-design |
-| 规范 | `docs/07-observability-driven-dev.md` | dm-cleanup, dm-grillme-plan, dm-arch-design, dm-dev-step, dm-plan-ver |
+| 规范 | `docs/07-observability-driven-dev.md` | dm-cleanup, dm-grillme-plan, dm-arch-design, dm-dev-step, dm-plan-ver, dm-close-ver, dm-contract-gate, dm-init-docs |
 | 规范 | `docs/08-small-batch-iteration.md` | dm-dev-step, dm-commit, dm-plan-ver |
 | 规范 | `docs/09-ai-architecture-guide.md` | dm-arch-design（规范源；skill 为其执行入口） |
 | 模板 | `templates/CODEBUDDY.md` | dm-init-docs（项目层：版本绑定+例外项；通用规范见 `~/.codebuddy/CODEBUDDY.md`） |

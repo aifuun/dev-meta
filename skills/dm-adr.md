@@ -122,6 +122,7 @@ Proposed → Accepted → Deprecated
 | 替代关系需双向交叉引用 | — |
 | 文件路径固定 `docs/adrs/adr-NNN.md` | — |
 | 可观测性架构级取舍（采样粒度 / computeUnits / 预编译模型 / 诊断分级）须走 ADR | docs/07-observability-driven-dev.md §6 |
+| 轨迹的**粒度与生命周期**取舍（flow 划分、常驻 / 临时、出口选择）亦属架构级，须走 ADR | docs/07 §3.2 |
 | 提交委托 dm-commit | dm-commit |
 
 ## 产出与完成判据

@@ -84,7 +84,7 @@ description: 契约断言门禁：改前 diff 契约、改后跑门禁（sha256 
 
 ### 5. 结构化诊断（失败时）
 
-门禁失败时按 `docs/07-observability-driven-dev.md` §3 输出黑匣子快照：含契约快照（`Input Snapshot` = 当前契约 SSOT 摘录）+ 不一致 diff + 资源/命令上下文，便于 AI 一次定位（呼应 07 §2.1/§2.3）。
+门禁失败时按 `docs/07-observability-driven-dev.md` §3.1 输出黑匣子快照：含契约快照（`Input Snapshot` = 当前契约 SSOT 摘录）+ 不一致 diff + 资源/命令上下文，便于 AI 一次定位（呼应 07 §2.1/§2.3）。
 
 ## 关键规则速查
 
@@ -95,8 +95,9 @@ description: 契约断言门禁：改前 diff 契约、改后跑门禁（sha256 
 | Gate 2：改后门禁没绿绝不向用户邀功，报错原样抛回自我修复 | docs/06 §8 |
 | Gate 3：交付前对齐 MANIFEST 指纹 + contract_verified，未对齐不合并 | docs/06 §8 |
 | 机器可校验优先：关键契约须可 parse（JSON Schema/Contract.swift/OpenAPI） | docs/06 §8 |
-| 门禁失败须结构化诊断（07 黑匣子） | docs/07 §6 / §3 |
+| 门禁失败须结构化诊断（07 黑匣子） | docs/07 §6 / §3.1 |
 | Gate 2 含可观测性 DoD：改后无 observe 包装 / 无出口 Assert（映射空须 assertionFailure）视为门禁未过 | docs/07 §2.5 |
+| Gate 2 含轨迹项（启用时）：观测点无判别量 / 轨迹验证只在单测层完成 → 视为未过 | docs/07 §3.2 |
 | 可观测性 DoD 已由 `verify_contract.py --source-dir` 脚本化（扫描裸打点 vs 结构化断言/包装信号） | samples/contract-gate |
 | 版本文档结构检查：`200-spec` / `300-design` **标题**含 `Transaction Flow` / `TF` / `Step` 即报告（只扫标题；**豁免历史版本**） | docs/02 §8 / §3.7 |
 | Gate 2 结构 lint：文档式契约须过 LINT-01..04（零死链 / 一条一标 / 锚点唯一 / 不引下游） | docs/06 §8.4 / samples/contract-lint |

@@ -164,7 +164,7 @@
 | **目录 + 索引门面** | 30 条以上 / 单文件 >300 行或 >30KB | `契约目录/`（正文按域分文件）+ `索引文件`（只放目录 / 状态 / 链接） | 单域文件 >200 行 → 该域再拆 |
 | **分级（大型）** | 多模块 / 多仓库 | L1 契约进契约目录；L2 / L3 随版本文档（`300-design` / `400-build`） | — |
 
-> 阈值是**建议值**，真正的判据是：**「查一条契约是否需要全量读整份文档」** —— 需要，就该拆。这是拆分的唯一动机，不要为「看起来整齐」而拆。
+> 阈值是**建议值**，真正的判据有**两条**：① **「查一条契约是否需要全量读整份文档」** —— 需要，就该拆；② **变更节奏不同则分文件** —— 生命周期差异大的资产（如可增删的**高频目录** vs 低频接口契约）混在一份文件里，会互相污染变更节奏与评审成本。**除这两条外，不要为「看起来整齐」而拆。**
 
 **体积预算对照表**（唯一一处集中登记，其余章节只引用本表）
 
@@ -224,6 +224,7 @@
 | `S0`–`S7` | 固定 8 个 | 版本**施工步**（工序） | `docs/02` §6.2 |
 | `GUARD-xx` | 域-序号 | 版本级**防腐红线** | `docs/02` §3.5 |
 | `L1` / `L2` / `L3` | 固定 3 个 | 契约**层级**（粒度） | 本文 §1.1 |
+| `O1` / `O2` / `O3` | 固定 3 个 | **观测**层级（断言 / 埋点 / 回读） | `docs/07` §2.6 |
 | `<DOMAIN>-NNN` | 域-序号 | 契约 **ID** | 本文 §4.3 / §6.2 |
 | `NN-<domain>.md` | 文件序号-域 | 契约**文件**（阅读顺序，序号不复用） | 本文 §6.2 |
 | `LINT-xx` | 域-序号 | 结构 lint 校验项（文档层机检） | 本文 §8.4 |
@@ -435,7 +436,7 @@ python3 contract_lint.py --contracts-dir docs/contracts
 | 契约状态生命周期（`[CURRENT]` / `[PLANNED]` / `[HISTORY]`） | §4.2 · `#contract-state-lifecycle` |
 | 编号规则（域-序号） | §4.3 · `#record-domain-numbering` |
 | 失败面契约（纯函数式失败 / 禁静默危险失败） | §5 · `#failure-face` |
-| 契约资产组织：载体阈值 / 目录 / 命名 / 索引 / 归档 / 落地 / 拆分 | §6 · `#asset-organization` |
+| 契约资产组织：载体阈值（含**变更节奏**拆分） / 目录 / 命名 / 索引 / 归档 / 落地 / 拆分 | §6 · `#asset-organization` |
 | 域分类与命名（判定法 / 硬规则 / 命名空间互斥） | §6.3 · `#asset-domain-naming` |
 | 拆分执行与验收 | §6.8 · `#asset-split-checklist` |
 | 引用与定位纪律：单向引用 / 语义锚点 / 禁写现状 | §7 · `#reference-discipline` |
@@ -444,7 +445,8 @@ python3 contract_lint.py --contracts-dir docs/contracts
 | 双门禁分工（不可互替） | §8.5 · `#gate-lint-vs-assert` |
 | 契约演进治理（破坏走 ADR / 纯增量 / 无主防护） | §9 · `#evolution-governance` |
 | 测试职责分层 | §10 · `#test-layering` |
-| 可观测性诊断契约 | `docs/07-observability-driven-dev.md` §2.1 / §3 |
+| 可观测性诊断契约 / 观测层编号（`O1`–`O3`） | `docs/07-observability-driven-dev.md` §2.1 / §2.6 / §3.1 |
+| 工作流轨迹 / 可判别性 / 判读表 / 负向约束 | `docs/07-observability-driven-dev.md` §2.7 / §3.2 |
 | 跨层编码约定（非契约维度） | `docs/09-ai-architecture-guide.md` §6 |
 
 ### 11.2 上游来源与落地载体 <a id="rule-map-sources"></a>
@@ -456,7 +458,7 @@ python3 contract_lint.py --contracts-dir docs/contracts
 | `docs/01-project-dev-flow.md` §3.3 | 上游 | 契约基线概念见本规范 |
 | `docs/02-version-rules.md` §2 / §5 / §3.6 | 上游 | API 契约 / Feature 契约 / 测试分层指针 |
 | `docs/02-version-rules.md` §6.2 / §3.5 | 上游 | S3 状态翻牌、S7 关版本前结构 lint、命名空间互斥 |
-| `docs/07-observability-driven-dev.md` §6 | 互补 | ODD：诊断契约 / 黑匣子规范 / `observe` 包装；运行时暴露层 |
+| `docs/07-observability-driven-dev.md` §6 | 互补 | ODD：诊断契约 / 黑匣子规范 / `observe` 包装 / **工作流轨迹（§3.2）**；运行时暴露层 |
 | `docs/09-ai-architecture-guide.md` §6 | 上游 | 跨层 Clean Code 编码约定（非契约维度，§3 指向此处） |
 | `templates/project/docs/03_CONTRACTS_AND_API.md` | 落地载体 | 契约 SSOT 项目侧模板：四要素 + 状态列 / 语义锚点 / 索引表 / 拆分指引；**附录**：通用域族参考 + 反例清单 |
 | `templates/versions/vX.Y-<slug>/400-build.md` §1.2 / §3 | 落地载体 | L1 载体；L3 载体为各 Step 的「关键行为契约」小节 |

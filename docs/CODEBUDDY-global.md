@@ -26,7 +26,7 @@
 | 工作日志格式与维护规则 | `~/.dev-meta/docs/04-worklog-rules.md` | [04-worklog-rules](https://github.com/aifuun/dev-meta/blob/main/docs/04-worklog-rules.md) |
 | CODEBUDDY 两层架构与部署 | `~/.dev-meta/docs/05-codebuddy-management.md` | [05-codebuddy-management](https://github.com/aifuun/dev-meta/blob/main/docs/05-codebuddy-management.md) |
 | 契约式开发 —— **AI 改前只读契约**（唯一权威） | `~/.dev-meta/docs/06-contract-based-dev.md` | [06-contract-based-dev](https://github.com/aifuun/dev-meta/blob/main/docs/06-contract-based-dev.md) |
-| 可观测性 —— **日志是 AI 的眼睛** | `~/.dev-meta/docs/07-observability-driven-dev.md` | [07-observability-driven-dev](https://github.com/aifuun/dev-meta/blob/main/docs/07-observability-driven-dev.md) |
+| 可观测性 —— **日志是 AI 的眼睛**（含工作流轨迹与可判别性） | `~/.dev-meta/docs/07-observability-driven-dev.md` | [07-observability-driven-dev](https://github.com/aifuun/dev-meta/blob/main/docs/07-observability-driven-dev.md) |
 | 小批迭代 —— **AI 执行粒度** = 单文件 / 单函数（唯一权威） | `~/.dev-meta/docs/08-small-batch-iteration.md` | [08-small-batch-iteration](https://github.com/aifuun/dev-meta/blob/main/docs/08-small-batch-iteration.md) |
 | 架构设计 —— **人定边界 / AI 填内部** | `~/.dev-meta/docs/09-ai-architecture-guide.md` | [09-ai-architecture-guide](https://github.com/aifuun/dev-meta/blob/main/docs/09-ai-architecture-guide.md) |
 
