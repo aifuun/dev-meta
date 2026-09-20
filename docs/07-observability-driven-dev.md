@@ -206,7 +206,7 @@ export async function observeStage<T>(stageName: string, metadata: Record<string
 
 | 衔接点 | 关系 |
 |--------|------|
-| `docs/06-contract-based-dev.md` §3 / §5 | ODD 是行为契约的运行时暴露；06 §3 的「失败透明」与 §5 的「失败面契约（禁止静默吞错）」是 ODD §2.1 的硬约束来源；06 已在其 §4.1 / §5 / §11.3 / 附录 A 引用本规范 §2.1 / §3 / §6 |
+| `docs/06-contract-based-dev.md` §3 / §5 | ODD 是行为契约的运行时暴露；06 §3 的「失败透明」与 §5 的「失败面契约（禁止静默吞错）」是 ODD §2.1 的硬约束来源；06 已在其 §4.1 / §5 / §11.2 引用本规范 §2.1 / §3 / §6 |
 | `docs/06-contract-based-dev.md` §4 | 诊断日志 `Input Snapshot` 须可被 provenance 交叉引用，防漂移 |
 | `skills/dm-plan-ver.md` | 400-build 行为契约须含「诊断契约（关键路径 observe 包装 + 状态留痕 + 无静默吞错）」 |
 | `skills/dm-dev-step.md` | Step 实现期须把诊断契约写入 400-build 行为契约；错误/降级路径结构化诊断、高开销节点含 Elapsed+资源指标 |
