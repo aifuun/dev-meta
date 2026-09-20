@@ -92,7 +92,7 @@ dev 工作包完成 = **代码 + 部署 + 联调**；部署与联调归 dev，qa
 
 ### Phase B：收尾执行（Do the close）
 
-6. **Step 0–7 施工清单核对** — `400-build.md` §2 各 Step 状态已收口（无遗留「执行」态、必做步未跳过、跳过理由已写）（测试职责分层见 `docs/06-contract-based-dev.md` §3）
+6. **Step 0–7 施工清单核对** — `400-build.md` §2 各 Step 状态已收口（无遗留「执行」态、必做步未跳过、跳过理由已写）（测试职责分层见 `docs/06-contract-based-dev.md` §10）
 7. **worklog 补全** — 版本周期内所有工作已记录（委托 dm-log）
 8. **文档收尾** — 版本文档确认提交（委托 dm-commit）
 

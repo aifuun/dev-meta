@@ -2,7 +2,7 @@
 
 > **文档流向纪律**：本文档继承引用 upstream `00_PRODUCT_REQUIREMENTS.md`，并被 `02`、`03`、`05`、`06` 引用；**不反向引用下游**。
 > **占位符约定**：`{{FIELD}}` = 结构化命名字段；`<!-- TODO: [dm-init-docs] <说明> -->` = 待补充内容。
-> **权威引用**：测试职责分层见 `dev-meta/docs/06-contract-based-dev.md` §3（唯一权威），本文只做项目落地，不重定义。
+> **权威引用**：测试职责分层见 `dev-meta/docs/06-contract-based-dev.md` §10（唯一权威），本文只做项目落地，不重定义。
 
 ---
 
@@ -31,7 +31,7 @@
 
 ## 3. 测试策略
 
-> **只做项目落地，不重定义分层**：测试职责分层的唯一权威是 `dev-meta/docs/06-contract-based-dev.md` §3（design=场景 / build=行为契约 / dm-dev-step=落地，互不重定义）。
+> **只做项目落地，不重定义分层**：测试职责分层的唯一权威是 `dev-meta/docs/06-contract-based-dev.md` §10（design=场景 / build=行为契约 / dm-dev-step=落地，互不重定义）。
 
 | 测试层 | 覆盖范围 | 运行方式 | 门禁要求 |
 |--------|----------|----------|----------|
@@ -42,7 +42,7 @@
 > ⚠️ **编号约定**：`L1 / L2 / L3` 专属于**契约层级**（接口 / Feature / 行为，见 `dev-meta/docs/06`）。
 > 测试层级此处用 `T1 / T2 / T3`，避免同号不同义。
 
-- **AI 生成测试的硬约束**：须断言具体边界值（空输入 / 极值 / 越界），禁止无断言的假 Green（见 `dev-meta/docs/06` §2.7 失败面契约）。
+- **AI 生成测试的硬约束**：须断言具体边界值（空输入 / 极值 / 越界），禁止无断言的假 Green（见 `dev-meta/docs/06` §5 失败面契约）。
 - **不写 TDD 的范围**：<!-- TODO: [dm-init-docs] 如 UI / 视图层，说明原因 -->
 
 ---
@@ -64,7 +64,7 @@
 | 引用对象 | 方向 | 用途 |
 |----------|------|------|
 | `00_PRODUCT_REQUIREMENTS.md` | upstream | 业务意图来源 |
-| `dev-meta/docs/06-contract-based-dev.md` §3 | 外部权威 | 测试职责分层（只引用） |
+| `dev-meta/docs/06-contract-based-dev.md` §10 | 外部权威 | 测试职责分层（只引用） |
 | `02_SYSTEM_DESIGN.md` | downstream | 架构落地 |
 | `03_CONTRACTS_AND_API.md` | downstream | 契约定义 |
 | `06_OBSERVABILITY.md` | downstream | 可观测性实例化 |

@@ -43,7 +43,7 @@ description: 创建或调整产品架构时使用，定义人的架构设计规�
 | **单向分层（Clean Architecture）** | 严格遵循 `Domain → Use Case → Adapter → Infrastructure` 依赖方向，禁止逆向或跨层调用 | 拒绝编写跨层直接访问（如禁止 Controller 直连 DB） |
 | **高内聚低耦合** | 按业务领域（限界上下文）划分子模块，而非仅按技术组件划分 | 单模块代码量控制在 AI 上下文可高效理解的范围内（见 08） |
 | **极简暴露（Facade）** | 每个子模块仅通过统一 `Facade` / API 接口对外暴露，内部实现全部私有化 | 生成新功能时，优先查询已有暴露接口，禁止直接调用私有函数 |
-| **契约优先（Contract-First）** | 模块交互必须先定义 Interface、DTO 及事件结构，再写实现 | 写实现前，必须先把 Interface 作为 Context 喂给 AI（见 06 §2.8 契约只读） |
+| **契约优先（Contract-First）** | 模块交互必须先定义 Interface、DTO 及事件结构，再写实现 | 写实现前，必须先把 Interface 作为 Context 喂给 AI（见 06 §8 契约只读） |
 
 ### 核心机制
 
@@ -85,7 +85,7 @@ description: 创建或调整产品架构时使用，定义人的架构设计规�
 | 单向分层：Domain→Use Case→Adapter→Infrastructure，禁止逆向/跨层 | 本文 §核心概念 |
 | 高内聚低耦合：按限界上下文划分子模块，非仅按技术组件 | 本文 §核心概念 |
 | 极简暴露：每模块仅经 Facade/API 暴露，内部全部私有 | 本文 §核心概念 |
-| 契约优先：先 Interface/DTO/事件，再实现；实现前把 Interface 喂给 AI | docs/06 §2.8 |
+| 契约优先：先 Interface/DTO/事件，再实现；实现前把 Interface 喂给 AI | docs/06 §8 |
 | 模块隐蔽：唯一 index/facade 入口，internal/services 不公开 | 本文 §核心概念 |
 | 跨模块解耦：同步用 Mediator/RPC，异步用 Event Bus，禁止硬编码互引 | 本文 §核心概念 |
 | 可观测性内建：关键路径结构化日志 + 不静默吞错 + 跨模块事件带 trace_id | docs/07 §2.5/§3 |

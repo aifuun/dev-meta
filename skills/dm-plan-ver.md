@@ -114,7 +114,7 @@ description: 新建版本：创建版本文档四件套、分支/PR、版本 Iss
 
 3.5 **开版本 Issue 前的契约门禁自检（Gate）**
    生成 Issue（即把 Step 列为可执行单元）之前，确认 `400-build.md` 已落地 06/07/08 基线，否则退回补写、不开 Issue：
-   - **06 契约式开发**：含 L1/L2/L3 行为契约、Step 清单带环节、失败面不静默、契约四要素标注（归属/方向/不变性/真值来源 + 域-序号编号，见 `docs/06-contract-based-dev.md` §2.5/§2.6/§2.7/§3）
+   - **06 契约式开发**：含 L1/L2/L3 行为契约、Step 清单带环节、失败面不静默、契约四要素标注（归属/方向/不变性/真值来源 + 域-序号编号，见 `docs/06-contract-based-dev.md` §3/§4/§5/§10）
    - **07 可观测性**：行为契约含诊断契约（关键路径 observe 包装 + 状态留痕 + 无静默吞错，见 `docs/07-observability-driven-dev.md` §2.1/§3/§7）
    - **08 小步开发**：计划可拆成单文件批次（AI 执行粒度 = 单文件重构/单函数修复，见 `docs/08-small-batch-iteration.md`）
    - **结构零残留**：`200-spec` / `300-design` 的**标题**中不得出现 `Transaction Flow` / `TF` / `Step`（属 `400-build`）；
@@ -171,11 +171,11 @@ Step 的**全生命周期**归 `dm-dev-step`，本 skill 只做**一次委托**�
 > **契约式开发核心（详见 `docs/06-contract-based-dev.md`，即使链接失效也以本句为准）**：
 > ① 先契约后实现；② L1 接口契约含错误/幂等/兼容/限流，L2 Feature 契约含失败语义/前置后置/依赖方向，L3 行为契约仅算法类必填（given-when-then）；③ 测试三层分工 design=场景 / build=行为契约 / dev-step=落地，互不重定义；④ 契约质量基线要求错误透明、命名即契约、不可变默认、显式边界校验；⑤ 下层契约不得违背上层。
 
-| `400-build.md` 对算法/隐性契约类函数须含「关键行为契约（关键测试用例）」，薄胶水/CRUD 可省略；测试职责分层见 docs/06-contract-based-dev.md §3 | templates/versions/vX.Y-<slug>/400-build.md + docs/06-contract-based-dev.md §3 |
-| `400-build.md` 须覆盖契约质量基线维度（错误/幂等/兼容/不变量等，见 docs/06-contract-based-dev.md §2.5）；缺维度须在 grill/设计阶段补齐 | docs/06-contract-based-dev.md §2.5 |
-| 契约须标注四要素（归属/方向/不变性/真值来源）+ 域-序号编号；质量维度作为不变性项落地 | docs/06-contract-based-dev.md §2.6 |
-| 失败面契约：纯函数式失败返回空/原值而非 nil；严禁静默危险失败，须调用前拦截显式暴露 | docs/06-contract-based-dev.md §2.7 |
-| 契约演进治理：破坏性变更走 dm-adr；纯增量 PR 标注；新接口回写总目录（无主防护） | docs/06-contract-based-dev.md §5 |
+| `400-build.md` 对算法/隐性契约类函数须含「关键行为契约（关键测试用例）」，薄胶水/CRUD 可省略；测试职责分层见 docs/06-contract-based-dev.md §10 | templates/versions/vX.Y-<slug>/400-build.md + docs/06-contract-based-dev.md §10 |
+| `400-build.md` 须覆盖契约质量基线维度（错误/幂等/兼容/不变量等，见 docs/06-contract-based-dev.md §3）；缺维度须在 grill/设计阶段补齐 | docs/06-contract-based-dev.md §3 |
+| 契约须标注四要素（归属/方向/不变性/真值来源）+ 域-序号编号；质量维度作为不变性项落地 | docs/06-contract-based-dev.md §4 |
+| 失败面契约：纯函数式失败返回空/原值而非 nil；严禁静默危险失败，须调用前拦截显式暴露 | docs/06-contract-based-dev.md §5 |
+| 契约演进治理：破坏性变更走 dm-adr；纯增量 PR 标注；新接口回写总目录（无主防护） | docs/06-contract-based-dev.md §9 |
 | 可观测性诊断契约：400-build 行为契约须含诊断契约（关键路径 observe 包装 + 状态留痕 + 无静默吞错），见 docs/07-observability-driven-dev.md §2.1/§3/§7 | docs/07-observability-driven-dev.md |
 | 版本计划须可拆成单文件批次（AI 执行粒度 = 单文件重构/单函数修复），供逐 Batch 推进，见 docs/08-small-batch-iteration.md | docs/08-small-batch-iteration.md |
 

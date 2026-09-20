@@ -88,7 +88,7 @@ Step 开发概要从版本四件套提取，各文档提供不同视角：
 
 ### 3.5 实现级 grill（仅当文档不完整时）
 
-对照 `300-design.md` 检查当前 Step 的设计完整性。若存在缺口（数据流、模块边界、异常处理、兼容性等未定义），提出 **3-5 个针对缺口的决定性决策点**（不重复文档已有内容），回答沉淀进开发概要或对应文档章节；技术选型类触发 `dm-adr`。若 `300-design.md` 已完整覆盖该 Step，跳过本步骤。契约质量缺口按 `docs/06-contract-based-dev.md` §2.5 维度核查（错误契约/幂等/兼容/不变量是否齐全）。
+对照 `300-design.md` 检查当前 Step 的设计完整性。若存在缺口（数据流、模块边界、异常处理、兼容性等未定义），提出 **3-5 个针对缺口的决定性决策点**（不重复文档已有内容），回答沉淀进开发概要或对应文档章节；技术选型类触发 `dm-adr`。若 `300-design.md` 已完整覆盖该 Step，跳过本步骤。契约质量缺口按 `docs/06-contract-based-dev.md` §3 维度核查（错误契约/幂等/兼容/不变量是否齐全）。
 
 > 原则见 skill-doc-principles §7「决策点显式收敛」。
 
@@ -119,7 +119,7 @@ Step 开发概要从版本四件套提取，各文档提供不同视角：
 - 关键场景：<来自 300-design.md §7>
 - 不变量：<来自 400-build.md 关键行为契约的不变量项；无则写"无">
 - 行为预期：<来自 400-build.md 关键行为契约；dm-dev-step 据此生成真实单测，不重新定义行为>
-- 测试职责分层见 `docs/06-contract-based-dev.md` §3
+- 测试职责分层见 `docs/06-contract-based-dev.md` §10
 
 ### 自底向上顺序（强制）
 1. Pure Model / Domain
@@ -167,8 +167,8 @@ Step 开发概要从版本四件套提取，各文档提供不同视角：
 | Step 级 commit 一律 `Refs #id`；版本 Issue 由 merge 的 `Closes` 关闭，**Step 不关 Issue** | 03-git-flow-rules.md §3.4 / §4.2 |
 | commit 以 `(S<n>)` 结尾标记 Step；跳过步不产生 commit | 03-git-flow-rules.md §3.4 |
 | Step 收尾回写 `500-schedule.md`：工作包状态 + tracking-matrix + 执行记录一条（≤8 行，append-only） | 02-version-rules.md §2 / §6 |
-| 契约须标注四要素（归属/方向/不变性/真值来源）+ 域-序号编号 | docs/06-contract-based-dev.md §2.6 |
-| 失败面契约：纯函数式失败返回空/原值而非 nil；严禁静默危险失败 | docs/06-contract-based-dev.md §2.7 |
+| 契约须标注四要素（归属/方向/不变性/真值来源）+ 域-序号编号 | docs/06-contract-based-dev.md §4 |
+| 失败面契约：纯函数式失败返回空/原值而非 nil；严禁静默危险失败 | docs/06-contract-based-dev.md §5 |
 | Micro-Batching：Step 内按三 Batch 推进（契约/数据模型→Core 单文件→UI/调用点）；每绿灯 Batch 由用户触发 commit | docs/08-small-batch-iteration.md |
 | 诊断契约：错误/降级路径须结构化诊断，高开销节点含 Elapsed + 资源指标 | docs/07-observability-driven-dev.md |
 

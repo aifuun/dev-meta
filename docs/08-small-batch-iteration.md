@@ -4,7 +4,7 @@
 
 AI 在多个文件间来回拉扯、陷入「长尾混乱」的根因，是 Task Batch 对人类而言「小」，对 AI 而言「太大」。本规范把对 AI 的执行粒度从 Step（见 `docs/02-version-rules.md` §6.2）向下细分为**单文件重构 / 单函数修复**级，并规定 Commit 级 Micro-Batching 与 Context Flush 纪律。
 
-本规范与 `docs/06-contract-based-dev.md` §2.8（契约只读）、`docs/07-observability-driven-dev.md`（可观测性）构成 **AI 协作三支柱**：契约只读让 AI 改前有界，可观测让 AI 改后可见，Micro-Batching 让 AI 改中可控。
+本规范与 `docs/06-contract-based-dev.md` §8（契约只读）、`docs/07-observability-driven-dev.md`（可观测性）构成 **AI 协作三支柱**：契约只读让 AI 改前有界，可观测让 AI 改后可见，Micro-Batching 让 AI 改中可控。
 
 > 以上「小版本迭代 / Micro-Batching」为**唯一权威**；模板与 skill 只引用本规范，不重定义。
 
@@ -60,7 +60,7 @@ Agentic TDD 的落地纪律（挂载进 Batch 2 卡口，非独立流程）：
 
 新会话只携带：
 
-1. **当前最新 Commit 的核心契约文件**（SSOT，呼应 `docs/06` §2.8 契约只读——新会话只带契约，不带历史噪音）；
+1. **当前最新 Commit 的核心契约文件**（SSOT，呼应 `docs/06` §8 契约只读——新会话只带契约，不带历史噪音）；
 2. **下一个小版本的 Single Task 说明**（单文件 / 单函数级）。
 
 绝不把上一会话的完整聊天记录作为上下文延续。
@@ -72,7 +72,7 @@ Agentic TDD 的落地纪律（挂载进 Batch 2 卡口，非独立流程）：
 | `docs/01-project-dev-flow.md` §3.5 | AI 执行粒度须缩到单文件/单函数，详见本规范 |
 | `docs/02-version-rules.md` §2 / §6.2 | Step 为 dev 工作包原子；Batch 是 Step 内的更小执行纪律，不冲突 |
 | `docs/03-git-flow-rules.md` §2.3 | Step 内 micro-batch 多 commit 均 `Refs` 同一版本 Issue；`reset --hard` 仅用户显式 |
-| `docs/06-contract-based-dev.md` §2.8 | 契约只读：新会话只带契约 SSOT（呼应 §3 Context Flush） |
+| `docs/06-contract-based-dev.md` §8 | 契约只读：新会话只带契约 SSOT（呼应 §3 Context Flush） |
 | `docs/07-observability-driven-dev.md` | 可观测性：日志是 AI 的眼睛，Batch 卡口校验产物即观测数据；§2.5 约束 AI 生成的测试 Assert（见 §2.2 Agentic TDD） |
 | `skills/dm-dev-step.md` | 三 Batch 执行纪律入口 |
 | `skills/dm-commit.md` | 每绿灯 Batch 即 commit（用户触发） |

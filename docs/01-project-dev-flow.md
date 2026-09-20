@@ -73,7 +73,7 @@
 
 - API 输入输出、错误码、兼容策略明确。
 - Schema 主键、索引、迁移策略明确。
-- 不可变式（Invariants）标注四要素（归属 / 方向 / 不变性 / 真值来源），见 `docs/06-contract-based-dev.md` §2.6。
+- 不可变式（Invariants）标注四要素（归属 / 方向 / 不变性 / 真值来源），见 `docs/06-contract-based-dev.md` §4。
 
 ### 3.4 版本路线规划
 

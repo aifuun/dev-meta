@@ -61,7 +61,7 @@
 
 ## 7. 测试策略
 
-> design 仅定义策略层级和关键场景，具体测试用例在 build 或独立测试文件中展开。测试职责分层（design=场景 / build=行为契约 / dev-step=落地）见 `docs/06-contract-based-dev.md` §3。
+> design 仅定义策略层级和关键场景，具体测试用例在 build 或独立测试文件中展开。测试职责分层（design=场景 / build=行为契约 / dev-step=落地）见 `docs/06-contract-based-dev.md` §10。
 
 | 关注点 | 测试级别 | 关键场景 | 环境依赖 |
 |---|---|---|---|

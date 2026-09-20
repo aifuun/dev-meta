@@ -66,7 +66,7 @@ description: 版本/Step 之外的跨文件技术债清理与仓库卫生（死�
 
 ### 2. 优先级扫描
 
-通读目标文件 / 仓库，按「优先级分层」列出发现项（级别 + 文件 + 问题 + 预期修复），形成扫描清单。仓库卫生项单独标注（`.gitignore` 现状、是否已有误提交文件被跟踪）。测试相关发现项的「期望行为」判定，参考 `docs/06-contract-based-dev.md` §3（测试职责分层）中 build 层的行为契约口径。
+通读目标文件 / 仓库，按「优先级分层」列出发现项（级别 + 文件 + 问题 + 预期修复），形成扫描清单。仓库卫生项单独标注（`.gitignore` 现状、是否已有误提交文件被跟踪）。测试相关发现项的「期望行为」判定，参考 `docs/06-contract-based-dev.md` §10（测试职责分层）中 build 层的行为契约口径。
 
 ### 3. 决策收敛
 
@@ -85,7 +85,7 @@ description: 版本/Step 之外的跨文件技术债清理与仓库卫生（死�
 
 - lint 0 错误。
 - 相关测试通过（如 iOS：`xcodebuild test`，确认重构未破坏行为，尤其坐标范围断言）。
-- 隐性契约债扫描：清理时若发现空 `catch` 吞错误、魔术数字冒充契约、未标注幂等 / 不变量、或「静默危险失败 / 依赖返回值兜底」等，标注为「隐性契约债」并记入扫描清单（契约质量基线见 `docs/06-contract-based-dev.md` §2.5；失败面契约见 §2.7）。特别地，「静默吞错 / 空 catch / 裸露 print / 依赖返回值兜底」属可观测性债（ODD），清理时须按 `docs/07-observability-driven-dev.md` §2.1 / §3 补 `observe` 结构化诊断（含 Input Snapshot / Resource Metrics，`#if DEBUG` 隔离），使 AI 能一次定位。
+- 隐性契约债扫描：清理时若发现空 `catch` 吞错误、魔术数字冒充契约、未标注幂等 / 不变量、或「静默危险失败 / 依赖返回值兜底」等，标注为「隐性契约债」并记入扫描清单（契约质量基线见 `docs/06-contract-based-dev.md` §3；失败面契约见 §5）。特别地，「静默吞错 / 空 catch / 裸露 print / 依赖返回值兜底」属可观测性债（ODD），清理时须按 `docs/07-observability-driven-dev.md` §2.1 / §3 补 `observe` 结构化诊断（含 Input Snapshot / Resource Metrics，`#if DEBUG` 隔离），使 AI 能一次定位。
 
 ### 6. 仓库卫生收尾
 
@@ -108,9 +108,9 @@ description: 版本/Step 之外的跨文件技术债清理与仓库卫生（死�
 | 优先复用已有纯函数，不另写重复逻辑 | 核心概念·复用纯函数 |
 | 验证门槛：lint 0 + 相关测试通过 才路由收尾 | 执行流程·验证 |
 | 部署版 SKILL.md 由中文源自动生成，禁止手改 | 核心概念·单一权威 + 自动部署 |
-| 契约须标注四要素（归属/方向/不变性/真值来源）+ 域-序号编号；质量维度作为不变性项落地 | docs/06-contract-based-dev.md §2.6 |
-| 失败面契约：纯函数式失败返回空/原值而非 nil；严禁静默危险失败，须调用前拦截显式暴露 | docs/06-contract-based-dev.md §2.7 |
-| 契约演进治理：破坏性变更走 dm-adr；纯增量 PR 标注；新接口回写总目录（无主防护） | docs/06-contract-based-dev.md §5 |
+| 契约须标注四要素（归属/方向/不变性/真值来源）+ 域-序号编号；质量维度作为不变性项落地 | docs/06-contract-based-dev.md §4 |
+| 失败面契约：纯函数式失败返回空/原值而非 nil；严禁静默危险失败，须调用前拦截显式暴露 | docs/06-contract-based-dev.md §5 |
+| 契约演进治理：破坏性变更走 dm-adr；纯增量 PR 标注；新接口回写总目录（无主防护） | docs/06-contract-based-dev.md §9 |
 | 可观测性债：静默吞错 / 空 catch / 裸露 print / 依赖返回值兜底 = 隐性契约债，清理时须按 07 §2.1/§3 补 observe 结构化诊断 | docs/07-observability-driven-dev.md |
 
 ## 产出与完成判据

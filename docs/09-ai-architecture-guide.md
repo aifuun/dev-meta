@@ -22,7 +22,7 @@
 | **单向分层（Clean Architecture）** | 严格遵循 `Domain → Use Case → Adapter → Infrastructure` 依赖方向，禁止逆向或跨层调用。 | 拒绝编写跨层直接访问（如禁止 Controller 直连 DB）。 |
 | **高内聚低耦合** | 按业务领域（限界上下文）划分子模块，而非仅按技术组件划分。 | 单模块代码量控制在 AI 上下文可高效理解的范围内（见 `docs/08`）。 |
 | **极简暴露（Facade）** | 每个子模块仅通过统一的 `Facade` / API 接口对外暴露，内部实现全部私有化。 | 生成新功能时，优先查询已有暴露接口，禁止直接调用私有函数。 |
-| **契约优先（Contract-First）** | 模块交互必须先定义 Interface、DTO 及事件结构，再写实现。 | 写实现前，必须先把 Interface 作为 Context 喂给 AI（见 `docs/06` §2.8 契约只读）。 |
+| **契约优先（Contract-First）** | 模块交互必须先定义 Interface、DTO 及事件结构，再写实现。 | 写实现前，必须先把 Interface 作为 Context 喂给 AI（见 `docs/06` §8 契约只读）。 |
 | **数据驱动阈值（Data-Driven Thresholds）** | 性能 / 精度 / 误差类门禁必须由 Harness **实测数据**定案，留 1.5–2.5× 余量，**严禁凭空预设**。 | 不得在无实测依据时写入断言阈值；阈值须可执行、可回归。 |
 
 ---
@@ -101,7 +101,7 @@
 
 | 文档 | 关系 |
 | --- | --- |
-| `docs/06-contract-based-dev.md` | 契约优先的 SSOT 纪律；本文 §2 契约优先、§4 步骤 1–2 落到其 §2.8 |
+| `docs/06-contract-based-dev.md` | 契约优先的 SSOT 纪律；本文 §2 契约优先、§4 步骤 1–2 落到其 §8 |
 | `docs/07-observability-driven-dev.md` | 可观测性内建；本文 §3.3、§4 步骤 4、§5 规则 6 指向其 §2.5/§3 |
 | `docs/08-small-batch-iteration.md` | AI 执行粒度与三 Batch；本文 §1/§2/§3.1/§4 步骤 3、§5 规则 7 指向其定义 |
 | `docs/01-project-dev-flow.md` | 小版本执行步骤；本文 §4 SOP 与其 §3.5 对齐 |

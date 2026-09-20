@@ -39,7 +39,7 @@ AI 不直接承接「人类视角的小版本」，而是以「单文件 / 单�
 
 ```mermaid
 flowchart LR
-    C[06 §2.8 契约只读<br/>改前有界] --> O[07 可观测性<br/>日志是眼睛·改后可见]
+    C[06 §8 契约只读<br/>改前有界] --> O[07 可观测性<br/>日志是眼睛·改后可见]
     O --> M[08 Micro-Batching<br/>小批+上下文重置·改中可控]
     M --> C
 ```
@@ -309,7 +309,7 @@ python3 pub_local.py --deploy --dry-run # 预演，不写入
 - [docs/03-git-flow-rules.md](https://github.com/aifuun/dev-meta/blob/main/docs/03-git-flow-rules.md) — Git 开发流规范（小版本 PR、版本 Issue、commit 规范）
 - [docs/04-worklog-rules.md](https://github.com/aifuun/dev-meta/blob/main/docs/04-worklog-rules.md) — 工作日志规范（每日工作总结 + 详细日志 + 待办 + 里程碑）
 - [docs/05-codebuddy-management.md](https://github.com/aifuun/dev-meta/blob/main/docs/05-codebuddy-management.md) — CODEBUDDY.md 管理规范：两层架构（全局层 vs 项目层）、加载机制、迁移说明
-- [docs/06-contract-based-dev.md](https://github.com/aifuun/dev-meta/blob/main/docs/06-contract-based-dev.md) — 契约式开发规范（三层契约 + 测试职责分层，唯一权威）
+- [docs/06-contract-based-dev.md](https://github.com/aifuun/dev-meta/blob/main/docs/06-contract-based-dev.md) — 契约式开发规范（三层契约 + 质量/记录/状态/失败面 + 资产组织与结构 lint，唯一权威）
 - [docs/07-observability-driven-dev.md](https://github.com/aifuun/dev-meta/blob/main/docs/07-observability-driven-dev.md) — 可观测性驱动开发规范（日志是 AI 的眼睛）
 - [docs/08-small-batch-iteration.md](https://github.com/aifuun/dev-meta/blob/main/docs/08-small-batch-iteration.md) — 小版本迭代规范（Micro-Batching + Context Flush，唯一权威）
 - [docs/09-ai-architecture-guide.md](https://github.com/aifuun/dev-meta/blob/main/docs/09-ai-architecture-guide.md) — AI 辅助开发架构设计指南（人的设计规范 + AI 执行边界）
@@ -328,6 +328,6 @@ python3 pub_local.py --deploy --dry-run # 预演，不写入
 
 - [skills/](https://github.com/aifuun/dev-meta/tree/main/skills) — Skill 中文源（16 个：dm-init-docs / dm-plan-roadmap / dm-plan-ver / dm-close-ver / dm-schedule / dm-dev-step / dm-log / dm-commit / dm-report / dm-adr / dm-arch-design / dm-contract-gate / dm-grillme-plan / dm-cleanup / dm-pub-skill / dm-pub-site）
 - [skills/skill-doc-principles.md](https://github.com/aifuun/dev-meta/blob/main/skills/skill-doc-principles.md) — Skill 文档编写规范（章节骨架、单一权威、自动部署）
-- [samples/](https://github.com/aifuun/dev-meta/tree/main/samples) — 版本文档样例（V1.4.1-indexeddb-prefs）与契约门禁样例（contract-gate）
+- [samples/](https://github.com/aifuun/dev-meta/tree/main/samples) — 版本文档样例（V1.4.1-indexeddb-prefs）、契约门禁样例（contract-gate）与契约结构 lint 样例（contract-lint）
 
 
