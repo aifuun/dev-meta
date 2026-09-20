@@ -50,7 +50,7 @@ IGNORE_NAMES = {"__pycache__", ".DS_Store"}
 # 规范文档与模板的一句话用途（这两类极少变动，集中维护；skill 用途自动取自其 frontmatter）
 DOCS_DESC = {
     "01-project-dev-flow.md": "项目级开发流程、文档分层与模板使用",
-    "02-version-rules.md": "版本四件套结构、TF 设计原则",
+    "02-version-rules.md": "版本四件套结构、版本粒度与 Step 施工流",
     "03-git-flow-rules.md": "分支策略、commit 格式、PR 流程",
     "04-worklog-rules.md": "工作日志格式与维护规则",
     "05-codebuddy-management.md": "CODEBUDDY 两层架构与部署",

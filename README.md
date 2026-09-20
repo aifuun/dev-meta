@@ -122,7 +122,7 @@ dm-init-docs  →  00 PRD  →  01 技术规格  →  02 系统设计  →  03 �
 ### Git 开发流
 
 ```
-版本 PR  →  TF Issue  →  commit  →  merge（保留历史）  →  关 Issue  →  清理分支
+版本 PR  →  版本 Issue  →  commit(S&lt;n&gt;)  →  merge（保留历史）  →  关 Issue  →  清理分支
 ```
 
 ### 工作日志
@@ -134,9 +134,9 @@ dm-init-docs  →  00 PRD  →  01 技术规格  →  02 系统设计  →  03 �
 ### Skill 工作流
 
 ```
-dm-init-docs  ──→  dm-plan-ver  ──→  dm-schedule（排程）
+dm-init-docs  ──→  dm-plan-roadmap（Milestone / Epoch / 粒度）  ──→  dm-plan-ver（单版本四件套）  ──→  dm-schedule（排程）
                        │
-                       ├── dm-dev-tf（TF 开发）
+                       ├── dm-dev-step（Step 0–7 全生命周期）
                        ├── dm-commit（统一提交出口）
                        └── dm-close-ver（版本收尾）
 
@@ -151,10 +151,11 @@ dm-pub-skill  ←── 发布 / 部署 skill 与模板
 | Skill | 职责 | 频率 |
 |-------|------|------|
 | `dm-init-docs` | 初始化项目文档，生成 00~06 骨架 + `./CODEBUDDY.md` 版本绑定 | 低频 |
-| `dm-plan-ver` | 开版本，创建四件套 + 分支/PR/Issue | 中频 |
+| `dm-plan-roadmap` | 路线图：Milestone + Epoch 划分、版本粒度红线、`v`/`r` 双轴编号 | 低频 |
+| `dm-plan-ver` | 开版本，创建四件套 + 分支/PR/版本 Issue + 粒度实证 | 中频 |
 | `dm-close-ver` | 关版本，就绪审计 + 保留历史 merge + 关 Issue + 清理分支 | 中频 |
-| `dm-schedule` | 版本排程，工作包列表 + 防沉迷红线 | 中频 |
-| `dm-dev-tf` | 启动 TF，读文档 + 确认 Issue + 出开发概要（开发在版本分支上） | 高频 |
+| `dm-schedule` | 版本排程，工作包列表（以 Step 为原子单位）+ 防沉迷红线 | 中频 |
+| `dm-dev-step` | Step 全生命周期：启动 → 提交 → 收尾回写 500-schedule | 高频 |
 | `dm-commit` | type 向导 + 格式校验 + Issue 关联 | 频繁 |
 | `dm-log` | 每日总结 + 详细日志 + 待办 + 里程碑 | 每日 |
 | `dm-report` | 从 worklog 提取生成周报/阶段报告 | 每周 |
@@ -236,9 +237,10 @@ python3 pub_local.py --deploy
 
 | 阶段 | 说什么 | 触发 skill |
 |------|--------|-----------|
-| 开版本 | 「新建版本 v1.2-login」 | `dm-plan-ver`（四件套 + 分支/PR/Issue） |
+| 切版本 | 「切版本」/「规划路线图」 | `dm-plan-roadmap`（Milestone / Epoch / 粒度校验） |
+| 开版本 | 「新建版本 v1.2-login」 | `dm-plan-ver`（四件套 + 分支/PR/版本 Issue） |
 | 排程 | 「排程」 | `dm-schedule` |
-| 开发 TF | 「开始 TF3」 | `dm-dev-tf` |
+| 开发 Step | 「开始 S2」 | `dm-dev-step` |
 | 改代码 | （自动） | `dm-contract-gate`（改前 diff / 改后门禁 / 交付对齐） |
 | 提交 | 「commit」 | `dm-commit` |
 | 关版本 | 「关闭版本」 | `dm-close-ver` |
@@ -304,7 +306,7 @@ python3 pub_local.py --deploy --dry-run # 预演，不写入
 
 - [docs/01-project-dev-flow.md](https://github.com/aifuun/dev-meta/blob/main/docs/01-project-dev-flow.md) — 项目级开发流程与文档分层骨架
 - [docs/02-version-rules.md](https://github.com/aifuun/dev-meta/blob/main/docs/02-version-rules.md) — 版本目录文件规范（schedule / spec / design / build）
-- [docs/03-git-flow-rules.md](https://github.com/aifuun/dev-meta/blob/main/docs/03-git-flow-rules.md) — Git 开发流规范（小版本 PR、TF issue、commit 规范）
+- [docs/03-git-flow-rules.md](https://github.com/aifuun/dev-meta/blob/main/docs/03-git-flow-rules.md) — Git 开发流规范（小版本 PR、版本 Issue、commit 规范）
 - [docs/04-worklog-rules.md](https://github.com/aifuun/dev-meta/blob/main/docs/04-worklog-rules.md) — 工作日志规范（每日工作总结 + 详细日志 + 待办 + 里程碑）
 - [docs/05-codebuddy-management.md](https://github.com/aifuun/dev-meta/blob/main/docs/05-codebuddy-management.md) — CODEBUDDY.md 管理规范：两层架构（全局层 vs 项目层）、加载机制、迁移说明
 - [docs/06-contract-based-dev.md](https://github.com/aifuun/dev-meta/blob/main/docs/06-contract-based-dev.md) — 契约式开发规范（三层契约 + 测试职责分层，唯一权威）

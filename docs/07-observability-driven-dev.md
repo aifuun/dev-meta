@@ -209,7 +209,7 @@ export async function observeStage<T>(stageName: string, metadata: Record<string
 | `docs/06-contract-based-dev.md` §2.5 / §2.7 | ODD 是行为契约的运行时暴露；§2.5 失败透明、§2.7 失败面契约禁止静默吞错，是 ODD §2.1 的硬约束来源；06 已反向引用本规范（§2.5/§2.6/§2.7/§4/§6） |
 | `docs/06-contract-based-dev.md` §2.6 | 诊断日志 `Input Snapshot` 须可被 provenance 交叉引用，防漂移 |
 | `skills/dm-plan-ver.md` | 400-build 行为契约须含「诊断契约（关键路径 observe 包装 + 状态留痕 + 无静默吞错）」 |
-| `skills/dm-dev-tf.md` | TF 实现期须把诊断契约写入 400-build 行为契约；错误/降级路径结构化诊断、高开销节点含 Elapsed+资源指标 |
+| `skills/dm-dev-step.md` | Step 实现期须把诊断契约写入 400-build 行为契约；错误/降级路径结构化诊断、高开销节点含 Elapsed+资源指标 |
 | `skills/dm-cleanup.md` | 「静默吞错 / 空 catch / 裸露 print / 依赖返回值兜底」列为隐性契约债（06 §2.7），清理时须补 observability 包装 |
 | `skills/dm-grillme-plan.md` | 实现降级级 grill 须 probe 可观测性盲区（无诊断契约 / 静默吞错 / 裸露日志），写码前消灭盲点 |
 | `skills/dm-close-ver.md` | Phase A 就绪性审计须加 ODD DoD 检查（无裸露日志 / 无静默吞错 / 高开销节点有诊断快照），合并前闸门 |

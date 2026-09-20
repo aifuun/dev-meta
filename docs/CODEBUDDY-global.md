@@ -21,7 +21,7 @@
 | 场景与要点 | 本地副本（优先读这个） | 仓库源文件（溯源 / 修改） |
 |---|---|---|
 | 项目初始化、文档分层、模板使用 | `~/.dev-meta/docs/01-project-dev-flow.md` | [01-project-dev-flow](https://github.com/aifuun/dev-meta/blob/main/docs/01-project-dev-flow.md) |
-| 版本四件套结构、TF 设计原则 | `~/.dev-meta/docs/02-version-rules.md` | [02-version-rules](https://github.com/aifuun/dev-meta/blob/main/docs/02-version-rules.md) |
+| 版本四件套结构、版本粒度、Step 施工流 | `~/.dev-meta/docs/02-version-rules.md` | [02-version-rules](https://github.com/aifuun/dev-meta/blob/main/docs/02-version-rules.md) |
 | 分支策略、commit 格式、PR 流程 | `~/.dev-meta/docs/03-git-flow-rules.md` | [03-git-flow-rules](https://github.com/aifuun/dev-meta/blob/main/docs/03-git-flow-rules.md) |
 | 工作日志格式与维护规则 | `~/.dev-meta/docs/04-worklog-rules.md` | [04-worklog-rules](https://github.com/aifuun/dev-meta/blob/main/docs/04-worklog-rules.md) |
 | CODEBUDDY 两层架构与部署 | `~/.dev-meta/docs/05-codebuddy-management.md` | [05-codebuddy-management](https://github.com/aifuun/dev-meta/blob/main/docs/05-codebuddy-management.md) |
@@ -32,7 +32,7 @@
 
 ## 通用 DoD (Definition of Done)
 
-每个 PR / commit / TF 交付前应满足：
+每个 PR / commit / 版本交付前应满足：
 
 - [ ] 本地构建通过 / 可运行
 - [ ] 手动冒烟验证（核心路径不走查）

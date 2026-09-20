@@ -82,9 +82,12 @@
 
 检查点：
 
-- 版本目标可拆分。
+- **版本粒度合规**：一个版本只承载单一核心业务场景（判据见 `docs/02-version-rules.md` §3.2）。
+- **Epoch 划分明确**：若干版本组成一个 Epoch，共同交付一个完整 feature；编号遵 `v` / `r` 双轴与号段留白规则（见 `docs/02` §3.3）。
 - 版本间依赖顺序合理。
 - 里程碑与风险节点明确。
+
+> 规划动作由 `dm-plan-roadmap` 执行；本文只定义检查点，不重定义规则。
 
 ### 3.5 小版本执行（复用版本流程）
 
@@ -92,12 +95,12 @@
 
 1. 开始一个小版本（目标与范围）
 2. 建文档（spec/design/build）
-3. 建跟踪项（1 个版本 PR + 每个 TF 1 个 issue）
+3. 建跟踪项（1 个版本 PR + 1 个版本 Issue；Step 0–7 作为该 Issue 内的 checklist）
 4. 开发（**按 docs/08-small-batch-iteration.md 三 Batch 推进，对 AI 执行粒度须缩到单文件重构 / 单函数修复**）：
    - **Batch 1** 契约接口与数据模型 → 编译 / Schema 校验通过
    - **Batch 2** Core 逻辑单文件 → 单元测试通过（核心算法层采用 docs/08 §2.2 Agentic TDD 轻量范式：仅核心逻辑、独立进程跑、Assert 受 docs/07 §2.5 约束；UI/视图不写 TDD）
    - **Batch 3** 接入 UI / 调用点 → 集成校验通过
-   - 每完成一个绿灯 Batch 由用户触发 commit（均 `Refs #同一TF`，见 docs/03 §2.3）；下个 Batch 混乱时由用户 `git reset --hard` 退回（AI 不自发，见 docs/08 §2.1）
+   - 每完成一个绿灯 Batch 由用户触发 commit（均 `Refs #同一 Issue`，见 docs/03 §2.3）；下个 Batch 混乱时由用户 `git reset --hard` 退回（AI 不自发，见 docs/08 §2.1）
 5. 测试与验证（Batch 2 逻辑断言走 Agentic TDD 挂入门禁；Batch 3 集成校验走人工 Preview + 静态检查；记录结果）
 6. 验收与收尾（验收记录、关闭 issue、合并 PR）
 7. 复盘与归档（变更总结、遗留项）
