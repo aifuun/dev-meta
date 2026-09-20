@@ -2,7 +2,7 @@
 
 > **文档流向纪律**：本文档**汇总引用** upstream `00`~`04`（及 `06`），是规划层文档；**不反向引用任何版本文档**（版本文档引用本文）。
 > **占位符约定**：`{{FIELD}}` = 结构化命名字段；`<!-- TODO: [dm-init-docs] <说明> -->` = 待补充内容。
-> **权威引用**：版本四件套结构与 TF 规则见 `dev-meta/docs/02-version-rules.md`；分支 / commit / PR 规则见 `dev-meta/docs/03-git-flow-rules.md`。本文只做项目级规划，不重定义。
+> **权威引用**：版本体系（四层结构 / 版本粒度 / Step 施工流）见 `dev-meta/docs/02-version-rules.md`；分支 / commit / PR 规则见 `dev-meta/docs/03-git-flow-rules.md`。本文只做项目级规划，不重定义。
 
 ---
 
