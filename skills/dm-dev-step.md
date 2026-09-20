@@ -198,7 +198,7 @@ Step 开发概要从版本四件套提取，各文档提供不同视角：
 | dm-plan-ver references/version-rules.md | `docs/02-version-rules.md` | Step 定义、四件套结构、环节定义 |
 | dm-plan-ver references/git-flow-rules.md | `docs/03-git-flow-rules.md` | Issue 规范（分支归版本级，不在本 skill 处理） |
 | dm-commit references/git-flow-rules.md | `docs/03-git-flow-rules.md` | commit 格式规则（含 `(S<n>)` 标记） |
-| dm-plan-ver assets/tracking-matrix.md | — | 收尾时更新 Step→Issue→PR→验收 追踪矩阵 |
+| dm-plan-ver assets/tracking-matrix.md | — | 收尾时更新 Step→Issue→PR→验收结果 追踪矩阵 |
 
 ## 使用示例
 

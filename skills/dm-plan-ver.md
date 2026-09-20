@@ -32,10 +32,10 @@ description: 新建版本：创建版本文档四件套、分支/PR、版本 Iss
 
 | 文档 | 回答的问题 | 前置依赖 |
 |------|-----------|----------|
-| `200-spec.md` | 交付什么？怎样算完成？ | — |
-| `300-design.md` | 流程如何串联？模块如何分工？ | spec |
-| `400-build.md` | 怎么实现？怎么执行？ | design |
-| `500-schedule.md` | 什么时候做什么？按什么顺序？ | build（委托 dm-schedule） |
+| `200-spec.md` | 交付什么？怎样算完成？（核心业务场景 + 架构锚点 + 验收） | — |
+| `300-design.md` | 技术上怎么设计？（架构与分层、防腐设计、数据流与状态机、核心算法、ADR） | spec |
+| `400-build.md` | 分几步施工？怎么验证防住了？（Step 0–7 施工清单 + `GUARD-0x`） | design |
+| `500-schedule.md` | 谁在什么时候做什么？（工作包 + 环节 + 进度状态） | build（委托 dm-schedule） |
 
 ### Step 施工清单（400-build §2）
 
@@ -45,7 +45,7 @@ description: 新建版本：创建版本文档四件套、分支/PR、版本 Iss
 |----|------|
 | Step | `S0`–`S7`，**固定 8 行**，不得增删 |
 | 名称 | 固定（见 `docs/02-version-rules.md` §6.2） |
-| 状态 | 执行 / `⏭️ SKIPPED`（跳过须写理由，格式固定为「跳过：<理由>」） |
+| 执行态 | 执行 / `⏭️ SKIPPED`（跳过须写理由，格式固定为「跳过：<理由>」） |
 | 环节 | 所属交付环节（开发/部署/联调/测试/发布…），使环节顺序与 schedule 对齐 |
 | guard | 该 Step 须通过的防腐契约编号（`GUARD-01,03`…）；每个编号须能在 §1.4 找到对应行 |
 | 交付物 / 跳过理由 | 交付物清单；跳过时写理由 |
@@ -53,14 +53,14 @@ description: 新建版本：创建版本文档四件套、分支/PR、版本 Iss
 - **必做步（S0 / S1 / S6 / S7）不得标记 `⏭️ SKIPPED`**。
 - **粒度实证（本 skill 的硬职责）**：**S4 / S5 各只出现一次**。多于一次 → 版本过大，
   **退回 `dm-plan-roadmap` 重切**，不得在版本内自行加层级。
-- 任务简述、预估工时、状态由 `500-schedule.md` 承载，不在清单重复。
+- 任务简述、预估工时、**进度状态**由 `500-schedule.md` 承载；本表的「**执行态**」是设计决定，与进度状态是两回事。
 - 环节完整定义见 `dm-schedule`「核心概念」环节↔类别表（唯一权威）。
 
 ### 追踪矩阵（tracking-matrix）
 
 **版本 Issue 唯一**（命名 `[vX.Y] <feature-name>`），追踪矩阵的行以 **Step** 为单位：
 
-| Step | Issue | PR | 验收 |
+| Step | Issue | PR | 验收结果 |
 |----|-------|-----|------|
 | S0 Scaffold & Clean | #xx | #xx | ⬜ |
 
@@ -222,7 +222,7 @@ AI:  1. 创建 docs/versions/v1.5-login/ 四件套
      3. 输出 PR 描述模板（标题 + 目标/范围/验收/风险）
      4. 生成版本 Issue 描述模板（标题 `[v1.5] 登录表单`，正文含 Step 0–7 checklist）
      5. 打印追踪矩阵（行以 Step 为单位，Issue / PR 为版本唯一的那一个）：
-        | Step | Issue | PR | 验收 |
+        | Step | Issue | PR | 验收结果 |
         | S0 Scaffold & Clean | #xx | #xx | ⬜ |
         | S1 Contract & ADR | #xx | #xx | ⬜ |
         | S2 Core & Prototype | #xx | #xx | ⬜ |

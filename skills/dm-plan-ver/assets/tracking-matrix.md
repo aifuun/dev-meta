@@ -6,8 +6,8 @@
 
 ## 追踪矩阵
 
-| Step | Issue | PR | 验收 |
-|------|-------|-----|------|
+| Step | Issue | PR | 验收结果 |
+|------|-------|-----|----------|
 | S0 Scaffold & Clean | #xx | #xx | ⬜ |
 | S1 Contract & ADR | #xx | #xx | ⬜ |
 | S2 Core & Prototype | #xx | #xx | ⬜ |
@@ -22,5 +22,5 @@
 ## 维护时机
 
 1. **版本创建时**：生成**唯一**版本 Issue（标题 `[vX.X] <feature-name>`，正文含 Step 0–7 checklist），关联到版本 PR，填入矩阵。
-2. **Step 完成时**：确认验收标准 → 建议 commit（subject 末尾 `(S<n>)`）→ 更新矩阵该 Step 状态为 ✅ → 回写 `500-schedule.md` 执行记录。
+2. **Step 完成时**：确认验收标准 → commit（subject 末尾 `(S<n>)` + **`Refs #<版本 Issue>`**，由用户触发）→ 更新矩阵该 Step 为 ✅ → 勾选版本 Issue checklist → 回写 `500-schedule.md` 执行记录。
 3. **版本关闭时**：检查全部 Step 已完成或已标记跳过、矩阵全 ✅，再输出 merge 建议。
