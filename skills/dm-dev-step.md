@@ -1,13 +1,13 @@
 ---
 name: dm-dev-step
-description: Step 全生命周期：启动（读版本文档、确认/创建版本 Issue、输出 Step 开发概要）→ 提交（委托 dm-commit）→ 收尾（验收、关 Issue、回写 500-schedule 执行记录）。开发在版本分支上，不建分支。触发于「开始 S2」「S2 完成了」「/dm-dev-step」。
+description: Step 全生命周期：启动（读版本文档、确认/创建版本 Issue、输出 Step 开发概要）→ 提交（委托 dm-commit，Refs 关联）→ 收尾（验收、勾选 Issue checklist、回写 500-schedule 执行记录）。开发在版本分支上，不建分支。触发于「开始 S2」「S2 完成了」「/dm-dev-step」。
 ---
 
 # dm-dev-step
 
 ## 概述
 
-Step 施工 skill，**拥有 Step 的整个生命周期**：启动（读文档 / 确认·创建版本 Issue / 出开发概要）→ 提交（委托 dm-commit）→ 收尾（验收 / 关 Issue / 回写 `500-schedule.md`）。开发直接在现有版本分支上进行，Step 不处理分支创建/删除。是 `dm-plan-ver` 阶段 2 的唯一承接方。
+Step 施工 skill，**拥有 Step 的整个生命周期**：启动（读文档 / 确认·创建版本 Issue / 出开发概要）→ 提交（委托 dm-commit）→ 收尾（验收 / 勾选 Issue checklist / 回写 `500-schedule.md`）。开发直接在现有版本分支上进行，Step 不处理分支创建/删除。是 `dm-plan-ver` 阶段 2 的唯一承接方。
 
 > **Step 是版本内唯一的施工拆分单位**（`S0`–`S7`，定义见 `docs/02-version-rules.md` §6.2）。
 > 版本内**不再划分业务流（TF）**；若发现一个 Step 装不下，说明版本过大，须退回 `dm-plan-roadmap` 重切。
@@ -19,7 +19,8 @@ Step 施工 skill，**拥有 Step 的整个生命周期**：启动（读文档 /
 | 读版本文档、提取 Step 上下文 | ✅ 本 skill |
 | 确认/创建**版本 Issue**（内容为 Step checklist） | ✅ 本 skill |
 | 输出 Step 开发概要 | ✅ 本 skill |
-| **Step 收尾**：验收 + 关闭 Issue + 回写 `500-schedule.md`（工作包状态 / tracking-matrix / 执行记录） | ✅ 本 skill |
+| **Step 收尾**：验收 + 勾选版本 Issue 的 checklist 项 + 回写 `500-schedule.md`（工作包状态 / tracking-matrix / 执行记录） | ✅ 本 skill |
+| **关闭版本 Issue** | ❌ 由版本 PR 合并时 merge commit 的 `Closes #id` 关闭（`dm-close-ver`） |
 | 分支创建/删除 | 版本级职责（dm-plan-ver），不在本 skill |
 | Step 提交 | 委托 dm-commit |
 | 版本粒度实证（S4/S5 计数）与重切 | ❌ `dm-plan-ver` / `dm-plan-roadmap` |
@@ -34,13 +35,13 @@ dm-plan-ver (版本规划)
         dm-dev-step（本 skill）
           ├── 启动：读文档 / 确认·创建版本 Issue / 出开发概要
           ├── 提交：委托 dm-commit
-          └── 收尾：验收 → 关 Issue → 回写 500-schedule
+          └── 收尾：验收 → 勾选 Issue checklist → 回写 500-schedule
 ```
 
 ## 触发
 
 - "开始 S2" / "做 S4"
-- "S2 完成了"（进入收尾：验收 → commit → 关 Issue → 回写 500-schedule）
+- "S2 完成了"（进入收尾：验收 → commit(Refs) → 勾选 Issue checklist → 回写 500-schedule）
 - "/dm-dev-step" / "/dm-dev-step S4"
 
 ## 核心概念
@@ -137,9 +138,11 @@ Step 开发概要从版本四件套提取，各文档提供不同视角：
 ### 5. Step 收尾（用户说「S<n> 完成了」时执行）
 
 1. **确认验收**：对照 `200-spec.md` 中相关验收标准与 `400-build` §2 该 Step 的交付物
-2. **执行 commit** — 委托 dm-commit：`type(scope): subject (S<n>)` + `Closes #id`
-   （subject 末尾的 `(S<n>)` 为 Step 关联标记，合法形式 `\(S[0-7]\)$`）
-3. **关闭版本 Issue**（本版本的 Step 全部完成时；`Closes` footer 自动关闭，未自动的补关）
+2. **执行 commit** — 委托 dm-commit：`type(scope): subject (S<n>)` + **`Refs #id`**
+   （subject 末尾的 `(S<n>)` 为 Step 关联标记，合法形式 `\(S[0-7]\)$`；
+   **Step 级一律 `Refs`** —— Issue 是版本级的，Step 完成 ≠ 版本完成）
+3. **勾选版本 Issue 中本 Step 的 checklist 项** —— **不关闭 Issue**；
+   版本 Issue 由版本 PR 合并时 merge commit 的 `Closes #id` 关闭（`dm-close-ver` 执行）
 4. **回写 `500-schedule.md`**：工作包状态 + tracking-matrix + **追加执行记录一条**
    （五段：概要 / 偏差 / 发现 / 失误 / 遗留；每条 ≤8 行，append-only；
    被推翻的判断用 ~~删除线~~ 保留；日常流水进 worklog，不重复记；状态只改工作包列表一处）
@@ -161,6 +164,7 @@ Step 开发概要从版本四件套提取，各文档提供不同视角：
 | `400-build.md` 不完整时需在概要中标注 | 02-version-rules.md |
 | `300-design.md` 对当前 Step 不完整时，出概要前须执行实现级 grill，问答沉淀进文档 | skill-doc-principles.md §7 |
 | Step 全生命周期归本 skill（启动 → 提交 → 收尾回写）；提交环节委托 dm-commit | 本 skill 职责边界 |
+| Step 级 commit 一律 `Refs #id`；版本 Issue 由 merge 的 `Closes` 关闭，**Step 不关 Issue** | 03-git-flow-rules.md §3.4 / §4.2 |
 | commit 以 `(S<n>)` 结尾标记 Step；跳过步不产生 commit | 03-git-flow-rules.md §3.4 |
 | Step 收尾回写 `500-schedule.md`：工作包状态 + tracking-matrix + 执行记录一条（≤8 行，append-only） | 02-version-rules.md §2 / §6 |
 | 契约须标注四要素（归属/方向/不变性/真值来源）+ 域-序号编号 | docs/06-contract-based-dev.md §2.6 |
@@ -223,8 +227,8 @@ AI:  1. 检测版本: docs/versions/v1.4.1-indexeddb-prefs/ → 当前分支 fea
 
 AI:  1. 对照 200-spec 验收标准确认
      2. commit: feat(storage): add audio-store and prefs-store (S2)
-        Closes #15
-     3. 关闭 Issue #15
+        Refs #15
+     3. 勾选 Issue #15 的 S2 项（Issue 保持 open —— 由版本 merge 时 Closes 关闭）
      4. 回写 500-schedule：工作包状态 ✅ + tracking-matrix + 执行记录一条
         #### S2 Core & Prototype（7c1e4a2）
         - 概要：建成 prefs-store 门面与 audio-store 能力探测，为版本提供存储底座

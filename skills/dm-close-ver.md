@@ -32,7 +32,7 @@ dm-plan-ver (开版本)
         dm-dev-step
           ├── 启动：读文档 / 确认·创建 Issue / 出开发概要
           ├── 提交：委托 dm-commit
-          └── 收尾：验收 → 关 Issue → 回写 500-schedule
+          └── 收尾：验收 → 勾选 Issue checklist → 回写 500-schedule
 
 dm-close-ver (关版本) ← 独立 skill，接收 dm-plan-ver 交接
 ```
@@ -82,7 +82,7 @@ dev 工作包完成 = **代码 + 部署 + 联调**；部署与联调归 dev，qa
 用户: "关闭版本 v1.3-export"
 ```
 
-1. **Issue 全查** — 所有 版本 Issue 已关闭或明确标记 `[DEFERRED]`
+1. **Issue checklist 全查** — 版本 Issue 的 `Step 0–7` checklist **全部勾选**（Issue 本身保持 **open**，由 Phase C 的 merge 关闭）；未完成的 Step 须显式标记 `[DEFERRED]`
 2. **工作包状态核对** — `500-schedule.md` 全部 ✅ 或明确延期
 3. **验收追溯** — 每个 Step 是否有可核对的验收结果（对照 `200-spec.md` 标准）
 4. **未提交变更** — 检查工作区/暂存区是否干净（`git status`）
@@ -101,16 +101,18 @@ dev 工作包完成 = **代码 + 部署 + 联调**；部署与联调归 dev，qa
 9. **Merge PR（保留历史）** — 用 **merge commit** 合并版本分支到 main，**不使用 squash**：
    ```bash
    git checkout main
-   git merge --no-ff feature/vX.Y-<slug>
+   git merge --no-ff feature/vX.Y-<slug> -m "Merge branch 'feature/vX.Y-<slug>'
+
+   Closes #<版本 Issue>"
    git push origin main
    ```
    - 保留每个 Step commit 的原始历史
-   - 若 Step commit 已含 `Closes #id`，合并时由托管平台自动关闭对应 Issue
+   - **`Closes #id` 只在此处使用**（Step 级 commit 一律 `Refs`）——merge commit 落到 main 时自动关闭版本 Issue
 
-10. **关闭剩余 版本 Issue** — 逐个确认并关闭本版本所有 版本 Issue：
-   - 已完成：标注验收结果后关闭
+10. **核对 / 补关 版本 Issue** — 核对本版本所有 版本 Issue 的状态：
+   - 正常：已由 merge commit 的 `Closes` 自动关闭
+   - 未自动关闭：确认 Step checklist 已全部勾选后**手动补关**
    - `[DEFERRED]`：单独备注延期原因后关闭
-   - **兜底**：各 版本 Issue 由 `dm-dev-step` 在收尾时关闭；此处仅**核对**，未关闭的手动补关
    - 关闭后更新追踪矩阵（tracking-matrix）为 ✅
 
 11. **清理分支** — 删除已合并的版本分支：
@@ -164,7 +166,7 @@ dev 工作包完成 = **代码 + 部署 + 联调**；部署与联调归 dev，qa
 | 规则 | 来源 |
 |------|------|
 | 合并使用 merge commit（`--no-ff`），**保留历史，不使用 squash** | 03-git-flow-rules §4.2（本 skill 覆盖默认 squash） |
-| 每个 Step commit 带 `Closes #id`，合并时自动关 Issue | 03-git-flow-rules §2.3 |
+| Step 级 commit 一律 `Refs #id`；版本 Issue 由 **merge commit 的 `Closes #id`** 关闭 | 03-git-flow-rules §2.3 / §3.4 / §4.2 |
 | 未关闭 Issue 必须明确 `[DEFERRED]`，不可静默跳过 | 03-git-flow-rules §2.3 |
 | 验收结果需可追溯 | 02-version-rules |
 | 收尾阶段禁止新功能 commit | — |

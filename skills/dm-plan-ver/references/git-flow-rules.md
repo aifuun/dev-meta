@@ -25,7 +25,7 @@
 - 版本 Issue 必须关联版本 PR。
 - 版本 PR 合并前必须确认版本 Issue 已关闭或明确延期。
 
-> **Micro-Batching（AI 执行粒度）**：一个 Step 内的改动按 `docs/08-small-batch-iteration.md` 拆为三 Batch（契约/数据模型 → Core 单文件 → UI/调用点），每个绿灯 Batch 各生成一个 commit，**多个小 commit 均可 `Refs #同一 Issue`**。若下个 Batch 陷入混乱，由**用户显式**执行 `git reset --hard <上一个绿灯 commit>` 退回（破坏性操作，AI 不自发，遵守 git 安全协议与「AI 不主动 commit」护栏），随后 New Session 携带最新契约 SSOT 继续。
+> **Micro-Batching（AI 执行粒度）**：一个 Step 内的改动按 `docs/08-small-batch-iteration.md` 拆为三 Batch（契约/数据模型 → Core 单文件 → UI/调用点），每个绿灯 Batch 各生成一个 commit，**多个小 commit 均用 `Refs #同一版本 Issue`**（`Closes` 属版本级，见 §3.4）。若下个 Batch 陷入混乱，由**用户显式**执行 `git reset --hard <上一个绿灯 commit>` 退回（破坏性操作，AI 不自发，遵守 git 安全协议与「AI 不主动 commit」护栏），随后 New Session 携带最新契约 SSOT 继续。
 
 ## 3. Commit Message 规范
 
@@ -63,6 +63,9 @@ type(scope): subject
 - **Step 关联**：commit 属于某个 Step 时，`subject` 末尾加 `(S<n>)` —— 如
   `feat(render): extract union path logic (S2)`。合法形式正则：`/\(S[0-7]\)$/`。
   **跳过（`⏭️ SKIPPED`）的 Step 不产生 commit**。
+- **Issue 关联（footer）**：**Issue 是版本级的**（§2.2：1 版本 = 1 Issue，Step 为 Issue 内 checklist）。
+  **Step 级 commit（含 Step 收尾）一律用 `Refs #id`** —— Step 完成 ≠ 版本完成，**不得**关闭版本 Issue。
+  `Closes #id` 只属**版本级**：由版本 PR 的 **merge commit** 承载（§4.2），合并时自动关闭版本 Issue。
 - `body` 用于说明原因、影响与迁移信息。
 - `footer` 用于 issue 关联与破坏性变更说明。
 
@@ -78,7 +81,7 @@ type(scope): subject
 ### 4.2 合并策略
 
 - 默认使用 **merge commit（`git merge --no-ff`）保留历史 commit**，不使用 squash。
-- 合并后版本 Issue 由 `Closes #id` footer 自动关闭，其余手动关闭。
+- 合并时由 **merge commit 的 `Closes #id` footer** 自动关闭版本 Issue；Step 级 commit 用 `Refs`，不关闭 Issue。其余手动关闭。
 - 合并前执行最小自检：范围正确、链接完整、验收可追溯。
 - 版本收尾的完整流程由 `dm-close-ver` 执行。
 
@@ -129,6 +132,13 @@ docs(git-flow): add minimal workflow rules
 fix(storage): fallback to memory when indexeddb is unavailable
 
 Keep playback flow non-blocking when openDB fails.
+
+Refs #42
+```
+
+```text
+# 版本 PR 合并 —— 唯一使用 Closes 的场景
+Merge branch 'feature/v1.4.1-indexeddb-prefs'
 
 Closes #42
 ```

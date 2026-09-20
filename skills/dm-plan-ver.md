@@ -131,8 +131,8 @@ description: 新建版本：创建版本文档四件套、分支/PR、版本 Iss
 Step 的**全生命周期**归 `dm-dev-step`，本 skill 只做**一次委托**，不参与其中任何步骤：
 
 - **启动**：读文档、确认/创建 Issue、出开发概要（开发在版本分支上，不建分支）
-- **提交**：委托 `dm-commit`（`type(scope): subject` + `Closes #id`）
-- **收尾**：验收 → 关 Issue → 回写 `500-schedule.md`（工作包状态 + tracking-matrix + 执行记录一条）
+- **提交**：委托 `dm-commit`（`type(scope): subject (S<n>)` + **`Refs #id`** —— Issue 是版本级的）
+- **收尾**：验收 → 勾选版本 Issue 的 Step checklist → 回写 `500-schedule.md`（工作包状态 + tracking-matrix + 执行记录一条）
 
 ```
 用户: "开始 S2"  /  "S2 完成了"
@@ -162,7 +162,7 @@ Step 的**全生命周期**归 `dm-dev-step`，本 skill 只做**一次委托**�
 | 防腐编号 `GUARD-0x` 落 `400-build` §1.4 + Step 清单 `guard` 列；**与契约层级 L1/L2/L3 无关** | 02-version-rules.md §3.5 / §6 |
 | Step 全生命周期（启动 → 提交 → 收尾回写）委托 dm-dev-step，本 skill 不执行 | 本 skill 职责边界 |
 | 每版本 1 PR，每版本 1 Issue | 03-git-flow-rules.md §2 |
-| commit: `type(scope): subject` + `Closes #id`，详见 dm-commit | 03-git-flow-rules.md §3 |
+| Step 级 commit: `type(scope): subject (S<n>)` + **`Refs #id`**；`Closes` 属版本级（merge 时），详见 dm-commit | 03-git-flow-rules.md §3.4 |
 | 分支: `feature/v<version>-<slug>`（版本级；Step 不建分支，开发在版本分支上进行） | 03-git-flow-rules.md §4 |
 | 收尾: 委托 dm-close-ver（保留历史 merge，不用 squash） | dm-close-ver.md |
 | Step 清单固定 8 行，含状态 / 环节 / guard / 交付物；必做步不得 SKIPPED | 02-version-rules.md §6.1 |
@@ -231,7 +231,7 @@ AI:  1. 创建 docs/versions/v1.5-login/ 四件套
 用户: "S2 完成了"
 
 AI:  委托 dm-dev-step（本 skill 不执行）：
-     验收 → commit(Closes #xx) → 关 Issue → 回写 500-schedule
+     验收 → commit(Refs #xx) → 勾选 Issue checklist → 回写 500-schedule
      （工作包状态 + 追踪矩阵 + 执行记录一条）
 
 用户: "关闭版本 v1.5-login"
