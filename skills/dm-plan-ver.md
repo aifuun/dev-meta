@@ -115,7 +115,7 @@ description: 新建版本：创建版本文档四件套、分支/PR、版本 Iss
 3.5 **开版本 Issue 前的契约门禁自检（Gate）**
    生成 Issue（即把 Step 列为可执行单元）之前，确认 `400-build.md` 已落地 06/07/08 基线，否则退回补写、不开 Issue：
    - **06 契约式开发**：含 L1/L2/L3 行为契约、Step 清单带环节、失败面不静默、契约四要素标注（归属/方向/不变性/真值来源 + 域-序号编号，见 `docs/06-contract-based-dev.md` §3/§4/§5/§10）
-   - **07 可观测性**：行为契约含诊断契约（关键路径 observe 包装 + 状态留痕 + 无静默吞错，见 `docs/07-observability-driven-dev.md` §2.1/§3/§7）
+   - **07 可观测性**：行为契约含诊断契约（关键路径 observe 包装 + 状态留痕 + 无静默吞错，见 `docs/07-observability-driven-dev.md` §2.1/§3/§7）；**轨迹**须在 Step 清单体现 S4 / S5 接线与 S6 验证（见 `docs/02` §6.2）
    - **08 小步开发**：计划可拆成单文件批次（AI 执行粒度 = 单文件重构/单函数修复，见 `docs/08-small-batch-iteration.md`）
    - **结构零残留**：`200-spec` / `300-design` 的**标题**中不得出现 `Transaction Flow` / `TF` / `Step`（属 `400-build`）；
      检查**只扫标题**，且须**豁免历史版本**（见 `docs/02` §3.7 / §8）
@@ -177,6 +177,7 @@ Step 的**全生命周期**归 `dm-dev-step`，本 skill 只做**一次委托**�
 | 失败面契约：纯函数式失败返回空/原值而非 nil；严禁静默危险失败，须调用前拦截显式暴露 | docs/06-contract-based-dev.md §5 |
 | 契约演进治理：破坏性变更走 dm-adr；纯增量 PR 标注；新接口回写总目录（无主防护） | docs/06-contract-based-dev.md §9 |
 | 可观测性诊断契约：400-build 行为契约须含诊断契约（关键路径 observe 包装 + 状态留痕 + 无静默吞错），见 docs/07-observability-driven-dev.md §2.1/§3/§7 | docs/07-observability-driven-dev.md |
+| 轨迹：S4/S5 接线须同时接轨迹观测点；**S6 轨迹资产核对与验证为必做**（目录一致 / 判读表无模糊行 / 完整链路「一次命中」） | 02-version-rules.md §6.2 / docs/07 §3.2 |
 | 版本计划须可拆成单文件批次（AI 执行粒度 = 单文件重构/单函数修复），供逐 Batch 推进，见 docs/08-small-batch-iteration.md | docs/08-small-batch-iteration.md |
 
 ## 产出与完成判据

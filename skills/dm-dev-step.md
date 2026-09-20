@@ -171,6 +171,7 @@ Step 开发概要从版本四件套提取，各文档提供不同视角：
 | 失败面契约：纯函数式失败返回空/原值而非 nil；严禁静默危险失败 | docs/06-contract-based-dev.md §5 |
 | Micro-Batching：Step 内按三 Batch 推进（契约/数据模型→Core 单文件→UI/调用点）；每绿灯 Batch 由用户触发 commit | docs/08-small-batch-iteration.md |
 | 诊断契约：错误/降级路径须结构化诊断，高开销节点含 Elapsed + 资源指标 | docs/07-observability-driven-dev.md |
+| 轨迹（启用时）：每观测点须给**判别量**（禁「已到达某步」）；验证落**集成 / E2E 完整链路**，不以单测代替 | docs/07-observability-driven-dev.md §3.2 |
 
 ## 产出与完成判据
 

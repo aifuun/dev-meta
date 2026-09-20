@@ -86,7 +86,7 @@ dev 工作包完成 = **代码 + 部署 + 联调**；部署与联调归 dev，qa
 2. **工作包状态核对** — `500-schedule.md` 全部 ✅ 或明确延期
 3. **验收追溯** — 每个 Step 是否有可核对的验收结果（对照 `200-spec.md` 标准）
 4. **未提交变更** — 检查工作区/暂存区是否干净（`git status`）
-5. **可观测性 DoD** — 无裸露日志（关键路径经 `observe` 包装）、无静默吞错、高开销节点（推理/IO/跨进程）有诊断快照（见 `docs/07-observability-driven-dev.md` §7 DoD）
+5. **可观测性 DoD** — 无裸露日志（关键路径经 `observe` 包装）、无静默吞错、高开销节点（推理/IO/跨进程）有诊断快照（见 `docs/07-observability-driven-dev.md` §7 DoD）；**轨迹**已核对（目录与实现一致 / 判读表无模糊行 / 临时项未超棘轮 / 完整链路「一次命中」留档，见 §3.2）
 
 > 任一不满足 → 先修复再继续，不跳过。
 
@@ -174,6 +174,7 @@ dev 工作包完成 = **代码 + 部署 + 联调**；部署与联调归 dev，qa
 | 关闭版本后更新 roadmap | 01-project-dev-flow |
 | 版本标记用 annotated tag `v<X.Y.Z>`，message 含 version/scope/merge/issues，必推送 `--tags` | 本 skill §11 |
 | 合并前须过 ODD DoD：无裸露日志 / 无静默吞错 / 高开销节点有诊断快照（07 §7） | docs/07-observability-driven-dev.md §7 |
+| 轨迹资产核对与验证（S6 必做）：目录一致 / 判读表无模糊行 / 临时项未超棘轮 / 完整链路「一次命中」 | 02-version-rules.md §6.2 / docs/07 §3.2 |
 
 ## 产出与完成判据
 
