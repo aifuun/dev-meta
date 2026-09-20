@@ -15,8 +15,8 @@ description: 创建或调整产品架构时使用，定义人的架构设计规�
 |------|------|
 | 定义架构设计原则与 AI 防腐规则 | ✅ 本 skill |
 | 模块边界 / Interface / DTO 设计 | ✅ 本 skill（产出落入 06 契约 SSOT） |
-| 防腐测试生成 | 委托 dm-dev-tf（依据 06/08 落地） |
-| 模块内部实现 | 委托 dm-dev-tf（按 08 三 Batch 推进） |
+| 防腐测试生成 | 委托 dm-dev-step（依据 06/08 落地） |
+| 模块内部实现 | 委托 dm-dev-step（按 08 三 Batch 推进） |
 | 版本计划拆分 | 委托 dm-plan-ver（计划须可拆成单文件批次） |
 
 ## 触发
@@ -66,11 +66,11 @@ description: 创建或调整产品架构时使用，定义人的架构设计规�
 
 ### 步骤 2：生成防腐测试（AI 生成，人工复核）
 
-依据 Interface 生成单元/集成测试用例，锁定预期行为（见 08 §2.2 Agentic TDD：仅核心逻辑、独立进程跑、Assert 受 07 约束）。委托 dm-dev-tf 落地。
+依据 Interface 生成单元/集成测试用例，锁定预期行为（见 08 §2.2 Agentic TDD：仅核心逻辑、独立进程跑、Assert 受 07 约束）。委托 dm-dev-step 落地。
 
 ### 步骤 3：模块内部实现（AI 主导，人做 Code Review）
 
-仅把 Interface + 局部上下文喂给 AI，让其在模块内部完成实现，直至测试通过（执行粒度见 08 三 Batch；陷入混乱时由人 `git reset --hard` 退回，见 08 §2.1）。委托 dm-dev-tf 推进。
+仅把 Interface + 局部上下文喂给 AI，让其在模块内部完成实现，直至测试通过（执行粒度见 08 三 Batch；陷入混乱时由人 `git reset --hard` 退回，见 08 §2.1）。委托 dm-dev-step 推进。
 
 ### 步骤 4：全局集成（人主导）
 
@@ -130,7 +130,7 @@ description: 创建或调整产品架构时使用，定义人的架构设计规�
 AI:  1. 决策点收敛（提问）：模块边界？同步/异步通信？Facade 暴露面？
      2. 产出 Interface + DTO（落入 06 契约 SSOT）
      3. 给出架构防腐规则（可写入 .cursorrules）
-     4. 委托 dm-dev-tf 生成防腐测试 + 模块实现（按 08 三 Batch）
+     4. 委托 dm-dev-step 生成防腐测试 + 模块实现（按 08 三 Batch）
 ```
 
 ### 示例 2：生成 AI 防腐规则

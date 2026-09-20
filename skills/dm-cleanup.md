@@ -1,13 +1,13 @@
 ---
 name: dm-cleanup
-description: 版本/TF 之外的跨文件技术债清理与仓库卫生（死代码、注释、.gitignore、误提交文件）。触发于「清理技术债」「做仓库卫生」。
+description: 版本/Step 之外的跨文件技术债清理与仓库卫生（死代码、注释、.gitignore、误提交文件）。触发于「清理技术债」「做仓库卫生」。
 ---
 
 # dm-cleanup
 
 ## 概述
 
-技术债清理与仓库卫生 skill。收口**版本 / TF 之外**的跨文件清理工作：按优先级分层扫描代码与仓库，显式收敛关键决策，逐处修复并验证，最终路由至版本收尾。以 PochiHide `VisionDetector.swift` 清理为范式。
+技术债清理与仓库卫生 skill。收口**版本 / Step 之外**的跨文件清理工作：按优先级分层扫描代码与仓库，显式收敛关键决策，逐处修复并验证，最终路由至版本收尾。以 PochiHide `VisionDetector.swift` 清理为范式。
 
 ## 职责边界
 
@@ -19,7 +19,7 @@ description: 版本/TF 之外的跨文件技术债清理与仓库卫生（死代
 | 验证（lint 0 错误 + 相关测试通过） | ✅ 本 skill |
 | 版本收尾（merge / 关 Issue / 清理分支 / 提交推送） | 委托 dm-close-ver |
 
-> **分流规则**：本 skill 只管**无法归到某版本 TF** 的 standalone 清理（一次性技术债、跨文件重构、仓库卫生）。若清理内容能明确归到某版本 TF，则提示走 `dm-dev-tf`，本 skill 不接管其开发流程，避免与 TF 链路重叠。
+> **分流规则**：本 skill 只管**无法归到某版本 Step** 的 standalone 清理（一次性技术债、跨文件重构、仓库卫生）。若清理内容能明确归到某版本 Step，则提示走 `dm-dev-step`，本 skill 不接管其开发流程，避免与 Step 链路重叠。
 
 ## 触发
 
@@ -62,7 +62,7 @@ description: 版本/TF 之外的跨文件技术债清理与仓库卫生（死代
 
 ### 1. 接收与分流判定
 
-读取用户的清理诉求；判断是否属于**版本 / TF 之外**的 standalone 清理（是 → 本 skill；若可归某 TF → 提示走 `dm-dev-tf`）。
+读取用户的清理诉求；判断是否属于**版本 / Step 之外**的 standalone 清理（是 → 本 skill；若可归某 Step → 提示走 `dm-dev-step`）。
 
 ### 2. 优先级扫描
 
@@ -81,7 +81,7 @@ description: 版本/TF 之外的跨文件技术债清理与仓库卫生（死代
 ### 5. 验证
 
 > **契约式开发核心（详见 `docs/06-contract-based-dev.md`，即使链接失效也以本句为准）**：
-> ① 先契约后实现；② L1 接口契约含错误/幂等/兼容/限流，L2 TF 契约含失败语义/前置后置/依赖方向，L3 行为契约仅算法类必填（given-when-then）；③ 测试三层分工 design=场景 / build=行为契约 / dev-tf=落地，互不重定义；④ 契约质量基线要求错误透明、命名即契约、不可变默认、显式边界校验；⑤ 下层契约不得违背上层。
+> ① 先契约后实现；② L1 接口契约含错误/幂等/兼容/限流，L2 Step 契约含失败语义/前置后置/依赖方向，L3 行为契约仅算法类必填（given-when-then）；③ 测试三层分工 design=场景 / build=行为契约 / dev-tf=落地，互不重定义；④ 契约质量基线要求错误透明、命名即契约、不可变默认、显式边界校验；⑤ 下层契约不得违背上层。
 
 - lint 0 错误。
 - 相关测试通过（如 iOS：`xcodebuild test`，确认重构未破坏行为，尤其坐标范围断言）。
@@ -100,7 +100,7 @@ description: 版本/TF 之外的跨文件技术债清理与仓库卫生（死代
 
 | 规则 | 来源 |
 |------|------|
-| 只管版本 / TF 之外的 standalone 清理；可归 TF 的走 dm-dev-tf | 职责边界 |
+| 只管版本 / Step 之外的 standalone 清理；可归 Step 的走 dm-dev-step | 职责边界 |
 | 显式触发 `/dm-cleanup`，不自动匹配 | 触发 |
 | 优先级 高→中→低 逐处处理 | 核心概念·优先级分层 |
 | 误提交文件删物理文件前必须显式提问 | skill-doc-principles §7 |
@@ -143,7 +143,7 @@ description: 版本/TF 之外的跨文件技术债清理与仓库卫生（死代
 ```
 用户: "/dm-cleanup 把 VisionDetector.swift 和仓库卫生一起清理了"
 
-AI:  1. 分流判定：standalone 清理（非某 TF）→ 本 skill
+AI:  1. 分流判定：standalone 清理（非某 Step）→ 本 skill
      2. 优先级扫描清单：
         🔴 [VisionDetector.swift] detect 手写翻转未复用 flipYToUIKit → 改调纯函数
         🔴 [VisionDetector.swift] clampedNormalized 被测却未用 → detect 输出套夹取 [0,1]

@@ -1,6 +1,6 @@
 # Skill 文档核心原则
 
-> 本文档定义 dev-meta 仓库 `skills/` 下所有 skill 设计文档的统一组织结构与写作规范。所有 skill 文档（如 `dm-schedule.md`、`dm-plan-ver.md`、`dm-dev-tf.md`、`dm-adr.md`）须遵循本原则，保证结构一致、AI 工具易遍历、概念单一权威。
+> 本文档定义 dev-meta 仓库 `skills/` 下所有 skill 设计文档的统一组织结构与写作规范。所有 skill 文档（如 `dm-schedule.md`、`dm-plan-ver.md`、`dm-dev-step.md`、`dm-adr.md`）须遵循本原则，保证结构一致、AI 工具易遍历、概念单一权威。
 
 ## 目标
 

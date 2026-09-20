@@ -19,7 +19,7 @@ description: 非版本类需求写代码/出方案前的决策逼问与 Final Pl
 | 编码 / 实现 | 委托对应实现 skill |
 | 提交 | 委托 dm-commit |
 
-> **双轨分工**：本 skill 只管**非版本类通用需求**（一次性脚本、独立重构、跨项目方案评审等）。**版本类**规划走 `dm-plan-ver`（需求级 / 架构级 grill）与 `dm-dev-tf`（实现级 grill）的**内嵌** grill，不在此链路，避免 grill 逻辑三处维护。
+> **双轨分工**：本 skill 只管**非版本类通用需求**（一次性脚本、独立重构、跨项目方案评审等）。**版本类**规划走 `dm-plan-ver`（需求级 / 架构级 grill）与 `dm-dev-step`（实现级 grill）的**内嵌** grill，不在此链路，避免 grill 逻辑三处维护。
 
 ## 触发
 
@@ -58,13 +58,13 @@ AI 提问 → 用户回答 → 沉淀文档
 ### 与 §7 的关系
 
 - §7 规定「决策点须显式提问→回答→沉淀」，本 skill 是其**通用 / 非版本类**的具体执行形态。
-- 版本类的同款执行已内嵌于 `dm-plan-ver` / `dm-dev-tf`，本 skill 不重复定义也不重复触发。
+- 版本类的同款执行已内嵌于 `dm-plan-ver` / `dm-dev-step`，本 skill 不重复定义也不重复触发。
 
 ## 执行流程
 
 ### 1. 接收需求
 
-读取用户的新需求或初始 Plan；判断是否属于**非版本类通用需求**（是 → 本 skill；否 → 提示走 `dm-plan-ver` / `dm-dev-tf` 内嵌 grill）。
+读取用户的新需求或初始 Plan；判断是否属于**非版本类通用需求**（是 → 本 skill；否 → 提示走 `dm-plan-ver` / `dm-dev-step` 内嵌 grill）。
 
 ### 2. Grill 提问
 
@@ -92,7 +92,7 @@ AI 提问 → 用户回答 → 沉淀文档
 
 | 规则 | 来源 |
 |------|------|
-| 本 skill 只管非版本类；版本类走 dm-plan-ver / dm-dev-tf 内嵌 grill | skill-doc-principles §7 |
+| 本 skill 只管非版本类；版本类走 dm-plan-ver / dm-dev-step 内嵌 grill | skill-doc-principles §7 |
 | 每轮 3-5 个决定性决策点，不重复用户已明说 | skill-doc-principles §7 |
 | grill 阶段不产出实现代码 / 最终方案 | skill-doc-principles §7 |
 | 问答须沉淀进 Final Plan 文档，不留在对话流 | skill-doc-principles §7 |
@@ -112,7 +112,7 @@ AI 提问 → 用户回答 → 沉淀文档
 - [ ] 回答已**沉淀进文档**，未停留在对话流
 - [ ] 技术选型类回答已触发 `dm-adr` 记录
 - [ ] 范围边界、完成标准、降级策略、明确排除项均已明确
-- [ ] 未与版本类 grill（`dm-plan-ver` / `dm-dev-tf` 内嵌）重复执行
+- [ ] 未与版本类 grill（`dm-plan-ver` / `dm-dev-step` 内嵌）重复执行
 
 ## 资源映射
 

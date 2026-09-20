@@ -17,7 +17,7 @@ description: 初始化新项目文档：引导式意图收集，生成 00~06 文
 | 生成 `./CODEBUDDY.md`（版本绑定 + 例外项） | ✅ 本 skill（原 `dm-init` 职责，现由本 skill 承接；是 dm-plan-ver / dm-log 的前置条件） |
 | 模板资产的发布与 skill 触发入口部署 | 委托 `dm-pub-skill`（本 skill 只消费模板生成文档，不负责发布） |
 | 代码脚手架（目录 / 依赖 / 配置） | ❌ 各语言 CLI 负责 |
-| 运行时代码植入（如 `observe` 包装器） | ❌ 由开发阶段 `dm-dev-tf` 落地，本 skill 只生成文档 |
+| 运行时代码植入（如 `observe` 包装器） | ❌ 由开发阶段 `dm-dev-step` 落地，本 skill 只生成文档 |
 | 版本四件套（200-spec / 300-design / 400-build / 500-schedule） | 委托 `dm-plan-ver` |
 | 提交 | 委托 `dm-commit` |
 

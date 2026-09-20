@@ -18,7 +18,7 @@ description: 契约断言门禁：改前 diff 契约、改后跑门禁（sha256 
 | 门禁失败 → 报错原样抛回、契约框架内自我修复 | ✅ 本 skill |
 | 契约需破坏性变更（改语义/签名/坐标口径） | 委托 `dm-adr`（06 §5） |
 | 契约纯增量追加 + 回写编号 | 委托用户 PR 标注（06 §5），本 skill 仅提示 |
-| 落地实现代码 | 委托 `dm-dev-tf`（本 skill 只守门禁，不写业务） |
+| 落地实现代码 | 委托 `dm-dev-step`（本 skill 只守门禁，不写业务） |
 
 ## 触发
 
@@ -90,7 +90,8 @@ description: 契约断言门禁：改前 diff 契约、改后跑门禁（sha256 
 | 门禁失败须结构化诊断（07 黑匣子） | docs/07 §6 / §3 |
 | Gate 2 含可观测性 DoD：改后无 observe 包装 / 无出口 Assert（映射空须 assertionFailure）视为门禁未过 | docs/07 §2.5 |
 | 可观测性 DoD 已由 `verify_contract.py --source-dir` 脚本化（扫描裸打点 vs 结构化断言/包装信号） | samples/contract-gate |
-| 落地实现委托 dm-dev-tf，本 skill 只守门禁 | 职责边界 |
+| 版本文档结构检查：`200-spec` / `300-design` **标题**含 `Transaction Flow` / `TF` / `Step` 即报告（只扫标题；**豁免历史版本**） | docs/02 §8 / §3.7 |
+| 落地实现委托 dm-dev-step，本 skill 只守门禁 | 职责边界 |
 
 ## 产出与完成判据
 
