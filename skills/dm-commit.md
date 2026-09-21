@@ -16,7 +16,7 @@ Commit 规范 skill，确保每次提交遵循 dev-meta commit 约定。是 comm
 | 确定 `type(scope): subject` 格式 | ✅ 本 skill |
 | 格式校验（type 集合 / scope / subject 长度 / footer） | ✅ 本 skill |
 | 执行 `git commit`（用户确认后） | ✅ 本 skill |
-| commit 内容的组织与分批（三 Batch） | ❌ `dm-dev-step`，见 `docs/08-small-batch-iteration.md` |
+| commit 内容的组织与分批（执行粒度） | ❌ `dm-dev-step`，见 `docs/08-small-batch-iteration.md` |
 | 契约门禁（改前 diff / 改后校验） | ❌ `dm-contract-gate`（本 skill 的前序卡口） |
 | 版本收尾、分支清理、打 tag | ❌ `dm-close-ver` |
 | 未获用户明确要求时**不主动** commit | 硬约束（见「关键规则速查」） |
@@ -55,14 +55,14 @@ Refs #42
 
 ### Refs 与 Closes（Issue 是**版本级**的）
 
-- `Refs #N`：本次提交是**版本 Issue** 的一部分。**Step 级提交（含三 Batch 与 Step 收尾）一律用此** ——
+- `Refs #N`：本次提交是**版本 Issue** 的一部分。**Step 级提交（含各类 Batch 与 Step 收尾）一律用此** ——
   Step 完成 ≠ 版本完成，**不得**关闭版本 Issue。
 - `Closes #N`：**版本级** footer，由版本 PR 的 **merge commit** 承载，合并时自动关闭版本 Issue。
   **Step 提交禁用**。
 
 ### Micro-Batching 节奏
 
-一个 Step 拆为三 Batch，每完成一个**绿灯 Batch** 即生成一个 commit，**均用 `Refs #同一版本 Issue`**（Step 收尾的 commit 同样用 `Refs`）。`Closes` 属版本级、由 merge 承载，**不在 Step 阶段使用**。详见 `docs/08-small-batch-iteration.md` 与 `docs/03` §3.4。
+改动按 `docs/08` 拆到**单文件 / 单函数**粒度，每完成一个**绿灯 Batch** 即生成一个 commit，**均用 `Refs #同一版本 Issue`**（Step 收尾的 commit 同样用 `Refs`）。`Closes` 属版本级、由 merge 承载，**不在 Step 阶段使用**。详见 `docs/08-small-batch-iteration.md` 与 `docs/03` §3.4。
 
 ### AI 不主动提交
 
@@ -119,7 +119,7 @@ Step 相关提交：
 
 构建完整的 commit message，执行 `git commit`。**除非用户明确要求，否则不主动 commit。**
 
-> 在 `docs/08-small-batch-iteration.md` 的 Micro-Batching 节奏下，一个 Step 拆为三 Batch，每完成一个**绿灯 Batch** 即生成一个 commit（均 `Refs #同一版本 Issue`）。本步骤仍在用户显式说 commit / 调 dm-commit 时触发，AI 不自发提交；下个 Batch 混乱时由**用户** `git reset --hard` 退回上一个绿灯 commit（AI 不自发，遵守 git 安全协议）。
+> 在 `docs/08-small-batch-iteration.md` 的 Micro-Batching 节奏下，改动拆到单文件 / 单函数粒度，每完成一个**绿灯 Batch** 即生成一个 commit（均 `Refs #同一版本 Issue`）。本步骤仍在用户显式说 commit / 调 dm-commit 时触发，AI 不自发提交；下个 Batch 混乱时由**用户** `git reset --hard` 退回上一个绿灯 commit（AI 不自发，遵守 git 安全协议）。
 
 ### 7. 校验
 

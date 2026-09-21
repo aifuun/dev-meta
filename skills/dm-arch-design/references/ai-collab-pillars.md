@@ -25,7 +25,7 @@
 ## 08 小版本迭代（Small-Batch Iteration）— `docs/08-small-batch-iteration.md`
 
 - **§1 AI 小批定义**：最小批次 = 单文件重构 / 单函数修复（非人类视角 Sprint）。
-- **§2 Commit 级 Micro-Batching（三 Batch）**：Batch1 契约+数据模型+编译 → Batch2 Core 单文件+单测 → Batch3 UI/调用点+集成；每绿灯 Batch **由用户触发 commit**。
+- **§2 Commit 级 Micro-Batching（执行粒度）**：改动按性质分契约 / Core / 接入三类（其**顺序与落位归 `docs/02` §6.2 的 Step 0–7**），每类内须拆到**单文件 / 单函数**；每绿灯 Batch **由用户触发 commit**。
 - **§2.1 混乱回退**：陷入混乱由用户显式 `git reset --hard` 退回绿灯 Commit，AI 不自发执行破坏性操作。
 - **§3 Context Flush / New Session**：小 Task 完成清空对话；新会话只带「最新契约 SSOT + 下一个单点 Task」。
 

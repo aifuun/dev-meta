@@ -16,7 +16,7 @@ description: 创建或调整产品架构时使用，定义人的架构设计规�
 | 定义架构设计原则与 AI 防腐规则 | ✅ 本 skill |
 | 模块边界 / Interface / DTO 设计 | ✅ 本 skill（产出落入 06 契约 SSOT） |
 | 防腐测试生成 | 委托 dm-dev-step（依据 06/08 落地） |
-| 模块内部实现 | 委托 dm-dev-step（按 08 三 Batch 推进） |
+| 模块内部实现 | 委托 dm-dev-step（按 08 执行粒度推进） |
 | 版本计划拆分 | 委托 dm-plan-ver（计划须可拆成单文件批次） |
 
 ## 触发
@@ -70,13 +70,13 @@ description: 创建或调整产品架构时使用，定义人的架构设计规�
 
 ### 步骤 3：模块内部实现（AI 主导，人做 Code Review）
 
-仅把 Interface + 局部上下文喂给 AI，让其在模块内部完成实现，直至测试通过（执行粒度见 08 三 Batch；陷入混乱时由人 `git reset --hard` 退回，见 08 §2.1）。委托 dm-dev-step 推进。
+仅把 Interface + 局部上下文喂给 AI，让其在模块内部完成实现，直至测试通过（执行粒度见 08：单文件 / 单函数；陷入混乱时由人 `git reset --hard` 退回，见 08 §2.1）。委托 dm-dev-step 推进。
 
 ### 步骤 4：全局集成（人主导）
 
 通过事件总线或 API Gateway 连接各模块，做全链路校验（校验产物即 07 观测数据）。
 
-> SOP 与 `docs/01` §3.5 小版本执行步骤对齐：步骤 1–2 ≈ Batch 1（契约+数据模型），步骤 3 ≈ Batch 2（Core 单文件），步骤 4 ≈ Batch 3（接入 UI/调用点）。
+> SOP 与 `docs/01` §3.5 小版本执行步骤对齐：步骤 1–2 ≈ **契约类**，步骤 3 ≈ **Core 类**，步骤 4 ≈ **接入类**（三类改动的**顺序与落位由 `docs/02` §6.2 的 Step 0–7 承担**，本节只对齐角色分工）。
 
 ## 关键规则速查（单一权威）
 
@@ -116,7 +116,7 @@ description: 创建或调整产品架构时使用，定义人的架构设计规�
 | SKILL.md | — | 流程指令 + 规则速查 |
 | `docs/06-contract-based-dev.md` |  docs/ | 契约只读 SSOT |
 | `docs/07-observability-driven-dev.md` | docs/ | 可观测性内建 |
-| `docs/08-small-batch-iteration.md` | docs/ | AI 执行粒度与三 Batch |
+| `docs/08-small-batch-iteration.md` | docs/ | AI 执行粒度与会话纪律 |
 | `docs/01-project-dev-flow.md` §3.5 | docs/ | 小版本执行步骤对齐 |
 | dm-adr | skills/ | 技术选型决策记录 |
 | `references/ai-collab-pillars.md` | ~/.codebuddy/skills/dm-arch-design/references/ | 06/07/08/09 索引卡（纯指针+关键条款，应用即对齐，按需加载） |
@@ -131,7 +131,7 @@ description: 创建或调整产品架构时使用，定义人的架构设计规�
 AI:  1. 决策点收敛（提问）：模块边界？同步/异步通信？Facade 暴露面？
      2. 产出 Interface + DTO（落入 06 契约 SSOT）
      3. 给出架构防腐规则（可写入 .cursorrules）
-     4. 委托 dm-dev-step 生成防腐测试 + 模块实现（按 08 三 Batch）
+     4. 委托 dm-dev-step 生成防腐测试 + 模块实现（按 08 执行粒度）
 ```
 
 ### 示例 2：生成 AI 防腐规则

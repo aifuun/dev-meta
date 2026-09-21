@@ -96,7 +96,7 @@
 1. 开始一个小版本（目标与范围）
 2. 建文档（spec/design/build）
 3. 建跟踪项（1 个版本 PR + 1 个版本 Issue；Step 0–7 作为该 Issue 内的 checklist）
-4. 开发（**按 docs/08-small-batch-iteration.md 三 Batch 推进，对 AI 执行粒度须缩到单文件重构 / 单函数修复**）：
+4. 开发（**按 docs/08-small-batch-iteration.md 的执行粒度推进：单文件重构 / 单函数修复**；改动按性质分契约 / Core / 接入三类，其**顺序与落位由 Step 0–7 承担**）：
    - **Batch 1** 契约接口与数据模型 → 编译 / Schema 校验通过
    - **Batch 2** Core 逻辑单文件 → 单元测试通过（核心算法层采用 docs/08 §2.2 Agentic TDD 轻量范式：仅核心逻辑、独立进程跑、Assert 受 docs/07 §2.5 约束；UI/视图不写 TDD）
    - **Batch 3** 接入 UI / 调用点 → 集成校验通过

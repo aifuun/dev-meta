@@ -2,9 +2,9 @@
 
 ## 概述
 
-AI 在多个文件间来回拉扯、陷入「长尾混乱」的根因，是 Task Batch 对人类而言「小」，对 AI 而言「太大」。本规范把对 AI 的执行粒度从 Step（见 `docs/02-version-rules.md` §6.2）向下细分为**单文件重构 / 单函数修复**级，并规定 Commit 级 Micro-Batching 与 Context Flush 纪律。
+AI 在多个文件间来回拉扯、陷入「长尾混乱」的根因，是 Task Batch 对人类而言「小」，对 AI 而言「太大」。本规范管的是 **AI 的「单次执行粒度」**（单文件重构 / 单函数修复）与 **AI 会话纪律**（Context Flush）；**施工顺序（哪一步做什么）由 `docs/02-version-rules.md` §6.2 的 Step 0–7 承担，本规范不重复定义顺序**。
 
-本规范与 `docs/06-contract-based-dev.md` §8（契约只读）、`docs/07-observability-driven-dev.md`（可观测性）构成 **AI 协作三支柱**：契约只读让 AI 改前有界，可观测让 AI 改后可见，Micro-Batching 让 AI 改中可控。
+本规范与 `docs/06-contract-based-dev.md` §8.2（契约只读）、`docs/07-observability-driven-dev.md`（可观测性）构成 **AI 协作三支柱**：契约只读让 AI 改前有界，可观测让 AI 改后可见，Micro-Batching 让 AI 改中可控。
 
 > 以上「小版本迭代 / Micro-Batching」为**唯一权威**；模板与 skill 只引用本规范，不重定义。
 
@@ -17,17 +17,19 @@ AI 在多个文件间来回拉扯、陷入「长尾混乱」的根因，是 Task
 
 **AI 最小批次（Micro-Batch）** = 一次单文件重构，或一次单点函数修复。一旦批次包含「跨 3+ 文件且彼此无直接调用关系」的改动，就超出了 AI 的安全执行粒度，必须拆分。
 
-## 2. Commit 级 Micro-Batching（三 Batch）
+## 2. Commit 级 Micro-Batching（执行粒度）
 
-一个 AI 可安全承接的 Step 内改动，按依赖顺序拆为三个 Batch，每完成一个**绿灯 Batch** 即提交（提交动作由用户触发，见 §2.1 护栏）：
+任何 Step 内的改动，按**改动性质**分为三类；每一类的实际改动仍须拆到 **AI 安全粒度**（单文件重构 / 单函数修复），每完成一个**绿灯 Batch** 即提交（提交动作由用户触发，见 §2.1 护栏）：
 
-| Batch | 内容 | 卡口校验 |
+| 改动性质 | 内容 | 卡口校验 |
 |-------|------|----------|
-| **Batch 1** | 契约接口与数据模型（如 `DetectorContract.swift` 新增字段、`*.schema.json` 字段） | 编译检查 / Schema 校验通过，不破坏已有构建 |
-| **Batch 2** | Core 逻辑实现（**单文件**） | 单元测试通过（Agentic TDD 轻量范式，见 §2.2） |
-| **Batch 3** | 接入 UI / 调用点（多文件适配） | 集成校验通过 |
+| **契约类**（Batch 1） | 契约接口与数据模型（如 `DetectorContract.swift` 新增字段、`*.schema.json` 字段） | 编译检查 / Schema 校验通过，不破坏已有构建 |
+| **Core 类**（Batch 2） | Core 逻辑实现（**单文件**） | 单元测试通过（Agentic TDD 轻量范式，见 §2.2） |
+| **接入类**（Batch 3） | 接入 UI / 调用点（多文件适配） | 集成校验通过 |
 
-- 顺序不可逆：先契约、再 Core、后接入（与 `docs/02-version-rules.md` §6.2 的 `400-build.md` Step 0–7 施工清单一致）。
+> ⚠️ **层级归属**：三类之间的**依赖顺序**（先契约 → 再 Core → 后接入）由 `docs/02` §6.2 的 **Step 0–7** 承担（契约类 → `S1`、Core 类 → `S2`、接入类 → `S4 / S5`）；**本规范只定义「每一小步能有多大」，不重复定义顺序。**
+
+- 顺序不可逆：先契约、再 Core、后接入 —— 该**顺序与落位由 `docs/02` §6.2 的 Step 0–7 承担**，本规范不复述。
 - 多个绿灯 Batch 的 commit 均 `Refs #同一 Issue`（见 `docs/03-git-flow-rules.md` §2.3）。
 
 ### 2.1 混乱回退纪律
@@ -60,7 +62,7 @@ Agentic TDD 的落地纪律（挂载进 Batch 2 卡口，非独立流程）：
 
 新会话只携带：
 
-1. **当前最新 Commit 的核心契约文件**（SSOT，呼应 `docs/06` §8 契约只读——新会话只带契约，不带历史噪音）；
+1. **当前最新 Commit 的核心契约文件**（SSOT，呼应 `docs/06` §8.2 契约只读——新会话只带契约，不带历史噪音）；
 2. **下一个小版本的 Single Task 说明**（单文件 / 单函数级）。
 
 绝不把上一会话的完整聊天记录作为上下文延续。
@@ -70,10 +72,10 @@ Agentic TDD 的落地纪律（挂载进 Batch 2 卡口，非独立流程）：
 | 文档 / Skill | 关系 |
 |--------------|------|
 | `docs/01-project-dev-flow.md` §3.5 | AI 执行粒度须缩到单文件/单函数，详见本规范 |
-| `docs/02-version-rules.md` §2 / §6.2 | Step 为 dev 工作包原子；Batch 是 Step 内的更小执行纪律，不冲突 |
+| `docs/02-version-rules.md` §2.2 / §6.2 | **Step 与 Batch 正交**（第三条轴是「环节」）：Step = 施工工序（谁在哪一步做什么，02 权威）；**Batch = AI 单次执行粒度**（每一步能有多大，本规范权威）。顺序归 02、粒度归本规范，互不重复 |
 | `docs/03-git-flow-rules.md` §2.3 | Step 内 micro-batch 多 commit 均 `Refs` 同一版本 Issue；`reset --hard` 仅用户显式 |
-| `docs/06-contract-based-dev.md` §8 | 契约只读：新会话只带契约 SSOT（呼应 §3 Context Flush） |
+| `docs/06-contract-based-dev.md` §8.2 | 契约只读：新会话只带契约 SSOT（呼应 §3 Context Flush） |
 | `docs/07-observability-driven-dev.md` | 可观测性：日志是 AI 的眼睛，Batch 卡口校验产物即观测数据；§2.5 约束 AI 生成的测试 Assert（见 §2.2 Agentic TDD） |
-| `skills/dm-dev-step.md` | 三 Batch 执行纪律入口 |
+| `skills/dm-dev-step.md` | 执行粒度（Micro-Batching）纪律入口 |
 | `skills/dm-commit.md` | 每绿灯 Batch 即 commit（用户触发） |
 | `skills/dm-plan-ver.md` | 版本计划须可拆成单文件批次 |

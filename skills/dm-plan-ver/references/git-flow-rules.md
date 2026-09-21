@@ -25,7 +25,7 @@
 - 版本 Issue 必须关联版本 PR。
 - 版本 PR 合并前必须确认版本 Issue 已关闭或明确延期。
 
-> **Micro-Batching（AI 执行粒度）**：一个 Step 内的改动按 `docs/08-small-batch-iteration.md` 拆为三 Batch（契约/数据模型 → Core 单文件 → UI/调用点），每个绿灯 Batch 各生成一个 commit，**多个小 commit 均用 `Refs #同一版本 Issue`**（`Closes` 属版本级，见 §3.4）。若下个 Batch 陷入混乱，由**用户显式**执行 `git reset --hard <上一个绿灯 commit>` 退回（破坏性操作，AI 不自发，遵守 git 安全协议与「AI 不主动 commit」护栏），随后 New Session 携带最新契约 SSOT 继续。
+> **Micro-Batching（AI 执行粒度）**：任何 Step 内的改动按 `docs/08-small-batch-iteration.md` 拆到**单文件 / 单函数**粒度（改动按性质分契约 / Core / 接入三类，其**顺序与落位由 Step 0–7 承担**，见 `docs/02` §6.2），每个绿灯 Batch 各生成一个 commit，**多个小 commit 均用 `Refs #同一版本 Issue`**（`Closes` 属版本级，见 §3.4）。若下个 Batch 陷入混乱，由**用户显式**执行 `git reset --hard <上一个绿灯 commit>` 退回（破坏性操作，AI 不自发，遵守 git 安全协议与「AI 不主动 commit」护栏），随后 New Session 携带最新契约 SSOT 继续。
 
 ## 3. Commit Message 规范
 
