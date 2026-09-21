@@ -115,11 +115,11 @@ Step 开发概要从版本四件套提取，各文档提供不同视角：
 > **契约式开发核心（详见 `docs/06-contract-based-dev.md`，即使链接失效也以本句为准）**：
 > ① 先契约后实现；② L1 接口契约含错误/幂等/兼容/限流，L2 Feature 契约含失败语义/前置后置/依赖方向，L3 行为契约仅算法类必填（given-when-then）；③ 测试三层分工 design=场景 / build=行为契约 / dev-step=落地，互不重定义；④ 契约质量基线要求错误透明、命名即契约、不可变默认、显式边界校验；⑤ 下层契约不得违背上层。
 
-- 级别：<unit / integration / e2e>（来自 300-design.md §7）
+- 级别：<unit / integration / e2e>（来自 300-design.md §7；命中 `docs/06` §10.2 四判据之一的**不得**只列 unit）
 - 关键场景：<来自 300-design.md §7>
 - 不变量：<来自 400-build.md 关键行为契约的不变量项；无则写"无">
 - 行为预期：<来自 400-build.md 关键行为契约；dm-dev-step 据此生成真实单测，不重新定义行为>
-- 测试职责分层见 `docs/06-contract-based-dev.md` §10
+- 测试职责分层见 `docs/06-contract-based-dev.md` §10；测试基线只增不减（§10.1）
 
 ### 自底向上顺序（强制）
 1. Pure Model / Domain
@@ -134,6 +134,12 @@ Step 开发概要从版本四件套提取，各文档提供不同视角：
 ```
 
 > **自底向上顺序**见 `docs/09-ai-architecture-guide.md` §3.4，禁止逆向。
+>
+> 📌 **UI 改动纪律（触及 `UI / Presentation` 层时强制）**：
+> ① 改动须**可局部回滚** —— 不得与样式重构混入同一 commit；
+> ② **不得顺手改 Design Token / 全局样式**（颜色 / 字号 / 间距 / 圆角 / 动效）；
+> ③ 视觉真值源是 **Design Token**，不得绕过 token 直写魔数（`docs/09` §5 第 8 条）；
+> ④ UI 改动**不写单测**，但收尾须附**可复查对照物**（Preview 截图 / 前后对比 / 真机验证记录）—— `docs/02` §6.2 / `docs/08` §2.2 第 5 条。
 
 ### 5. Step 收尾（用户说「S<n> 完成了」时执行）
 
@@ -169,7 +175,7 @@ Step 开发概要从版本四件套提取，各文档提供不同视角：
 | Step 收尾回写 `500-schedule.md`：工作包状态 + tracking-matrix + 执行记录一条（≤8 行，append-only） | 02-version-rules.md §2 / §6 |
 | 契约须标注四要素（归属/方向/不变性/真值来源）+ 域-序号编号 | docs/06-contract-based-dev.md §4 |
 | 失败面契约：纯函数式失败返回空/原值而非 nil；严禁静默危险失败 | docs/06-contract-based-dev.md §5 |
-| Micro-Batching：Step 内按三 Batch 推进（契约/数据模型→Core 单文件→UI/调用点）；每绿灯 Batch 由用户触发 commit | docs/08-small-batch-iteration.md |
+| Micro-Batching：任何 Step 内按**单文件 / 单函数**粒度拆 commit（改动分契约 / Core / 接入三类，其顺序归 Step 0–7）；每绿灯 Batch 由用户触发 commit | docs/08-small-batch-iteration.md |
 | 诊断契约：错误/降级路径须结构化诊断，高开销节点含 Elapsed + 资源指标 | docs/07-observability-driven-dev.md |
 | 轨迹（启用时）：每观测点须给**判别量**（禁「已到达某步」）；验证落**集成 / E2E 完整链路**，不以单测代替 | docs/07-observability-driven-dev.md §3.2 |
 

@@ -55,7 +55,7 @@ description: 契约断言门禁：改前 diff 契约、改后跑门禁（sha256 
 | Swift 契约门面 | `DetectorContract.swift` / `Contract.swift` / 公开 `Protocol` |
 | Schema 契约 | `*.schema.json` / `docs/03_CONTRACTS_AND_API.md` §3 内联 JSON Schema |
 | API 契约 | `OpenAPI`（`openapi.yaml`）/ `docs/03_CONTRACTS_AND_API.md` §2 |
-| 版本行为契约 | `docs/versions/vX.Y-<slug>/400-build.md` §1.x / §2.3 / §3.3 |
+| 版本行为契约 | `docs/versions/vX.Y-<slug>/400-build.md` §1.x（Schema / API / 异常 / 防腐）+ §3 各 Step 明细内的「关键行为契约」小节 |
 
 ### 2. Gate 1 改前卡口（Pre-Implementation）
 

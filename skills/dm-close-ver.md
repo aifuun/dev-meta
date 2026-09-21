@@ -87,18 +87,19 @@ dev 工作包完成 = **代码 + 部署 + 联调**；部署与联调归 dev，qa
 3. **验收追溯** — 每个 Step 是否有可核对的验收结果（对照 `200-spec.md` 标准）
 4. **未提交变更** — 检查工作区/暂存区是否干净（`git status`）
 5. **可观测性 DoD** — 无裸露日志（关键路径经 `observe` 包装）、无静默吞错、高开销节点（推理/IO/跨进程）有诊断快照（见 `docs/07-observability-driven-dev.md` §7 DoD）；**轨迹**已核对（目录与实现一致 / 判读表无模糊行 / 临时项未超棘轮 / 完整链路「一次命中」留档，见 §3.2）
+6. **测试基线核对** — 测试基线（用例数 / 关键断言数）**未下降**（`docs/06` §10.1）；有删除 / 跳过的须有显式理由；命中 `docs/06` §10.2 四判据之一的须有**集成 / E2E 证据**（不得以单测代替）；UI 改动须附**可复查对照物**（`docs/02` §6.2 / `docs/08` §2.2）
 
 > 任一不满足 → 先修复再继续，不跳过。
 
 ### Phase B：收尾执行（Do the close）
 
-6. **Step 0–7 施工清单核对** — `400-build.md` §2 各 Step 状态已收口（无遗留「执行」态、必做步未跳过、跳过理由已写）（测试职责分层见 `docs/06-contract-based-dev.md` §10）
-7. **worklog 补全** — 版本周期内所有工作已记录（委托 dm-log）
-8. **文档收尾** — 版本文档确认提交（委托 dm-commit）
+7. **Step 0–7 施工清单核对** — `400-build.md` §2 各 Step 状态已收口（无遗留「执行」态、必做步未跳过、跳过理由已写）（测试职责分层见 `docs/06-contract-based-dev.md` §10）
+8. **worklog 补全** — 版本周期内所有工作已记录（委托 dm-log）
+9. **文档收尾** — 版本文档确认提交（委托 dm-commit）
 
 ### Phase C：合并与关闭（Merge & close issues）
 
-9. **Merge PR（保留历史）** — 用 **merge commit** 合并版本分支到 main，**不使用 squash**：
+10. **Merge PR（保留历史）** — 用 **merge commit** 合并版本分支到 main，**不使用 squash**：
    ```bash
    git checkout main
    git merge --no-ff feature/vX.Y-<slug> -m "Merge branch 'feature/vX.Y-<slug>'
@@ -109,18 +110,18 @@ dev 工作包完成 = **代码 + 部署 + 联调**；部署与联调归 dev，qa
    - 保留每个 Step commit 的原始历史
    - **`Closes #id` 只在此处使用**（Step 级 commit 一律 `Refs`）——merge commit 落到 main 时自动关闭版本 Issue
 
-10. **核对 / 补关 版本 Issue** — 核对本版本所有 版本 Issue 的状态：
+11. **核对 / 补关 版本 Issue** — 核对本版本所有 版本 Issue 的状态：
    - 正常：已由 merge commit 的 `Closes` 自动关闭
    - 未自动关闭：确认 Step checklist 已全部勾选后**手动补关**
    - `[DEFERRED]`：单独备注延期原因后关闭
    - 关闭后更新追踪矩阵（tracking-matrix）为 ✅
 
-11. **清理分支** — 删除已合并的版本分支：
+12. **清理分支** — 删除已合并的版本分支：
     ```bash
     git branch -d feature/vX.Y-<slug>
     ```
 
-12. **版本标记**（必做）— 用 **annotated tag** 打版本号，message 须含「版本 + 必要信息」：
+13. **版本标记**（必做）— 用 **annotated tag** 打版本号，message 须含「版本 + 必要信息」：
     - tag 命名：`v<X.Y.Z>`（与版本目录 `vX.Y-<slug>`、PR `[Vx.y.z]` 一致；`<X.Y>` 取自版本目录，`<Z>` 为补丁号，首个版本为 `.0`）
     - message 必要字段：`version`（含 slug）、`scope`（本次交付范围摘要）、`merge`（merge commit 哈希，作回滚点）、`issues`（关闭的 版本 Issue 清单）
     ```bash

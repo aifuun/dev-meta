@@ -93,6 +93,7 @@
 5. Event-Driven Coupling: For cross-domain communication, publish an Event to the EventBus instead of directly calling another domain's service.
 6. Write Observability In: Every non-trivial branch logs a structured event and never swallows errors silently (see docs/07).
 7. Stay In Scope: Implement only the single file / single function you were given; ask before expanding the blast radius (see docs/08).
+8. Visual Contract = Design Token: Never hardcode magic numbers for color / font-size / spacing / radius / motion — always reference the design token. Do not alter global styles or tokens unless the task explicitly asks for it, and keep view changes locally revertible (see docs/02 §6.2 S4, docs/08 §2.2).
 ```
 
 ---
