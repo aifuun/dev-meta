@@ -93,7 +93,7 @@
 5. Event-Driven Coupling: For cross-domain communication, publish an Event to the EventBus instead of directly calling another domain's service.
 6. Write Observability In: Every non-trivial branch logs a structured event and never swallows errors silently (see docs/07).
 7. Stay In Scope: Implement only the single file / single function you were given; ask before expanding the blast radius (see docs/08).
-8. Visual Contract = Design Token: Never hardcode magic numbers for color / font-size / spacing / radius / motion — always reference the design token. Do not alter global styles or tokens unless the task explicitly asks for it, and keep view changes locally revertible (see docs/02 §6.2 S4, docs/08 §2.2).
+8. Visual Contract = Design Token: Never hardcode magic numbers for color / font-size / spacing / radius / motion — always reference the design token. Do not alter global styles or tokens unless the task explicitly asks for it, and keep view changes locally revertible (see docs/02 §6.2 S4, docs/08 §2.2; token spec: §7).
 ```
 
 ---
@@ -108,11 +108,67 @@
 - 单一职责 + 窄接口：一个函数只兑现一个契约，接口隔离（ISP）。
 - 显式边界校验：入口处校验前置条件，早失败（fail-fast）。
 
-## 7. 引用关系
+## 7. 设计令牌（Design Token）语义化规范
+
+### 7.0 准入线与定位
+
+- **定位**：本节是**视觉层的 AI 行为约束**，**不是** UI 设计方法论。交互流程、视觉层次、动线、栅格、品牌调性等属**人的专业判断**，不在本节范围 —— 由项目侧 `04_UI_UX_DESIGN.md` 与外部设计规范承担。
+- **准入线**：本节只收「**AI 会违反、且违反后无人能自动发现**」的条目 —— 这是「规范」与「最佳实践」的分界线。
+- **解决什么**：`§5` 第 8 条与 `docs/02` §6.2 ③ 等**多处**要求「视觉真值源是 Design Token、不得直写魔数」，但此前**从未定义 token 的形态与命名** → AI 只能猜（猜成 `color-blue`，值一改名字就骗人）。本节即为该定义的**唯一权威**。
+
+### 7.1 三层架构
+
+| 层 | 命名形态 | 示例 | 谁可引用 | 映射既有支柱 |
+|----|----------|------|----------|--------------|
+| **Primitive** 基础层 | `<类别>-<色阶/序号>` | `--color-blue-500`、`--space-4` | **仅 Semantic**；组件禁用 | 不可变原始值（SSOT） |
+| **Semantic** 语义层 | `<类别>-<用途>-<变体>` | `--color-text-primary`、`--color-bg-danger` | **组件只读此层** | 契约只读（`docs/06` §8.2） |
+| **Component** 组件层 | `<组件>-<属性>-<状态>` | `--button-bg-hover` | 仅该组件内部 | 局部契约 |
+
+> **别名对照**：Material 3 的 `reference` / `system` / `component` 依次等价于上表三层。
+> ⚠️ **本三层不带任何编号**：`L1` / `L2` / `L3` 已被**契约层级**占用（见 `docs/06` §6.3 命名空间互斥表），**不得**用于令牌层级。
+
+### 7.2 命名规则
+
+- **形态**：`<类别>-<用途>-<变体>`（如 `--color-text-danger`、`--space-gap-md`）。
+- **禁止含具体值**：`--color-blue`、`--size-16px`、`--spacing-8` ❌ —— 值一改名字就骗人，违反「命名即契约」（§6）。
+- **语义优先**：命名表达**用途**而非**外观**（`--color-text-muted` ✓ / `--color-gray-400` ❌ 用于正文）。
+
+### 7.3 四条红线
+
+| # | 红线 | 违反后果 |
+|---|------|----------|
+| ① | **价值禁入名** | 命名与实现耦合，改值即失真 |
+| ② | **组件禁直取 Primitive** | 视觉层的「越级调用」，全局换肤失效 |
+| ③ | **Component 层须 ≥2 个消费者**才创建 | 单消费者即过度设计，应并入 Semantic |
+| ④ | **token 文件是视觉 SSOT** | 禁止在组件内覆写或局部重定义 |
+
+### 7.4 可门禁校验点
+
+| # | 校验点 | 形式 |
+|---|--------|------|
+| ① | 组件源码**无裸值**（hex / px / rem / 裸字号数字） | 正则可查 |
+| ② | **Primitive 未被组件直引** | 引用图可查 |
+| ③ | 令牌命名**符合 `<类别>-<用途>-<变体>` 模式** | 命名 lint 可查 |
+
+> 本版仅定义校验点，**不新增 `GUARD-0x` 编号**（避免与既有 Gate 语义冲突，实现留待后续版本）。
+
+### 7.5 与外部标准的关系
+
+| 类别 | 外部标准 | 与本规范的关系 |
+|------|----------|----------------|
+| **令牌格式 / 结构** | **W3C DTCG**（Design Tokens Format Module，`*.tokens.json`） | **引用** —— 本规范不重定义 schema |
+| **可访问性阈值** | **WCAG 2.2 AA** | **引用** —— 对比度 / 动态字号 / 标签的判据 |
+| 设计语言与命名参考 | Material 3 / HIG / Ant Design | **仅参考**，不构成约束 |
+
+---
+
+## 8. 引用关系
 
 | 文档 | 关系 |
 | --- | --- |
-| `docs/06-contract-based-dev.md` | 契约优先的 SSOT 纪律；本文 §2 契约优先、§4 步骤 1–2 落到其 §8；其 §3「跨层编码约定」即本文 §6 |
+| `docs/06-contract-based-dev.md` | 契约优先的 SSOT 纪律；本文 §2 契约优先、§4 步骤 1–2 落到其 §8；其 §3「跨层编码约定」即本文 §6；其 §6.3 命名空间互斥表登记本文 §7 的令牌三层 |
 | `docs/07-observability-driven-dev.md` | 可观测性内建；本文 §3.3、§4 步骤 4、§5 规则 6 指向其 §2.5/§3 |
 | `docs/08-small-batch-iteration.md` | AI 执行粒度与会话纪律；本文 §1/§2/§3.1/§4 步骤 3、§5 规则 7 指向其定义 |
 | `docs/01-project-dev-flow.md` | 小版本执行步骤；本文 §4 SOP 与其 §3.5 对齐 |
+| `docs/02-version-rules.md` §6.2 | UI 变更纪律；本文 §7 是其「视觉真值源」的规范形态 |
+| `templates/project/docs/04_UI_UX_DESIGN.md` | 项目侧载具；本文 §7 的落地骨架（§3.1 令牌三层表 + §5 AI 执行检查清单） |

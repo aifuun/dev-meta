@@ -38,7 +38,7 @@ description: 初始化新项目文档：引导式意图收集，生成 00~06 文
 | **01** | `01_TECHNICAL_SPEC.md` | 技术选型、边界约束、测试策略、部署基线 | ← 00 |
 | **02** | `02_SYSTEM_DESIGN.md` | 架构图、组件分层、数据流、并发/状态机 | ← 00, 01 |
 | **03** | `03_CONTRACTS_AND_API.md` | **契约 SSOT**：Invariants、API、存储 Schema、错误码 | ← 01, 02 |
-| **04** | `04_UI_UX_DESIGN.md`（可选） | 交互流程、视图五态、组件规范 | ← 00, 03；**纯后端/CLI 跳过** |
+| **04** | `04_UI_UX_DESIGN.md`（可选） | 交互流程、视图五态、设计令牌、组件规范、可访问性、AI 执行检查清单 | ← 00, 03；**纯后端/CLI 跳过** |
 | **05** | `05_ROADMAP_AND_COMPLIANCE.md` | Milestone、版本切分（Epoch）、合规/安全/隐私 | ← 00~04, 06 |
 | **06** | `06_OBSERVABILITY.md` | dev-meta 07 的项目实例化 | ← 02, 03 |
 

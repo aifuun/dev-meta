@@ -32,6 +32,7 @@
 ## 09 AI 辅助架构设计指南 — `docs/09-ai-architecture-guide.md`
 
 - 本 skill 的**方法论文档源**，已结构化沉淀为 `dm-arch-design`。四原则（单向分层 / 高内聚低耦合 / 极简暴露 Facade / 契约优先）与核心机制（模块隐蔽 / 事件总线 / 可观测性内建）见本 skill 正文，不在此复述。
+- **§7 设计令牌（Design Token）语义化规范**：三层 = **Primitive / Semantic / Component**（**不带编号** —— `L1`–`L3` 属契约层级，见 06 §6.3，不得挪用）；命名 `<类别>-<用途>-<变体>`、**价值禁入名**；四条红线（② 组件禁直取 Primitive ④ token 文件为视觉 SSOT）；可门禁项见 §7.4。项目侧骨架见 `templates/project/docs/04_UI_UX_DESIGN.md` §3.1。
 
 ## 互指闭环
 

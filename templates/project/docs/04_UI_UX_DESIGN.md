@@ -28,14 +28,37 @@
 
 ---
 
-## 3. 组件规范
+## 3. 设计令牌与组件规范
+
+### 3.1 设计令牌（Design Token）
+
+> **视觉 SSOT**：本节是项目视觉的**唯一真值源**；组件一律引用 **Semantic** 层，禁止写裸值。规范与红线见 `dev-meta/docs/09-ai-architecture-guide.md` §7。
+
+| 层 | 用途 | 命名形态 | 本项目取值 / 来源 |
+|----|------|----------|-------------------|
+| **Primitive** 基础层 | 原始值，**仅 Semantic 可引用** | `<类别>-<色阶/序号>` | <!-- TODO: [dm-init-docs] 如 --color-blue-500 / --space-4 --> |
+| **Semantic** 语义层 | **组件只读此层** | `<类别>-<用途>-<变体>` | <!-- TODO: [dm-init-docs] 如 --color-text-primary / --color-bg-danger --> |
+| **Component** 组件层 | 仅该组件内部（须 ≥2 消费者才创建） | `<组件>-<属性>-<状态>` | <!-- TODO: [dm-init-docs] 如 --button-bg-hover --> |
+
+- **令牌文件（SSOT 载体）**：<!-- TODO: [dm-init-docs] 如 *.tokens.json（W3C DTCG）/ tokens.ts / theme.css -->
+- **红线**：① 命名不含具体值 ② 组件禁直取 Primitive ③ Component 层须 ≥2 消费者 ④ 禁止组件内覆写令牌
+
+### 3.2 组件清单
 
 | 组件 | 用途 | 入参 | 状态 | 复用范围 |
 |------|------|------|------|----------|
 | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> | <!-- TODO --> |
 
-- **设计系统 / Token**：<!-- TODO: [dm-init-docs] 颜色、字号、间距来源 -->
-- **可访问性**：<!-- TODO: [dm-init-docs] 对比度、动态字号、无障碍标签 -->
+### 3.3 可访问性与动效下限
+
+> 阈值**引用 WCAG 2.2 AA**，不在本文重定义。
+
+| 项 | 要求 | 本项目落地方式 |
+|----|------|----------------|
+| 对比度 | 正文 / 大字达 WCAG 2.2 AA | <!-- TODO --> |
+| 动态字号 | 支持系统字号缩放，不截断 | <!-- TODO --> |
+| 无障碍标签 | 交互元素有可读标签 / 语义角色 | <!-- TODO --> |
+| 动效降级 | 尊重 `prefers-reduced-motion` | <!-- TODO --> |
 
 ---
 
@@ -47,7 +70,24 @@
 
 ---
 
-## 5. 引用声明
+## 5. AI 执行检查清单
+
+> **用途**：S4（Ingress）/ S5（Egress）UI 接入时**逐项核对**。每项均对应「AI 会违反、且违反后无人能自动发现」的行为约束（准入线见 `dev-meta/docs/09-ai-architecture-guide.md` §7.0）。
+
+| # | 检查项 | 判据来源 | 可否自动校验 |
+|---|--------|----------|--------------|
+| 1 | 三层令牌齐备、**无裸值**，且组件**仅引用 Semantic**（禁直取 Primitive） | `docs/09` §7.1–§7.3 红线② | ✅ 正则 + 引用图 |
+| 2 | 视图覆盖**空 / 加载 / 成功 / 错误 / 降级**五态 | 本文 §2 | 🟡 人工对照 |
+| 3 | 错误与降级态**有留痕**，无静默吞错 | `docs/07-observability-driven-dev.md` §2.5 | 🟡 人工 / 日志检查 |
+| 4 | **单一真值源**：UI 不得自持业务状态 | `docs/09` §3.4 | 🟡 人工 Review |
+| 5 | 对比度 / 动态字号 / 无障碍标签达标 | WCAG 2.2 AA | ✅ 工具扫描 |
+| 6 | 动效支持 `prefers-reduced-motion` | WCAG 2.2 AA | ✅ 工具扫描 |
+| 7 | **禁跨层取数**：UI 不得越级调用 | `docs/09` §2 单向分层 | 🟡 人工 Review |
+| 8 | 令牌命名**不含具体值** | `docs/09` §7.2 | ✅ 命名 lint |
+
+---
+
+## 6. 引用声明
 
 | 引用对象 | 方向 | 用途 |
 |----------|------|------|
@@ -55,3 +95,4 @@
 | `03_CONTRACTS_AND_API.md` | upstream | 接口契约与错误码 |
 | `06_OBSERVABILITY.md` | 平级 | 错误 / 降级留痕 |
 | `05_ROADMAP_AND_COMPLIANCE.md` | downstream | 版本归属 |
+| `dev-meta/docs/09-ai-architecture-guide.md` §7 | upstream | 设计令牌规范与准入线（只引用） |
