@@ -106,8 +106,6 @@
 | `01_TECHNICAL_SPEC.md` | upstream | 技术选型与约束 |
 | `02_SYSTEM_DESIGN.md` | upstream | 架构与数据流 |
 | `dev-meta/docs/06-contract-based-dev.md` | 外部权威 | 契约规范：§4 记录 / §4.2 状态 / §6 组织与索引 / §7 引用纪律（只引用） |
-| `04_UI_UX_DESIGN.md` | downstream | 视图状态与交互 |
-| `06_OBSERVABILITY.md` | downstream | 失败面可观测性 |
 
 ---
 

@@ -106,4 +106,3 @@
 | `dev-meta/docs/07-observability-driven-dev.md` | **外部权威** | ODD 规范（只引用，不重定义） |
 | `02_SYSTEM_DESIGN.md` | upstream | 关键路径与架构 |
 | `03_CONTRACTS_AND_API.md` | upstream | 失败面与错误码 |
-| `05_ROADMAP_AND_COMPLIANCE.md` | downstream | 审计与合规留痕 |

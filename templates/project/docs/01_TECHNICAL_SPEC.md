@@ -65,6 +65,3 @@
 |----------|------|------|
 | `00_PRODUCT_REQUIREMENTS.md` | upstream | 业务意图来源 |
 | `dev-meta/docs/06-contract-based-dev.md` §10 | 外部权威 | 测试职责分层（只引用） |
-| `02_SYSTEM_DESIGN.md` | downstream | 架构落地 |
-| `03_CONTRACTS_AND_API.md` | downstream | 契约定义 |
-| `06_OBSERVABILITY.md` | downstream | 可观测性实例化 |

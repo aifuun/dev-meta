@@ -93,6 +93,5 @@
 |----------|------|------|
 | `00_PRODUCT_REQUIREMENTS.md` | upstream | 用户故事与验收 |
 | `03_CONTRACTS_AND_API.md` | upstream | 接口契约与错误码 |
-| `06_OBSERVABILITY.md` | 平级 | 错误 / 降级留痕 |
-| `05_ROADMAP_AND_COMPLIANCE.md` | downstream | 版本归属 |
+| `06_OBSERVABILITY.md` | upstream | 错误 / 降级留痕判据（本文 §2 引用） |
 | `dev-meta/docs/09-ai-architecture-guide.md` §7 | upstream | 设计令牌规范与准入线（只引用） |

@@ -72,5 +72,3 @@
 | `01_TECHNICAL_SPEC.md` | upstream | 技术选型与约束 |
 | `dev-meta/docs/07` | 外部权威 | 可观测性规范（只引用） |
 | `dev-meta/docs/09` | 外部权威 | 架构设计原则（只引用） |
-| `03_CONTRACTS_AND_API.md` | downstream | 契约定义 |
-| `06_OBSERVABILITY.md` | downstream | 可观测性实例化 |
