@@ -70,7 +70,7 @@ TEMPLATE_DESC = {
     "project/docs/04_UI_UX_DESIGN.md": "交互与视图状态（无 UI 时跳过）",
     "project/docs/05_ROADMAP_AND_COMPLIANCE.md": "Milestone、版本切分、合规",
     "project/docs/06_OBSERVABILITY.md": "可观测性实例化（docs/07 的项目落点）",
-    "versions/vX.Y-<slug>/200-spec.md": "版本规格模板（核心业务场景 + 架构锚点 + 验收标准 + DoD）",
+    "versions/vX.Y-<slug>/200-spec.md": "版本规格模板（背景 + 用户旅程 + 核心业务场景 + 架构锚点 + 验收标准 + DoD）",
     "versions/vX.Y-<slug>/300-design.md": "版本设计模板（架构与分层、数据流与状态机、核心算法、ADR）",
     "versions/vX.Y-<slug>/400-build.md": "实现蓝图 + Step 0–7 施工清单模板",
     "versions/vX.Y-<slug>/500-schedule.md": "工作包排程模板",
